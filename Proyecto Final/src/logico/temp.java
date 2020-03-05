@@ -1,5 +1,7 @@
 package logico;
 
+
+
 public class temp {
 private String Brayan; 
 private String Yehudy;
