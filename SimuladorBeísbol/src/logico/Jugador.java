@@ -2,15 +2,17 @@ package logico;
 
 public abstract class Jugador {
 	
-	private String nombre;
-	private String noDorsal;
-	private float cantJuegos; 
-	private float errores;
-	public Jugador(String nombre, String noDorsal, float cantJuegos, float errores) {
+	protected String nombre;
+	protected String noDorsal;
+	protected float cantJuegos; 
+	protected float errores;
+	protected String equipo;
+	public Jugador(String nombre, String noDorsal, float cantJuegos, float errores, String equipo) {
 		this.nombre = nombre;
 		this.noDorsal = noDorsal;
 		this.cantJuegos = cantJuegos;
 		this.errores = errores;
+		this.equipo = equipo;
 	}
 	public String getNombre() {
 		return nombre;

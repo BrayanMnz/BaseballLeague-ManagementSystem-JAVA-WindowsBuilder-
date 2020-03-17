@@ -10,8 +10,8 @@ private String posicion; //posicion a la defensiva.
 
 
 	public jugadorPosicion(String nombre, String noDorsal, float cantJuegos, float errores, float hits,
-		float carrerasEmpujadas, float basesRobadas, float turnos, String posicion) {
-	super(nombre, noDorsal, cantJuegos, errores);
+		float carrerasEmpujadas, float basesRobadas, float turnos, String posicion, String equipo) {
+	super(nombre, noDorsal, cantJuegos, errores, equipo);
 	this.hits = hits;
 	this.carrerasEmpujadas = carrerasEmpujadas;
 	this.basesRobadas = basesRobadas;

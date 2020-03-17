@@ -10,7 +10,7 @@ public class Equipo {
 	private float hr; //home runs
 	private float promedioBat; //batting average
 	private float porcBase; //en base porcentaje
-	private float porcSlugging; //% de slugging
+	private float porcSlugging; //% de slugging  ([Hits] + [Doubles] + [Triples x 2] + [Home Runs x 3])/At Bats
 	private float derrotas;
 	private float victorias;
 	private float promCarreras; //promedio carreras
@@ -24,7 +24,7 @@ public class Equipo {
 			float porcSlugging, float derrotas, float victorias, float promCarreras, float inningPit, float strike,
 			float errores, float outs, float chances, String manager) {
 		super();
-		Jugadores = jugadores;
+		Jugadores = new ArrayList <Jugador>();
 		this.gp = gp;
 		this.carreras = carreras;
 		this.hr = hr;
@@ -146,10 +146,11 @@ public class Equipo {
 	//private float carrerasBateadas; //runs batted in
 
 	//private float ops; //on base plus slugging 
+	//private float cierres; //shutouts, un pitcher no deja que el equipo haga ni una carrera
+
 
 	//private float salvados; //saves
 	//ivate float juegoCompleto; //partidas completas con un solo pitcher
-	//private float cierres; //shutouts, un pitcher no deja que el equipo haga ni una carrera
 	//private float inicioCalidad; //Inicios de calidadd
 	//private float bola; //bb o walk
 

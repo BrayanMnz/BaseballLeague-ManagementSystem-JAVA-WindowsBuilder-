@@ -3,18 +3,18 @@ package logico;
 public class Pitcher extends Jugador {
 	private float juegoGanado;
 	private float juegoPerdido;
-	private float efectividad; //ERA EARNED RUNS ALLOWED
-	private float innings; 
+	private float efectividad;	 //ERA EARNED RUNS ALLOWED
+	private float inningsLanzados; 
 	private float ponches; 
 	
 
 	public Pitcher(String nombre, String noDorsal, float cantJuegos, float errores, float juegoGanado,
-			float juegoPerdido, float efectividad, float innings, float ponches) {
-		super(nombre, noDorsal, cantJuegos, errores);
+			float juegoPerdido, float efectividad, float inningsLanzados, float ponches, String equipo) {
+		super(nombre, noDorsal, cantJuegos, errores, equipo);
 		this.juegoGanado = 0;
 		this.juegoPerdido = 0;
 		this.efectividad = 0;
-		this.innings =0;
+		this.inningsLanzados =0;
 		this.ponches = 0;
 	}
 
@@ -34,8 +34,8 @@ public class Pitcher extends Jugador {
 	}
 
 
-	public float getInnings() {
-		return innings;
+	public float getInningsLanzados() {
+		return inningsLanzados;
 	}
 
 
@@ -59,8 +59,8 @@ public class Pitcher extends Jugador {
 	}
 
 
-	public void setInnings(float innings) {
-		this.innings = innings;
+	public void setInningsLanzados(float inningsLanzados) {
+		this.inningsLanzados = inningsLanzados;
 	}
 
 
