@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Equipo {
 	
-	private ArrayList <Jugador> Jugadores;
+	private ArrayList <Jugador> jugadores;
 	private float  gp; //juegos jugados
 	private float carreras; //r
 	private float hr; //home runs
@@ -24,7 +24,7 @@ public class Equipo {
 			float porcSlugging, float derrotas, float victorias, float promCarreras, float inningPit, float strike,
 			float errores, float outs, float chances, String manager) {
 		super();
-		Jugadores = new ArrayList <Jugador>();
+		jugadores = new ArrayList <Jugador>();
 		this.gp = gp;
 		this.carreras = carreras;
 		this.hr = hr;
@@ -42,10 +42,10 @@ public class Equipo {
 		this.manager = manager;
 	}
 	public ArrayList<Jugador> getJugadores() {
-		return Jugadores;
+		return jugadores;
 	}
 	public void setJugadores(ArrayList<Jugador> jugadores) {
-		Jugadores = jugadores;
+		this.jugadores = jugadores;
 	}
 	public float getGp() {
 		return gp;
