@@ -9,13 +9,31 @@ public class Equipo {
     public String estadio; //Nombre del estadio 
     public String trainer;
     private float cantJuegos; 
-	public Equipo(String nombreEquipo, String id, String estadio, String trainer, float cantJuegos) {
+    private float ganados; 
+    public float getGanados() {
+		return ganados;
+	}
+	public float getPerdidos() {
+		return perdidos;
+	}
+	public void setGanados(float ganados) {
+		this.ganados = ganados;
+	}
+	public void setPerdidos(float perdidos) {
+		this.perdidos = perdidos;
+	}
+	private float perdidos;
+    
+	public Equipo(String nombreEquipo, String id, String estadio, String trainer, float cantJuegos,float ganados,float perdidos) {
 		misJugadores = new ArrayList <Jugador>();
 		this.nombreEquipo = nombreEquipo;
 		this.id = id;
 		this.estadio = estadio;
 		this.trainer = trainer;
-		this.setCantJuegos(0);
+		this.cantJuegos = 0; 
+		this.ganados = 0; 
+		this.perdidos = 0;
+		
 	}
 	public ArrayList<Jugador> getJugadores() {
 		return misJugadores;

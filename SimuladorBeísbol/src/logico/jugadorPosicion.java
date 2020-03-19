@@ -7,8 +7,6 @@ private float basesRobadas;
 private float turnos; //turnos al bate 
 private String posicion; //posicion a la defensiva.
 
-
-
 	public jugadorPosicion(String nombre, String noDorsal, float cantJuegos, float errores, float hits,
 		float carrerasEmpujadas, float basesRobadas, float turnos, String posicion, String equipo) {
 	super(nombre, noDorsal, cantJuegos, errores, equipo);
