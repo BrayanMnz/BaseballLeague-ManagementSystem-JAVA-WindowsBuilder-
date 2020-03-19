@@ -7,12 +7,19 @@ public abstract class Jugador {
 	protected float cantJuegos; 
 	protected float errores;
 	protected String equipo;
-	public Jugador(String nombre, String noDorsal, float cantJuegos, float errores, String equipo) {
+	protected boolean lesionado; 
+	protected float altura;// en metros 
+	protected float peso; //en libras 
+	
+	public Jugador(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado, float altura,float peso) {
 		this.nombre = nombre;
 		this.noDorsal = noDorsal;
 		this.cantJuegos = cantJuegos;
 		this.errores = errores;
 		this.equipo = equipo;
+		lesionado = false; 
+		this.altura = altura; 
+		this.peso = peso;
 	}
 	public String getNombre() {
 		return nombre;
@@ -37,6 +44,30 @@ public abstract class Jugador {
 	}
 	public void setErrores(float errores) {
 		this.errores = errores;
+	}
+	public String getEquipo() {
+		return equipo;
+	}
+	public boolean isLesionado() {
+		return lesionado;
+	}
+	public float getAltura() {
+		return altura;
+	}
+	public float getPeso() {
+		return peso;
+	}
+	public void setEquipo(String equipo) {
+		this.equipo = equipo;
+	}
+	public void setLesionado(boolean lesionado) {
+		this.lesionado = lesionado;
+	}
+	public void setAltura(float altura) {
+		this.altura = altura;
+	}
+	public void setPeso(float peso) {
+		this.peso = peso;
 	}
 
 }

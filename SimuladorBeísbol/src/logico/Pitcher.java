@@ -7,69 +7,56 @@ public class Pitcher extends Jugador {
 	private float inningsLanzados; 
 	private float ponches; 
 	private float juegosSalvados;
-	
-
-	public Pitcher(String nombre, String noDorsal, float cantJuegos, float errores, float juegoGanado,
-			float juegoPerdido, float efectividad, float inningsLanzados, float ponches, String equipo) {
-		super(nombre, noDorsal, cantJuegos, errores, equipo);
-		this.juegoGanado = 0;
-		this.juegoPerdido = 0;
-		this.efectividad = 0;
-		this.inningsLanzados =0;
-		this.ponches = 0;
+	public Pitcher(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado,
+			float altura, float peso, float juegoGanado, float juegoPerdido, float efectividad, float inningsLanzados,
+			float ponches, float juegosSalvados) {
+		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso);
+		this.juegoGanado = juegoGanado;
+		this.juegoPerdido = juegoPerdido;
+		this.efectividad = efectividad;
+		this.inningsLanzados = inningsLanzados;
+		this.ponches = ponches;
+		this.juegosSalvados = juegosSalvados;
 	}
-
-
 	public float getJuegoGanado() {
 		return juegoGanado;
 	}
-
-
 	public float getJuegoPerdido() {
 		return juegoPerdido;
 	}
-
-
 	public float getEfectividad() {
 		return efectividad;
 	}
-
-
 	public float getInningsLanzados() {
 		return inningsLanzados;
 	}
-
-
 	public float getPonches() {
 		return ponches;
 	}
-
-
+	public float getJuegosSalvados() {
+		return juegosSalvados;
+	}
 	public void setJuegoGanado(float juegoGanado) {
 		this.juegoGanado = juegoGanado;
 	}
-
-
 	public void setJuegoPerdido(float juegoPerdido) {
 		this.juegoPerdido = juegoPerdido;
 	}
-
-
 	public void setEfectividad(float efectividad) {
 		this.efectividad = efectividad;
 	}
-
-
 	public void setInningsLanzados(float inningsLanzados) {
 		this.inningsLanzados = inningsLanzados;
 	}
-
-
 	public void setPonches(float ponches) {
 		this.ponches = ponches;
 	}
+	public void setJuegosSalvados(float juegosSalvados) {
+		this.juegosSalvados = juegosSalvados;
+	}
+	
 
-
+	
 	
 
 }
