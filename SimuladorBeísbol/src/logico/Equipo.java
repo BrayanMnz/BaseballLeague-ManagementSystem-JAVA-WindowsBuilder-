@@ -10,18 +10,7 @@ public class Equipo {
     public String trainer;
     private float cantJuegos; 
     private float ganados; 
-    public float getGanados() {
-		return ganados;
-	}
-	public float getPerdidos() {
-		return perdidos;
-	}
-	public void setGanados(float ganados) {
-		this.ganados = ganados;
-	}
-	public void setPerdidos(float perdidos) {
-		this.perdidos = perdidos;
-	}
+
 	private float perdidos;
     
 	public Equipo(String nombreEquipo, String id, String estadio, String trainer, float cantJuegos,float ganados,float perdidos) {
@@ -71,4 +60,16 @@ public class Equipo {
 	public void setCantJuegos(float cantJuegos) {
 		this.cantJuegos = cantJuegos;
 	} 
+    public float getGanados() {
+		return ganados;
+	}
+	public float getPerdidos() {
+		return perdidos;
+	}
+	public void setGanados(float ganados) {
+		this.ganados = ganados;
+	}
+	public void setPerdidos(float perdidos) {
+		this.perdidos = perdidos;
+	}
 }

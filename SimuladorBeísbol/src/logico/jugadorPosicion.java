@@ -14,7 +14,7 @@ private String posicion; //posicion a la defensiva.
 	this.carrerasEmpujadas = carrerasEmpujadas;
 	this.basesRobadas = basesRobadas;
 	this.turnos = turnos;
-	this.setPosicion(posicion); 
+	this.posicion = posicion;
 }
 	
 
