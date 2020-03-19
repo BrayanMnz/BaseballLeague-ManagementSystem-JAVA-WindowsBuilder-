@@ -2,13 +2,14 @@ package logico;
 
 public class jugadorPosicion extends Jugador {
 	private float hits; //ofensiva
+	private float carrerasAnotadas;
 	private float carrerasEmpujadas;
 	private float basesRobadas; 
 	private float turnos; //turnos al bate 
 	private String posicion; //posicion a la defensiva.
 
 public jugadorPosicion(String nombre, String noDorsal, float cantJuegos, float errores, String equipo,
-			boolean lesionado, float altura, float peso, float hits, float carrerasEmpujadas, float basesRobadas,
+			boolean lesionado, float altura, float peso, float hits,float carrerasAnotadas, float carrerasEmpujadas, float basesRobadas,
 			float turnos, String posicion) {
 		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso);
 		this.hits = hits;
@@ -56,6 +57,14 @@ public void setTurnos(float turnos) {
 
 public void setPosicion(String posicion) {
 	this.posicion = posicion;
+}
+
+public float getCarrerasAnotadas() {
+	return carrerasAnotadas;
+}
+
+public void setCarrerasAnotadas(float carrerasAnotadas) {
+	this.carrerasAnotadas = carrerasAnotadas;
 }
 
 
