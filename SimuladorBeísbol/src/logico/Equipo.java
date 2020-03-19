@@ -16,9 +16,11 @@ public class Equipo {
 	private float promCarreras; //promedio carreras
 	private float inningPit; //innings pitchados
 	private float strike; //strikes 
-	private float errores; 
+		private float errores; 
 	private float outs; //putouts
 	private float chances;
+	private float inningsColectivo;
+	private float savesColectivo;
 	private String manager;
 	public Equipo(ArrayList<Jugador> jugadores, float gp, float carreras, float hr, float promedioBat, float porcBase,
 			float porcSlugging, float derrotas, float victorias, float promCarreras, float inningPit, float strike,
@@ -137,8 +139,47 @@ public class Equipo {
 	public void setManager(String manager) {
 		this.manager = manager;
 	}
+	public float CantErrores() {
+		float cantErrores = 0;
+		for (Jugador aux : jugadores) {
+			cantErrores = cantErrores + aux.getErrores();
+		}
+		return cantErrores;
+	}
 
-//	private float ab; //at bat
+	public float cantHits() {
+		float cantHits=0;
+		for (Jugador aux : jugadores) {
+			if (aux instanceof jugadorPosicion) {
+				cantHits =  ((jugadorPosicion) aux).getHits() + cantHits;
+			}
+		}
+		return cantHits;
+	}
+	public float cantBateo() {
+		float cantBateo=0;
+		for (Jugador aux : jugadores) {
+			if (aux instanceof jugadorPosicion) {
+				cantBateo =  ((jugadorPosicion) aux).getTurnos() + cantBateo;
+			}
+		}
+		return cantBateo;
+	}
+	public float battingAvg() {
+		return cantHits()/cantBateo();
+	}
+	public float carrerasJuego() {
+		return carreras/gp;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	//	private float ab; //at bat
 //	private float hits; //hits
 //	private float dobles; //dobles
 	//private float triples; //triples
