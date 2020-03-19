@@ -6,6 +6,7 @@ public class Pitcher extends Jugador {
 	private float efectividad;	 //ERA EARNED RUNS ALLOWED
 	private float inningsLanzados; 
 	private float ponches; 
+	private float juegosSalvados;
 	
 
 	public Pitcher(String nombre, String noDorsal, float cantJuegos, float errores, float juegoGanado,
