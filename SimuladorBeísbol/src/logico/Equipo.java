@@ -72,4 +72,9 @@ public class Equipo {
 	public void setPerdidos(float perdidos) {
 		this.perdidos = perdidos;
 	}
+	public  void insertarJugador(Jugador aux) {  
+		misJugadores.add(aux);  
+	}
+	
 }
+
