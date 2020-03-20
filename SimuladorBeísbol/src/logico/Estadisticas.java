@@ -51,6 +51,13 @@ public class Estadisticas {
 		}
 		return cantHits;
 	}
+	public float cantJuegos(String name) {
+		float cantJuegos = 0;
+		for (Jugador aux : miSeason.buscarJugadorNombreEquipo(name)) {
+				cantJuegos=aux.getCantJuegos();
+		}
+		return cantJuegos;
+	}
 
 	public float turnosAvg(String name) {
 		return cantHits(name)/cantBateo(name);
@@ -59,13 +66,13 @@ public class Estadisticas {
 		float cantCarreras=0;
 		for (Jugador aux : miSeason.buscarJugadorNombreEquipo(name)) {
 			if (aux instanceof jugadorPosicion) {
-				cantCarreras = ((jugadorPosicion) aux).getCarrerasAnotadas() + cantCarreras;
+				cantCarreras = ((jugadorPosicion) aux).getCarrerasAnotadas()+ cantCarreras;
 			}
 		}
 		return cantCarreras;
 	}
 	public float carrerasJuego(String name) {
-		return (cantCarreras(name)/miSeason.buscarEquipoNombre(name).getCantJuegos());
+		return cantCarreras(name)/cantJuegos(name);
 	}
 
 	public float cantHit(String name) {

@@ -14,6 +14,7 @@ public jugadorPosicion(String nombre, String noDorsal, float cantJuegos, float e
 		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso);
 		this.hits = hits;
 		this.carrerasEmpujadas = carrerasEmpujadas;
+		this.carrerasAnotadas = carrerasAnotadas;
 		this.basesRobadas = basesRobadas;
 		this.turnos = turnos;
 		this.posicion = posicion;
