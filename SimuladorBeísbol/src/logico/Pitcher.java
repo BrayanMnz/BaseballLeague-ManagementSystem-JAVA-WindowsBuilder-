@@ -3,20 +3,28 @@ package logico;
 public class Pitcher extends Jugador {
 	private float juegoGanado;
 	private float juegoPerdido;
-	private float efectividad;	 //ERA EARNED RUNS ALLOWED
+	private float carrerasLimpias;	 //ER EARNED RUNS 
 	private float inningsLanzados; 
 	private float ponches; 
+	private float BB;
 	private float juegosSalvados;
 	public Pitcher(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado,
-			float altura, float peso, float juegoGanado, float juegoPerdido, float efectividad, float inningsLanzados,
-			float ponches, float juegosSalvados) {
+			float altura, float peso, float juegoGanado, float juegoPerdido, float carrerasLimpias, float inningsLanzados,
+			float ponches, float BB, float juegosSalvados) {
 		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso);
 		this.juegoGanado = juegoGanado;
 		this.juegoPerdido = juegoPerdido;
-		this.efectividad = efectividad;
+		this.carrerasLimpias = carrerasLimpias;
 		this.inningsLanzados = inningsLanzados;
 		this.ponches = ponches;
+		this.BB = BB;
 		this.juegosSalvados = juegosSalvados;
+	}
+	public float getCarrerasLimpias() {
+		return carrerasLimpias;
+	}
+	public void setCarrerasLimpias(float carrerasLimpias) {
+		this.carrerasLimpias = carrerasLimpias;
 	}
 	public float getJuegoGanado() {
 		return juegoGanado;
@@ -25,7 +33,7 @@ public class Pitcher extends Jugador {
 		return juegoPerdido;
 	}
 	public float getEfectividad() {
-		return efectividad;
+		return carrerasLimpias;
 	}
 	public float getInningsLanzados() {
 		return inningsLanzados;
@@ -43,7 +51,7 @@ public class Pitcher extends Jugador {
 		this.juegoPerdido = juegoPerdido;
 	}
 	public void setEfectividad(float efectividad) {
-		this.efectividad = efectividad;
+		this.carrerasLimpias = efectividad;
 	}
 	public void setInningsLanzados(float inningsLanzados) {
 		this.inningsLanzados = inningsLanzados;
@@ -54,9 +62,15 @@ public class Pitcher extends Jugador {
 	public void setJuegosSalvados(float juegosSalvados) {
 		this.juegosSalvados = juegosSalvados;
 	}
+	public float getBB() {
+		return BB;
+	}
+	public void setBB(float bB) {
+		BB = bB;
+	}
+public float efectividad() { 
+	float era=0; 
+	return era = (getCarrerasLimpias()*9) / getInningsLanzados();
+}
 	
-
-	
-	
-
 }

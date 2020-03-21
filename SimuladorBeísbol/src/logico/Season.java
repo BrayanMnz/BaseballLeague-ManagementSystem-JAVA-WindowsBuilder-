@@ -17,16 +17,22 @@ public class Season {
 	public  void insertarEquipo(Equipo aux) {  
 		misEquipos.add(aux);  
 	}
-	public  void insertarJugador(Jugador aux) {  
-		misJugadores.add(aux);  
-	}
-	public Equipo buscarEquipoNombre(String name) {
-		int i=0;
-		while (misEquipos.get(i).getNombreEquipo() != name) {
-			i++;
-		}
-		return misEquipos.get(i);
-	}
+
+	 public Equipo buscarEquipoById (String idEquipo) { 
+    	 boolean encontrado = false; 
+    	Equipo auxEquipo =null;
+    	 int i=0;
+    	 while(i<misEquipos.size() && !encontrado) {
+    		 if(misEquipos.get(i).getId().equalsIgnoreCase(idEquipo)) {
+    			 auxEquipo = misEquipos.get(i);
+    			 encontrado = true; 
+    			
+    		 } i++;  
+    		 }
+		return  auxEquipo;
+	 }
+
+	 
 	public ArrayList<Jugador> buscarJugadorNombreEquipo(String name) {
 		ArrayList <Jugador> teamPlayers;
 		teamPlayers = new ArrayList<Jugador>();
@@ -37,5 +43,8 @@ public class Season {
 		}
 		return teamPlayers;
 	}
+	 
+
+	
 	
 }

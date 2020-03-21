@@ -10,6 +10,7 @@ public class Equipo {
     public String trainer;
     private float cantJuegos; 
     private float ganados; 
+    private Season miSeason;
 
 	private float perdidos;
     
@@ -75,6 +76,102 @@ public class Equipo {
 	public  void insertarJugador(Jugador aux) {  
 		misJugadores.add(aux);  
 	}
-	
+	//Calcular total Hits del equipo
+    public float totalHits() { 
+    	float cantHits = 0;
+	for (Jugador auxJugador : misJugadores) {
+		if(auxJugador instanceof jugadorPosicion) { 
+			cantHits += ((jugadorPosicion) auxJugador).getHits();
+		}
+	}
+	return cantHits;
+} 
+    //Calcular total de turnos del equipo
+    public float totalTurnos() { 
+    	float cantTurnos = 0;
+	for (Jugador auxJugador : misJugadores) {
+		if(auxJugador instanceof jugadorPosicion) { 
+			cantTurnos += ((jugadorPosicion) auxJugador).getTurnos();
+		}
+	}
+	return cantTurnos;
+} 
+//Calcular total Carreras del equipo
+    public float totalCarreras() { 
+    	float cantCarreras = 0;
+	for (Jugador auxJugador : misJugadores) {
+		if(auxJugador instanceof jugadorPosicion) { 
+			cantCarreras += ((jugadorPosicion) auxJugador).getCarrerasAnotadas();
+		}
+	}
+	return cantCarreras;
+} 
+    //Calcular efectividad individual de un jugador del equipo.
+    public float efectividad (String noJugador) {
+ 	   float era=0;
+Jugador auxJugador = buscarJugadorByDorsal(noJugador);
+ if(auxJugador instanceof Pitcher) { 
+ era = ( (((Pitcher) auxJugador).getCarrerasLimpias() *9 ) / (((Pitcher) auxJugador).getInningsLanzados())  );
+ } return era;  }
+ 
+//Total innings lanzados del equipo    
+    public float totalInnings() { 
+    	float cantInnings = 0;
+	for (Jugador auxJugador : misJugadores) {
+		if(auxJugador instanceof Pitcher) { 
+			cantInnings += ((Pitcher) auxJugador).getInningsLanzados();
+		}
+	}
+	return cantInnings;
+} 
+       
+ //BuscarJugador por # de chaqueta del equipo
+	 public Jugador buscarJugadorByDorsal (String noDorsal) { 
+    	 boolean encontrado = false; 
+    	Jugador auxJugador =null;
+    	 int i=0;
+    	 while(i<misJugadores.size() && !encontrado) {
+    		 if(misJugadores.get(i).getNoDorsal().equalsIgnoreCase(noDorsal)) {
+    			 auxJugador = misJugadores.get(i);
+    			 encontrado = true;  } 
+    		 i++; }	return  auxJugador;
+	 }
+ //Cantidad Juegos Ganados equipo 
+	 public float totalGanados() {
+	    	float cantGanados = 0;
+	    	for (Jugador auxJugador : misJugadores) {
+	    		if(auxJugador instanceof Pitcher) { 
+	    			cantGanados += ((Pitcher) auxJugador).getJuegoGanado();
+	    		}
+	    	}
+	    	return cantGanados;
+	 }
+ // Cantidad Juegos perdidos equipo 
+	 public float totalPerdidos() {
+	    	float cantPerdidos = 0;
+	    	for (Jugador auxJugador : misJugadores) {
+	    		if(auxJugador instanceof Pitcher) { 
+	    			cantPerdidos += ((Pitcher) auxJugador).getJuegoPerdido();
+	    		}	}   
+	    	return cantPerdidos;   }
+	 // Cantidad Ponches por equipo 
+	 public float totalPonches() {
+	    	float cantPonches = 0;
+	    	for (Jugador auxJugador : misJugadores) {
+	    		if(auxJugador instanceof Pitcher) { 
+	    			cantPonches += ((Pitcher) auxJugador).getPonches();
+	    		}	}   
+	    	return cantPonches;   }
+	 
+	 // Cantidad Ponches por equipo 
+	 public float totalBasePorBolas() {
+	    	float cantBB = 0;
+	    	for (Jugador auxJugador : misJugadores) {
+	    		if(auxJugador instanceof Pitcher) { 
+	    			cantBB += ((Pitcher) auxJugador).getBB();
+	    		}	}   
+	    	return cantBB;   }
 }
+
+
 

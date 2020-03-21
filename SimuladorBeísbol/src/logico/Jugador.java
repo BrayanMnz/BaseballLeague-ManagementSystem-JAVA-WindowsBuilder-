@@ -11,6 +11,7 @@ public abstract class Jugador {
 	protected float altura;// en metros 
 	protected float peso; //en libras 
 	
+	
 	public Jugador(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado, float altura,float peso) {
 		this.nombre = nombre;
 		this.noDorsal = noDorsal;

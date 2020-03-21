@@ -7,12 +7,14 @@ public class jugadorPosicion extends Jugador {
 	private float basesRobadas; 
 	private float turnos; //turnos al bate 
 	private String posicion; //posicion a la defensiva.
+	private Season miSeason;
 
 public jugadorPosicion(String nombre, String noDorsal, float cantJuegos, float errores, String equipo,
 			boolean lesionado, float altura, float peso, float hits,float carrerasAnotadas, float carrerasEmpujadas, float basesRobadas,
 			float turnos, String posicion) {
 		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso);
 		this.hits = hits;
+		this.carrerasAnotadas = carrerasAnotadas;
 		this.carrerasEmpujadas = carrerasEmpujadas;
 		this.basesRobadas = basesRobadas;
 		this.turnos = turnos;
@@ -68,8 +70,11 @@ public void setCarrerasAnotadas(float carrerasAnotadas) {
 }
 
 
-
-
+public float promBateo() { 
+     float avg;
+	return avg = getHits()/getTurnos();
+	
+}
 
 
 
