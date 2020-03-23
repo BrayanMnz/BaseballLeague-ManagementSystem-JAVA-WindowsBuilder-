@@ -10,9 +10,10 @@ public abstract class Jugador {
 	protected boolean lesionado; 
 	protected float altura;// en metros 
 	protected float peso; //en libras 
+	protected float juegos;
 	
 	
-	public Jugador(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado, float altura,float peso) {
+	public Jugador(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado, float altura,float peso, float juegos) {
 		this.nombre = nombre;
 		this.noDorsal = noDorsal;
 		this.cantJuegos = cantJuegos;
@@ -21,6 +22,7 @@ public abstract class Jugador {
 		lesionado = false; 
 		this.altura = altura; 
 		this.peso = peso;
+		this.juegos = juegos;
 	}
 	public String getNombre() {
 		return nombre;

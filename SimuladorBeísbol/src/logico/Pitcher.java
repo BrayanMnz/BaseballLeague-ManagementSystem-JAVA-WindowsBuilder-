@@ -10,8 +10,8 @@ public class Pitcher extends Jugador {
 	private float juegosSalvados;
 	public Pitcher(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado,
 			float altura, float peso, float juegoGanado, float juegoPerdido, float carrerasLimpias, float inningsLanzados,
-			float ponches, float BB, float juegosSalvados) {
-		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso);
+			float ponches, float BB, float juegosSalvados, float juegos) {
+		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso, juegos);
 		this.juegoGanado = juegoGanado;
 		this.juegoPerdido = juegoPerdido;
 		this.carrerasLimpias = carrerasLimpias;
