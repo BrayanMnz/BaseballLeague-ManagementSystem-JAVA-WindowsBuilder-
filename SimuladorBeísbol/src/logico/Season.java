@@ -2,11 +2,14 @@ package logico;
 
 import java.util.ArrayList;
 
+
+
 public class Season {
 	
 	private ArrayList<Equipo> misEquipos;
 	private Nomina miNomina;
 	private ArrayList <Jugador> misJugadores;
+	private static Season miSeason;
 	
 	public Season() {
 		super();
@@ -14,6 +17,13 @@ public class Season {
 		this.miNomina = miNomina;
 		this.misJugadores = new ArrayList<Jugador>();
 	}
+
+public static Season getInstance() { 
+	  if(miSeason == null) { 
+		  miSeason = new Season(); 
+	  }
+	return miSeason;
+}
 	public  void insertarEquipo(Equipo aux) {  
 		misEquipos.add(aux);  
 	}

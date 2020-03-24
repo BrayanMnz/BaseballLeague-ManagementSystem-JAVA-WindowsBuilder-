@@ -170,7 +170,25 @@ Jugador auxJugador = buscarJugadorByDorsal(noJugador);
 	    		if(auxJugador instanceof Pitcher) { 
 	    			cantBB += ((Pitcher) auxJugador).getBB();
 	    		}	}   
-	    	return cantBB;   }
+	    	return cantBB;   
+	    	}
+	 
+	/* public String jugadorLesionado(String idJugador, String tipoLesion) {
+		 String aux="";
+		Jugador  auxJugador = buscarJugadorByDorsal(idJugador);
+			if(auxJugador.isLesionado()) { 
+			 auxJugador.insertarLesion(tipoLesion);
+					aux = tipoLesion;}
+			
+				else if (auxJugador.lesionado == false) { 
+					aux = "El jugador no esta lesionado, no se puede especificar ninguna lesion";
+				}
+			
+
+		
+		return aux;
+		
+	 }*/
 }
 
 

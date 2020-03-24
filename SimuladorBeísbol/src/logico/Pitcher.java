@@ -72,5 +72,9 @@ public float efectividad() {
 	float era=0; 
 	return era = (getCarrerasLimpias()*9) / getInningsLanzados();
 }
+@Override
+
+public void insertarLesion(String auxLesion) {
+	 		   misLesiones.add(auxLesion); }
 	
 }

@@ -1,9 +1,12 @@
 package logico;
 
+import java.util.ArrayList;
+
 public class Partido {
 	//CREAR MARCADOR PARA LA PARTE VISUAL
-	private String visitante;
-	private String local;
+	private ArrayList <Equipo> misEquipos;
+	private Equipo Equipovisitante;
+	private Equipo Equipolocal;
 	private String estadio;
 	private String hora;
 	private String fecha;
@@ -14,26 +17,26 @@ public class Partido {
 	private int localHits=0;
 	private int errorLocal=0;
 	private int errorVisita=0;
-	public Partido(String visitante, String local, String estadio) {
+	public Partido(Equipo visitante, Equipo local, String estadio) {
 		super();
-		this.visitante = visitante;
-		this.local = local;
+		this.Equipovisitante = visitante;
+		this.Equipolocal = local;
 		this.estadio = estadio;
 		terminado = false;
 		localRun = 0;
 		visitaRun = 0;
 	}
-	public String getVisitante() {
-		return visitante;
+	public Equipo getVisitante() {
+		return Equipovisitante;
 	}
-	public void setVisitante(String visitante) {
-		this.visitante = visitante;
+	public void setVisitante(Equipo visitante) {
+		this.Equipovisitante = visitante;
 	}
-	public String getLocal() {
-		return local;
+	public Equipo getLocal() {
+		return Equipolocal;
 	}
-	public void setLocal(String local) {
-		this.local = local;
+	public void setLocal(Equipo local) {
+		this.Equipolocal = local;
 	}
 	public String getEstadio() {
 		return estadio;
@@ -95,4 +98,18 @@ public class Partido {
 	public void setErrorVisita(int errorVisita) {
 		this.errorVisita = errorVisita;
 	}
+
+	public ArrayList <Equipo> getMisEquipos() {
+		return misEquipos;
+	}
+	public void setMisEquipos(ArrayList <Equipo> misEquipos) {
+		this.misEquipos = misEquipos;
+	}
+	
+  // public Equipo ganadorPartido() { 
+	//   if(Equipolocal.)
+	   
+ //  }
+	  
+	
 }

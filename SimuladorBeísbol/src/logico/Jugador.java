@@ -1,5 +1,7 @@
 package logico;
 
+import java.util.ArrayList;
+
 public abstract class Jugador {
 	
 	protected String nombre;
@@ -7,19 +9,21 @@ public abstract class Jugador {
 	protected float cantJuegos; 
 	protected float errores;
 	protected String equipo;
-	protected boolean lesionado; 
+	protected boolean lesionado = false; 
 	protected float altura;// en metros 
 	protected float peso; //en libras 
 	protected float juegos;
+	protected ArrayList<String> misLesiones;
 	
 	
 	public Jugador(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado, float altura,float peso, float juegos) {
+		setMisLesiones(new ArrayList<>());
 		this.nombre = nombre;
 		this.noDorsal = noDorsal;
 		this.cantJuegos = cantJuegos;
 		this.errores = errores;
 		this.equipo = equipo;
-		lesionado = false; 
+		
 		this.altura = altura; 
 		this.peso = peso;
 		this.juegos = juegos;
@@ -72,5 +76,13 @@ public abstract class Jugador {
 	public void setPeso(float peso) {
 		this.peso = peso;
 	}
-
+	public ArrayList<String> getMisLesiones() {
+		return misLesiones;
+	}
+	public void setMisLesiones(ArrayList<String> misLesiones) {
+		this.misLesiones = misLesiones;
+	}
+	
+   public abstract void insertarLesion(String auxLesion);
+  
 }

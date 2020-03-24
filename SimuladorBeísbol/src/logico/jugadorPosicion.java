@@ -77,7 +77,8 @@ public float promBateo() {
 	
 }
 
-
-
-
+@Override
+public void insertarLesion(String auxLesion) {
+	misLesiones.add(auxLesion);
+	   }
 }

@@ -34,13 +34,7 @@ public class Estadisticas {
 	public void setMisEquipos(ArrayList<Equipo> misEquipos) {
 		this.misEquipos = misEquipos;
 	}
-	/*public float cantErrores(String name) {
-		float cantError=0;
-		for (Jugador aux : miSeason.buscarJugadorNombreEquipo(name)) {
-			cantError = cantError + aux.getErrores();
-		}
-		return cantError;
-	} */
+
 	
 	/* public float cantHits(String name) {
 		float cantHits=0;
@@ -50,7 +44,15 @@ public class Estadisticas {
 			}
 		}
 		return cantHits;
-	} */
+
+	}
+	public float cantJuegos(String name) {
+		float cantJuegos = 0;
+		for (Jugador aux : miSeason.buscarJugadorNombreEquipo(name)) {
+				cantJuegos=aux.getCantJuegos();
+		}
+		return cantJuegos;
+	}
 
 public float promColectivo(String idEquipo) { 
 	float avg = 0; 
@@ -58,10 +60,27 @@ public float promColectivo(String idEquipo) {
 		Equipo auxEquipo = auxSeason.buscarEquipoById(idEquipo);
 	 avg = ( (auxEquipo.totalHits())/(auxEquipo.totalTurnos()) );
 
+	
+	public float cantCarreras(String name){
+		float cantCarreras=0;
+		for (Jugador aux : miSeason.buscarJugadorNombreEquipo(name)) {
+			if (aux instanceof jugadorPosicion) {
+				cantCarreras = ((jugadorPosicion) aux).getCarrerasAnotadas()+ cantCarreras;
+			}
+		}
+		return cantCarreras;
+	}
+	public float carrerasJuego(String name) {
+		return cantCarreras(name)/cantJuegos(name);
+	}
+
+
 	}
 		return avg; }
-	/* Efectividad individual del lanzado*/
+	Efectividad individual del lanzado*/
 
+	
+	
 	//public float carrerasJuego(String name) {
 	//	return (cantCarreras(name)/miSeason.buscarEquipoById(name).getCantJuegos());
 //	}
