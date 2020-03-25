@@ -1,22 +1,35 @@
 package logico;
 
-public class Lesion {
+import java.io.Serializable;
+import java.util.Date;
+
+public class Lesion implements Serializable{
 	
-	private String equipo;
-	private String nombreJugador;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Equipo miEquipo;
+	private String miJugador;
 	private String fechaInicioLesion;
 	private String tipoLesion;
-	public Lesion(String equipo, String nombreJugador, String fechaInicioLesion, String tipoLesion) {
-		this.equipo = equipo;
-		this.nombreJugador = nombreJugador;
+	private Date fechaFinalLesion;
+	public Lesion(Equipo miEquipo, String miJugador, String fechaInicioLesion,Date fechaFinalLesion, String tipoLesion) {
+		this.miEquipo = miEquipo;
+		this.setMiJugador(miJugador);
 		this.fechaInicioLesion = fechaInicioLesion;
+		this.fechaFinalLesion= getFechaFinalLesion();
 		this.tipoLesion = tipoLesion;
 	}
-	public String getEquipo() {
-		return equipo;
+	public Equipo getmiEquipo() {
+		return miEquipo;
 	}
-	public String getNombreJugador() {
-		return nombreJugador;
+
+	public String getMiJugador() {
+		return miJugador;
+	}
+	public void setMiJugador(String miJugador) {
+		this.miJugador = miJugador;
 	}
 	public String getFechaInicioLesion() {
 		return fechaInicioLesion;
@@ -24,16 +37,19 @@ public class Lesion {
 	public String getTipoLesion() {
 		return tipoLesion;
 	}
-	public void setEquipo(String equipo) {
-		this.equipo = equipo;
-	}
-	public void setNombreJugador(String nombreJugador) {
-		this.nombreJugador = nombreJugador;
+	public void setEquipo(Equipo equipo) {
+		this.miEquipo = equipo;
 	}
 	public void setFechaInicioLesion(String fechaInicioLesion) {
 		this.fechaInicioLesion = fechaInicioLesion;
 	}
 	public void setTipoLesion(String tipoLesion) {
 		this.tipoLesion = tipoLesion;
+	}
+	public Date getFechaFinalLesion() {
+		return fechaFinalLesion;
+	}
+	public void setFechaFinalLesion(Date fechaFinalLesion) {
+		this.fechaFinalLesion = fechaFinalLesion;
 	}
 }

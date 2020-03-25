@@ -1,9 +1,14 @@
 package logico;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Jugador {
+public abstract class Jugador implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected String nombre;
 	protected String noDorsal;
 	protected float cantJuegos; 
@@ -13,11 +18,11 @@ public abstract class Jugador {
 	protected float altura;// en metros 
 	protected float peso; //en libras 
 	protected float juegos;
-	protected ArrayList<String> misLesiones;
+	protected ArrayList<Lesion> misLesiones; 
 	
 	
-	public Jugador(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado, float altura,float peso, float juegos) {
-		setMisLesiones(new ArrayList<>());
+	public Jugador(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado, float altura,float peso) {
+	   misLesiones = new ArrayList <Lesion>();
 		this.nombre = nombre;
 		this.noDorsal = noDorsal;
 		this.cantJuegos = cantJuegos;
@@ -76,13 +81,7 @@ public abstract class Jugador {
 	public void setPeso(float peso) {
 		this.peso = peso;
 	}
-	public ArrayList<String> getMisLesiones() {
-		return misLesiones;
-	}
-	public void setMisLesiones(ArrayList<String> misLesiones) {
-		this.misLesiones = misLesiones;
-	}
+
 	
-   public abstract void insertarLesion(String auxLesion);
   
 }

@@ -7,14 +7,14 @@ import java.util.ArrayList;
 public class Season {
 	
 	private ArrayList<Equipo> misEquipos;
-	private Nomina miNomina;
+
 	private ArrayList <Jugador> misJugadores;
 	private static Season miSeason;
 	
 	public Season() {
 		super();
 		this.setMisEquipos(new ArrayList<Equipo>());
-		this.miNomina = miNomina;
+
 		this.misJugadores = new ArrayList<Jugador>();
 	}
 

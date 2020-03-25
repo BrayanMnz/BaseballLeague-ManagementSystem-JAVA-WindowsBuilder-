@@ -1,6 +1,10 @@
 package logico;
 
 public class Pitcher extends Jugador {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private float juegoGanado;
 	private float juegoPerdido;
 	private float carrerasLimpias;	 //ER EARNED RUNS 
@@ -9,16 +13,9 @@ public class Pitcher extends Jugador {
 	private float BB;
 	private float juegosSalvados;
 	public Pitcher(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado,
-			float altura, float peso, float juegoGanado, float juegoPerdido, float carrerasLimpias, float inningsLanzados,
-			float ponches, float BB, float juegosSalvados, float juegos) {
-		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso, juegos);
-		this.juegoGanado = juegoGanado;
-		this.juegoPerdido = juegoPerdido;
-		this.carrerasLimpias = carrerasLimpias;
-		this.inningsLanzados = inningsLanzados;
-		this.ponches = ponches;
-		this.BB = BB;
-		this.juegosSalvados = juegosSalvados;
+			float altura, float peso) {
+		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso);
+
 	}
 	public float getCarrerasLimpias() {
 		return carrerasLimpias;
@@ -68,13 +65,19 @@ public class Pitcher extends Jugador {
 	public void setBB(float bB) {
 		BB = bB;
 	}
+	
+	public  void insertarLesion(Lesion aux) {  
+		misLesiones.add(aux);  
+		lesionado = true;
+	}
+	
 public float efectividad() { 
 	float era=0; 
 	return era = (getCarrerasLimpias()*9) / getInningsLanzados();
 }
-@Override
+//@Override
 
-public void insertarLesion(String auxLesion) {
-	 		   misLesiones.add(auxLesion); }
+//public void insertarLesion(String auxLesion) {
+	 		  // misLesiones.add(auxLesion); }
 	
 }

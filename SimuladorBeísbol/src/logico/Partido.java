@@ -1,8 +1,13 @@
 package logico;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Partido {
+public class Partido implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//CREAR MARCADOR PARA LA PARTE VISUAL
 	private ArrayList <Equipo> misEquipos;
 	private Equipo Equipovisitante;
@@ -10,6 +15,7 @@ public class Partido {
 	private String estadio;
 	private String hora;
 	private String fecha;
+	private int innnings;
 	private boolean terminado = false;
 	private int localRun=0;
 	private int visitaRun=0;
@@ -17,7 +23,7 @@ public class Partido {
 	private int localHits=0;
 	private int errorLocal=0;
 	private int errorVisita=0;
-	public Partido(Equipo visitante, Equipo local, String estadio) {
+	public Partido(Equipo visitante, Equipo local, String estadio, int innnings) {
 		super();
 		this.Equipovisitante = visitante;
 		this.Equipolocal = local;
@@ -25,6 +31,7 @@ public class Partido {
 		terminado = false;
 		localRun = 0;
 		visitaRun = 0;
+		this.innnings = innnings;
 	}
 	public Equipo getVisitante() {
 		return Equipovisitante;
@@ -106,8 +113,33 @@ public class Partido {
 		this.misEquipos = misEquipos;
 	}
 	
-  // public Equipo ganadorPartido() { 
-	//   if(Equipolocal.)
+   public int getInnnings() {
+		return innnings;
+	}
+	public void setInnnings(int innnings) {
+		this.innnings = innnings;
+	}
+	public void partidoTerminado() { 
+		
+		if(innnings < 9) { 
+			System.out.println("El partido no ha terminado, debe completar las 9 entradas");
+		}
+	}
+public Equipo ganadorPartido() { 
+	Equipo winner = null;
+	
+	       if((localRun> visitaRun) && (innnings>=9)) {
+		   winner = getLocal();
+		   terminado = true; 
+		  }
+	   else if ((localRun< visitaRun) && (innnings>=9)  ) { 
+		   winner = getVisitante();
+		   terminado = true;
+	   }   /*  else  if(innnings < 9) { 
+			System.out.println("El partido no ha terminado, debe completar las 9 entradas");
+       } */
+	return winner;
+	   }
 	   
  //  }
 	  

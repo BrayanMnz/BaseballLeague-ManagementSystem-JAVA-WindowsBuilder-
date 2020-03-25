@@ -1,6 +1,10 @@
 package logico;
 
 public class jugadorPosicion extends Jugador {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private float hits; //ofensiva
 	private float carrerasAnotadas;
 	private float carrerasEmpujadas;
@@ -10,15 +14,9 @@ public class jugadorPosicion extends Jugador {
 	private String posicion; //posicion a la defensiva.
 
 public jugadorPosicion(String nombre, String noDorsal, float cantJuegos, float errores, String equipo,
-			boolean lesionado, float altura, float peso, float hits,float carrerasAnotadas, float carrerasEmpujadas, float basesRobadas,
-			float turnos, String posicion, float juegos, float hr) {
-		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso, juegos);
-		this.hits = hits;
-		this.carrerasAnotadas = carrerasAnotadas;
-		this.carrerasEmpujadas = carrerasEmpujadas;
-		this.basesRobadas = basesRobadas;
-		this.turnos = turnos;
-		this.hr = hr;
+			boolean lesionado, float altura, float peso,String posicion) {
+		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso);
+
 		this.posicion = posicion;
 	}
 
@@ -71,14 +69,15 @@ public void setCarrerasAnotadas(float carrerasAnotadas) {
 }
 
 
+
 public float promBateo() { 
      float avg;
 	return avg = getHits()/getTurnos();
 	
 }
-
-@Override
-public void insertarLesion(String auxLesion) {
-	misLesiones.add(auxLesion);
-	   }
+public  void insertarLesion(Lesion aux) {  
+	misLesiones.add(aux);  
+	lesionado = true;
 }
+}
+

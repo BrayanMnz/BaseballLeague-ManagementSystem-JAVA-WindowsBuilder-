@@ -1,9 +1,15 @@
 package logico;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Equipo {
+public class Equipo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList <Jugador> misJugadores;
+	private ArrayList <Jugador> Alineacion;
 	public String nombreEquipo; 
 	public String id; // Boston el id seria "BOS", Yankees "NYY"
     public String estadio; //Nombre del estadio 
@@ -11,11 +17,13 @@ public class Equipo {
     private float cantJuegos; 
     private float ganados; 
     private Season miSeason;
+    private int carrerasPorPartido;
 
 	private float perdidos;
     
 	public Equipo(String nombreEquipo, String id, String estadio, String trainer, float cantJuegos,float ganados,float perdidos) {
 		misJugadores = new ArrayList <Jugador>();
+		Alineacion = new ArrayList <Jugador>();
 		this.nombreEquipo = nombreEquipo;
 		this.id = id;
 		this.estadio = estadio;
@@ -73,8 +81,26 @@ public class Equipo {
 	public void setPerdidos(float perdidos) {
 		this.perdidos = perdidos;
 	}
+	public int getCarrerasPorPartido() {
+		return carrerasPorPartido;
+	}
+	public void setCarrerasPorPartido(int carrerasPorPartido) {
+		this.carrerasPorPartido = carrerasPorPartido;
+	}
+	public ArrayList <Jugador> getAlineacion() {
+		return Alineacion;
+	}
+	public void setAlineacion(ArrayList <Jugador> alineacion) {
+		Alineacion = alineacion;
+	}
 	public  void insertarJugador(Jugador aux) {  
 		misJugadores.add(aux);  
+	}
+	public  void insertarJugadorAlineacion(Jugador aux) {  
+		if(aux.lesionado == true) { 
+			System.out.println("El jugador esta lesionado, no puede pertenecer a la alineacion");
+		} else
+		Alineacion.add(aux);  
 	}
 	//Calcular total Hits del equipo
     public float totalHits() { 
@@ -173,6 +199,15 @@ Jugador auxJugador = buscarJugadorByDorsal(noJugador);
 	    	return cantBB;   
 	    	}
 	 
+	 public ArrayList<String> nominaEquipo() { 
+		 ArrayList<String> listadoJugadores = new ArrayList<>();
+		 for (Jugador auxJugador :misJugadores) {
+             listadoJugadores.add(auxJugador.getNombre());
+			 
+		}
+		return listadoJugadores;
+	 }
+	 
 	/* public String jugadorLesionado(String idJugador, String tipoLesion) {
 		 String aux="";
 		Jugador  auxJugador = buscarJugadorByDorsal(idJugador);
@@ -189,6 +224,8 @@ Jugador auxJugador = buscarJugadorByDorsal(noJugador);
 		return aux;
 		
 	 }*/
+	 
+	 
 }
 
 
