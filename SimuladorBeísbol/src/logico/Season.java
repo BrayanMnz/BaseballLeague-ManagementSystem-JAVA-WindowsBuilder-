@@ -13,7 +13,7 @@ public class Season {
 	
 	public Season() {
 		super();
-		this.misEquipos = new ArrayList<Equipo>();
+		this.setMisEquipos(new ArrayList<Equipo>());
 		this.miNomina = miNomina;
 		this.misJugadores = new ArrayList<Jugador>();
 	}
@@ -25,16 +25,16 @@ public static Season getInstance() {
 	return miSeason;
 }
 	public  void insertarEquipo(Equipo aux) {  
-		misEquipos.add(aux);  
+		getMisEquipos().add(aux);  
 	}
 
 	 public Equipo buscarEquipoById (String idEquipo) { 
     	 boolean encontrado = false; 
     	Equipo auxEquipo =null;
     	 int i=0;
-    	 while(i<misEquipos.size() && !encontrado) {
-    		 if(misEquipos.get(i).getId().equalsIgnoreCase(idEquipo)) {
-    			 auxEquipo = misEquipos.get(i);
+    	 while(i<getMisEquipos().size() && !encontrado) {
+    		 if(getMisEquipos().get(i).getId().equalsIgnoreCase(idEquipo)) {
+    			 auxEquipo = getMisEquipos().get(i);
     			 encontrado = true; 
     			
     		 } i++;  
@@ -52,6 +52,14 @@ public static Season getInstance() {
 			}
 		}
 		return teamPlayers;
+	}
+
+	public ArrayList<Equipo> getMisEquipos() {
+		return misEquipos;
+	}
+
+	public void setMisEquipos(ArrayList<Equipo> misEquipos) {
+		this.misEquipos = misEquipos;
 	}
 	 
 
