@@ -93,9 +93,13 @@ public class Jugador extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		Equipo miAux;
+	
+		//PROBANDO QUE COMBOBOX CARGARA LOS NOMBRES DE LOS EQUIPOS
+		
+		/*	Equipo miAux;
 		miAux = new Equipo("MiEquipo","30","Estadio","Yehudy",30,25,5);
 		Season.getInstance().insertarEquipo(miAux);		
+		*/ 
 		
 		JPanel pnlAddPlayer = new JPanel();
 		pnlAddPlayer.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -352,6 +356,8 @@ public class Jugador extends JDialog {
 		rdbtnNoLesion = new JRadioButton("No");
 		rdbtnNoLesion.setBounds(245, 107, 42, 23);
 		pnlAddPlayer.add(rdbtnNoLesion);
+		
+		//LLAMANDO FUNCION PARA CARGAR EQUIPOS EN CBX
 		cbxEquipos();
 
 		
@@ -370,10 +376,7 @@ public class Jugador extends JDialog {
 					Pitcher aux;
 					aux = new Pitcher (txtNombre.getText(),txtDorsal.getText(), Float.parseFloat(txtJuegos.getText().toString()),
 							Float.parseFloat(txtErrores.getText().toString()),txtEquipo.getText().toString(),auxBool,
-							Float.parseFloat(txtAltura.getText().toString()),Float.parseFloat(txtPeso.getText().toString()),Float.parseFloat(txtGanados.getText().toString())
-							,Float.parseFloat(txtPerdidos.getText().toString()),Float.parseFloat(txtCarrLimpias.getText().toString()),
-							Float.parseFloat(txtInnings.getText().toString()),Float.parseFloat(txtPonches.getText().toString()),Float.parseFloat(txtBB.getText().toString()),
-							Float.parseFloat(txtSalvados.getText().toString()),2);
+							Float.parseFloat(txtAltura.getText().toString()), Float.parseFloat(txtPeso.getText().toString()));
 					//miSeason.buscarEquipoById(aux.getEquipo()).insertarJugador(aux);
 					miAux.insertarJugador(aux);
 				}
@@ -381,10 +384,7 @@ public class Jugador extends JDialog {
 					jugadorPosicion aux;
 					aux = new jugadorPosicion(txtNombre.getText(),txtDorsal.getText(), Float.parseFloat(txtJuegos.getText().toString()),
 							Float.parseFloat(txtErrores.getText().toString()),txtEquipo.getText().toString(),auxBool,
-							Float.parseFloat(txtAltura.getText().toString()),Float.parseFloat(txtPeso.getText().toString()),
-							Float.parseFloat(txtHits.getText().toString()), Float.parseFloat(txtAnotadas.getText().toString()),Float.parseFloat(txtEmpujadas.getText().toString()),
-							Float.parseFloat(txtRobadas.getText().toString()),Float.parseFloat(txtTurnos.getText().toString()),txtPosicion.getText(),2,Float.parseFloat(txtHR.getText().toString()));
-					miSeason.buscarEquipoById(aux.getEquipo()).insertarJugador(aux);
+							Float.parseFloat(txtAltura.getText().toString()),Float.parseFloat(txtPeso.getText().toString()),txtPosicion.getText());
 				}
 			}
 		});
@@ -466,6 +466,9 @@ public class Jugador extends JDialog {
 		}*/
 		
 	}
+	
+	//FUNCION DE CARGAR EQUIPOS EN COMBOBOX 
+	
 	public static void cbxEquipos () {
 		
 			for (Equipo aux : Season.getInstance().getMisEquipos()) {
