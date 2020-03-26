@@ -379,6 +379,7 @@ public class Jugador extends JDialog {
 							Float.parseFloat(txtAltura.getText().toString()), Float.parseFloat(txtPeso.getText().toString()));
 					//miSeason.buscarEquipoById(aux.getEquipo()).insertarJugador(aux);
 					miAux.insertarJugador(aux);
+					loadJugadores();
 				}
 				if (rdbtnPosicion.isSelected() && (rdbtnNoLesion.isSelected() || rdbtnLesionado.isSelected())) {
 					jugadorPosicion aux;
@@ -416,43 +417,29 @@ public class Jugador extends JDialog {
 				tablaPlayers.setBounds(0, 302, 546, 0);
 				//listaPlayers.add(tablaPlayers);
 				scrollPane.setColumnHeaderView(tablaPlayers);
-				String[] columnas = {"#Dorsal","Nombre","Juegos", "Equipo"};
+				String[] columnas = {"#Dorsal","Nombre","Juegos", "Errores"};
 				model = new DefaultTableModel();
 				model.setColumnIdentifiers(columnas);
 				tablaPlayers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				tablaPlayers.setModel(model);
 				scrollPane.setViewportView(tablaPlayers);
+				loadJugadores();
 			}
 		}
 	} 
-	public static void loadJugadores(int selection) {
+	public static void loadJugadores() {
 		model.setRowCount(0);
-		DecimalFormat df = new DecimalFormat("#.##");
+		//DecimalFormat df = new DecimalFormat("#.##");
 		fila = new Object[model.getColumnCount()];
-		for (Equipo auxTeam : Season.getInstance().getMisEquipos()) {
-			switch (selection) {
-			case 0:
-				for (logico.Jugador aux : auxTeam.getJugadores()) {
-					fila[0] = aux.getNoDorsal();
-					fila[1] = aux.getNombre();
-					fila[2] = aux.getCantJuegos();
-					fila[3] = aux.getEquipo();
+		for (Equipo aux : Season.getInstance().getMisEquipos()) {
+			for(logico.Jugador auxPlayer : aux.getMisJugadores()) {
+					fila[0] = auxPlayer.getNoDorsal();
+					fila[1] = auxPlayer.getNombre();
+					fila[2] = auxPlayer.getCantJuegos();
+					fila[3] = auxPlayer.getErrores();
 					model.addRow(fila);
-				}
-				break;
-			case 1:
-				for (Queso aux : Quesera.getInstance().getAllQuesos()) {
-					if(aux instanceof QuesoEf){
-					fila[0] = aux.getId();
-					fila[1] = aux.getTipo();
-					fila[2] = df.format(aux.Volumen());
-					fila[3] = df.format(aux.Precio());
-					model.addRow(fila);
-					}
-				}
-				break;	
-			}
 		}
+	}
 		tablaPlayers.setModel(model);
 		tablaPlayers.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		tablaPlayers.getTableHeader().setReorderingAllowed(false);
@@ -460,7 +447,8 @@ public class Jugador extends JDialog {
 		columnModel.getColumn(0).setPreferredWidth(60);
 		columnModel.getColumn(1).setPreferredWidth(180);
 		columnModel.getColumn(2).setPreferredWidth(150);
-		columnModel.getColumn(3).setPreferredWidth(140);		/*if(tableModel.getRowCount()==0){
+		columnModel.getColumn(3).setPreferredWidth(140);	
+		/*if(tableModel.getRowCount()==0){
 			btnEliminar.setEnabled(false);
 			btnModificar.setEnabled(false);
 		}*/

@@ -207,6 +207,12 @@ Jugador auxJugador = buscarJugadorByDorsal(noJugador);
 		}
 		return listadoJugadores;
 	 }
+	public ArrayList<Jugador> getMisJugadores() {
+		return misJugadores;
+	}
+	public void setMisJugadores(ArrayList<Jugador> misJugadores) {
+		this.misJugadores = misJugadores;
+	}
 	 
 	/* public String jugadorLesionado(String idJugador, String tipoLesion) {
 		 String aux="";
