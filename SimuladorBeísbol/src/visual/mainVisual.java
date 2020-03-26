@@ -14,6 +14,8 @@ import java.awt.Dimension;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class mainVisual extends JFrame {
 
@@ -64,11 +66,22 @@ public class mainVisual extends JFrame {
 		panel.add(lblLogo);
 		
 		JButton button = new JButton("Jugadores");
-		button.setBounds(10, 36, 119, 85);
+		button.setBounds(10, 36, 151, 85);
 		panelPrincipal.add(button);
 		
 		JButton button_1 = new JButton("New button");
-		button_1.setBounds(179, 36, 119, 85);
+		button_1.setBounds(179, 36, 151, 85);
 		panelPrincipal.add(button_1);
+		
+		JButton btnRegEquipos = new JButton("Registrar\r\n Equipos");
+		btnRegEquipos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistrarEquipo equipo1 = new RegistrarEquipo();
+				equipo1.setModal(true);
+				equipo1.setVisible(true);
+			}
+		});
+		btnRegEquipos.setBounds(346, 36, 151, 85);
+		panelPrincipal.add(btnRegEquipos);
 	}
 }

@@ -35,8 +35,8 @@ public class main implements Serializable {
 		Pitcher p2 = new Pitcher("Elvis", "4", 2, 1, "Yankees", false, 2, 2);
 		jugadorPosicion bate1 = new jugadorPosicion("Yehudy","24", 2,3,"Yankees",false,10,12,"2");
 		jugadorPosicion bate2 = new jugadorPosicion("Brayan","25", 5,6,"Redsox",false,10,14,"5");
-		Equipo redsox = new Equipo ("Redsox","2","Estadio","Hola",15,13,2);
-		Equipo Yankees = new Equipo("Yankees", "NYY", "Yankee Stadium", "Aaron Boone", 10, 0, 0);
+		Equipo redsox = new Equipo ("Redsox","BOS","FenWay","Roe Roenicke",null);
+		Equipo Yankees = new Equipo("Yankees", "NYY", "Yankee Stadium", "Aaron Boone", null);
 		
 		e1.insertarSeason(s1);
         s1.insertarEquipo(Yankees);  
@@ -66,10 +66,10 @@ public class main implements Serializable {
 		//System.out.println(partido.getLocal().nombreEquipo);
 	//  partido.setLocal(redsox);
 	  //System.out.println(partido.getLocal().nombreEquipo);
-		Lesion l1 = new Lesion(redsox, "Brayan", fechaActual, fechaFinal, "esguince 1er grado");
+		Lesion l1 = new Lesion( "Brayan", fechaActual, fechaFinal, "esguince 1er grado");
       //  redsox.insertarJugadorAlineacion(bate2);
 		bate2.insertarLesion(l1);
-		//System.out.println(bate2.lesionado);
+		System.out.println(bate2.lesionado);
 		//System.out.println(l1.getFechaInicioLesion());
 		jugadorPosicion b1 = new jugadorPosicion("Elvis", "", 2, 2, "RedSox", false, 32, 43, "");
         jugadorPosicion b2 = new jugadorPosicion("Elvis", "", 2, 2, "RedSox", false, 32, 43, "");

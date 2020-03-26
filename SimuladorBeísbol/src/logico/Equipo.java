@@ -2,6 +2,7 @@ package logico;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Equipo implements Serializable{
 	/**
@@ -16,12 +17,13 @@ public class Equipo implements Serializable{
     public String trainer;
     private float cantJuegos; 
     private float ganados; 
+    private Date fechaFundacion;
     private Season miSeason;
     private int carrerasPorPartido;
 
 	private float perdidos;
     
-	public Equipo(String nombreEquipo, String id, String estadio, String trainer, float cantJuegos,float ganados,float perdidos) {
+	public Equipo(String nombreEquipo, String id, String estadio, String trainer, Date fechaFundacion) {
 		misJugadores = new ArrayList <Jugador>();
 		Alineacion = new ArrayList <Jugador>();
 		this.nombreEquipo = nombreEquipo;
@@ -77,6 +79,12 @@ public class Equipo implements Serializable{
 	}
 	public void setGanados(float ganados) {
 		this.ganados = ganados;
+	}
+	public Date getFechaFundacion() {
+		return fechaFundacion;
+	}
+	public void setFechaFundacion(Date fechaFundacion) {
+		this.fechaFundacion = fechaFundacion;
 	}
 	public void setPerdidos(float perdidos) {
 		this.perdidos = perdidos;

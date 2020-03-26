@@ -9,21 +9,21 @@ public class Lesion implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Equipo miEquipo;
+	//private Equipo miEquipo;
 	private String miJugador;
 	private String fechaInicioLesion;
 	private String tipoLesion;
 	private Date fechaFinalLesion;
-	public Lesion(Equipo miEquipo, String miJugador, String fechaInicioLesion,Date fechaFinalLesion, String tipoLesion) {
-		this.miEquipo = miEquipo;
+	public Lesion( String miJugador, String fechaInicioLesion,Date fechaFinalLesion, String tipoLesion) {
+		//this.miEquipo = miEquipo;
 		this.setMiJugador(miJugador);
 		this.fechaInicioLesion = fechaInicioLesion;
 		this.fechaFinalLesion= getFechaFinalLesion();
 		this.tipoLesion = tipoLesion;
 	}
-	public Equipo getmiEquipo() {
-		return miEquipo;
-	}
+//	public Equipo getmiEquipo() {
+	//	return miEquipo;
+	//}
 
 	public String getMiJugador() {
 		return miJugador;
@@ -37,9 +37,9 @@ public class Lesion implements Serializable{
 	public String getTipoLesion() {
 		return tipoLesion;
 	}
-	public void setEquipo(Equipo equipo) {
-		this.miEquipo = equipo;
-	}
+//	public void setEquipo(Equipo equipo) {
+	//	this.miEquipo = equipo;
+	//}
 	public void setFechaInicioLesion(String fechaInicioLesion) {
 		this.fechaInicioLesion = fechaInicioLesion;
 	}
