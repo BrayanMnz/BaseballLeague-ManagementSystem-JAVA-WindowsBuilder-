@@ -1,12 +1,17 @@
 package logico;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+
+
 
 public class Liga implements Serializable{
 	/**
@@ -25,10 +30,10 @@ public class Liga implements Serializable{
 		
 	}
 	public static Liga getInstance() { 
-		  if(miLiga == null) { 
-			  miLiga = new Liga(); 
+		  if(getMiLiga() == null) { 
+			  setMiLiga(new Liga()); 
 		  }
-		return miLiga;
+		return getMiLiga();
 	}
 	//insertar season 
 	public  void insertarSeason(Season aux) {  
@@ -40,6 +45,12 @@ public class Liga implements Serializable{
 	public ArrayList<Equipo> getMisEquipos() {
 		return misEquipos;
 	}
+	public static Liga getMiLiga() {
+		return miLiga;
+	}
+	public static void setMiLiga(Liga miLiga) {
+		Liga.miLiga = miLiga;
+	}
 	public void setMisJugadores(ArrayList<Jugador> misJugadores) {
 		this.misJugadores = misJugadores;
 	}
@@ -47,45 +58,6 @@ public class Liga implements Serializable{
 		this.misEquipos = misEquipos;
 	}
 	
-	
-	public void guardar() throws IOException{ 
-		
-		FileOutputStream Equipos = new FileOutputStream("MisEquipos.dat");
-		ObjectOutputStream oos = new ObjectOutputStream(Equipos);
-          oos.writeInt(misEquipos.size());
-          for (Equipo auxEquipo : misEquipos) {
-			oos.writeObject(auxEquipo);
-		} 
-          FileOutputStream Jugadores = new FileOutputStream("MisJugadores.dat");
-          ObjectOutputStream oos1 = new ObjectOutputStream(Jugadores);
-          oos1.writeInt(misJugadores.size());
-          for (Jugador auxJugador : misJugadores) {
-        	  oos1.writeObject(auxJugador); }
-      Equipos.close();
-      Jugadores.close();
-	
-	}
-	
-	
-	public void Load() throws IOException, ClassNotFoundException{
-	FileInputStream Equipos = new FileInputStream("MisEquipos.dat");
-	ObjectInputStream oos = new ObjectInputStream(Equipos);
-	 
-	int size = oos.readInt();
-	for(int i =0; i < size; i++) { 
-		misEquipos.add((Equipo) oos.readObject());
-	} 
-	Equipos.close();
-	
-	FileInputStream Jugadores = new FileInputStream("MisJugadores.dat");
-	ObjectInputStream oos1 = new ObjectInputStream(Jugadores);
-	 
-	int size1 = oos.readInt();
-	for(int i =0; i < size1; i++) { 
-		misJugadores.add((Jugador) oos1.readObject());
-	} 
-	Jugadores.close();
-	
-	}
 
+	
 }

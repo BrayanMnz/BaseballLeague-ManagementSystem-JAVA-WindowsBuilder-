@@ -16,7 +16,7 @@ public class main implements Serializable {
 	private static Estadisticas e1;
 
 
-	public static void main(String[] args) throws ClassNotFoundException {
+	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		Liga liga1 = new Liga();
 		Season s1 = new Season();
 	    liga1.insertarSeason(s1);
@@ -100,22 +100,6 @@ public class main implements Serializable {
 		System.out.println(redsox.nominaEquipo());
 
 
-		try {
-			liga1.guardar();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		try {
-			liga1.Load();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 	}
 }

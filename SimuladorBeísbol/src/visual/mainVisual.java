@@ -7,11 +7,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Dimension;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
 
 public class mainVisual extends JFrame {
 
 	private JPanel panelPrincipal;
-
+	private Dimension dim = null;
 	/**
 	 * Launch the application.
 	 */
@@ -35,17 +42,33 @@ public class mainVisual extends JFrame {
 		setTitle("Simlador de Be\u00EDsbol");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 816, 557);
+		dim = super.getToolkit().getScreenSize();
+		super.setSize(dim.width, (dim.height-50));
+		setLocationRelativeTo(null);
 		panelPrincipal = new JPanel();
+		panelPrincipal.setBackground(Color.WHITE);
 		panelPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(panelPrincipal);
 		panelPrincipal.setLayout(null);
 		
-		JButton btnJugadores = new JButton("Jugadores");
-		btnJugadores.setBounds(10, 11, 89, 23);
-		panelPrincipal.add(btnJugadores);
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
+		panel.setBounds(10, 132, 1330, 536);
+		panelPrincipal.add(panel);
+		panel.setLayout(null);
 		
-		JButton btnNewButton_1 = new JButton("New button");
-		btnNewButton_1.setBounds(109, 11, 89, 23);
-		panelPrincipal.add(btnNewButton_1);
+		JLabel lblLogo = new JLabel("");
+		lblLogo.setBounds(10, -141, 1468, 803);
+		lblLogo.setBackground(Color.WHITE);
+		lblLogo.setIcon(new ImageIcon(mainVisual.class.getResource("/Imagenes/5391__major_league_baseball-alternate-2019-1.jpg")));
+		panel.add(lblLogo);
+		
+		JButton button = new JButton("Jugadores");
+		button.setBounds(10, 36, 119, 85);
+		panelPrincipal.add(button);
+		
+		JButton button_1 = new JButton("New button");
+		button_1.setBounds(179, 36, 119, 85);
+		panelPrincipal.add(button_1);
 	}
 }
