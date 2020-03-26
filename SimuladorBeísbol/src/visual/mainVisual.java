@@ -66,6 +66,13 @@ public class mainVisual extends JFrame {
 		panel.add(lblLogo);
 		
 		JButton button = new JButton("Jugadores");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jugador misJugadores = new Jugador();
+				misJugadores.setModal(true);
+				misJugadores.setVisible(true);
+			}
+		});
 		button.setBounds(10, 36, 151, 85);
 		panelPrincipal.add(button);
 		

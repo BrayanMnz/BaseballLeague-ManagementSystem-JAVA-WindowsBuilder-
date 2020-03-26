@@ -17,6 +17,7 @@ import logico.Season;
 import logico.jugadorPosicion;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
@@ -30,6 +31,12 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Jugador extends JDialog {
 
@@ -62,19 +69,31 @@ public class Jugador extends JDialog {
 	JPanel panelPitcher;
 	JRadioButton rdbtnNoLesion;
 	JRadioButton rdbtnLesionado;
-	private Season miSeason;
 	private static DefaultTableModel model;
 	private static Object[] fila;
+	static JComboBox<String> cbxEquipo;
 	private static JTable tablaPlayers;
-	private Jugador aux = null;
-	static JComboBox cbxEquipo;
+	private JPanel panelCaracteristicas;
+	private JLabel lblPesoNew;
+	private JLabel lblAlturaNew;
+	private JLabel lblPosicionNew;
+	private JTextField txtPesoNew;
+	private JTextField txtAlturaNew;
+	private JTextField txtPosicionNew;
+	private JButton btnVerLesiones;
+	private String playerDorsal;
+	private int indexName;
+	private String PlayerName;
+	private Jugador jugadorAuxiliar;
+	private logico.Jugador jugadorMostrar = null;
+
 
 
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		try {
 			Jugador dialog = new Jugador();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -83,16 +102,23 @@ public class Jugador extends JDialog {
 			e.printStackTrace();
 		}
 	}
-
+*/
 	/**
 	 * Create the dialog.
 	 */
 	public Jugador() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowActivated(WindowEvent e) {
+				cbxEquipos();
+			}
+		});
+		setTitle("Jugadores");
 		setBounds(100, 100, 894, 624);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(Color.BLUE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
 	
 		//PROBANDO QUE COMBOBOX CARGARA LOS NOMBRES DE LOS EQUIPOS
 		
@@ -100,10 +126,12 @@ public class Jugador extends JDialog {
 		miAux = new Equipo("MiEquipo","30","Estadio","Yehudy",30,25,5);
 		Season.getInstance().insertarEquipo(miAux);		
 		*/ 
+		contentPanel.setLayout(null);
 		
 		JPanel pnlAddPlayer = new JPanel();
-		pnlAddPlayer.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		pnlAddPlayer.setBackground(Color.LIGHT_GRAY);
 		pnlAddPlayer.setBounds(10, 11, 858, 172);
+		pnlAddPlayer.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPanel.add(pnlAddPlayer);
 		pnlAddPlayer.setLayout(null);
 		
@@ -116,15 +144,15 @@ public class Jugador extends JDialog {
 		pnlAddPlayer.add(lblDorsal);
 		
 		JLabel lblCantJuegos = new JLabel("#Juegos");
-		lblCantJuegos.setBounds(10, 36, 46, 14);
+		lblCantJuegos.setBounds(10, 36, 52, 14);
 		pnlAddPlayer.add(lblCantJuegos);
 		
 		JLabel lblEquipo = new JLabel("Equipo");
 		lblEquipo.setBounds(210, 36, 46, 14);
 		pnlAddPlayer.add(lblEquipo);
 		
-		JLabel lblErrores = new JLabel("lblErrores");
-		lblErrores.setBounds(10, 61, 46, 14);
+		JLabel lblErrores = new JLabel("Errores");
+		lblErrores.setBounds(10, 61, 52, 14);
 		pnlAddPlayer.add(lblErrores);
 		
 		JLabel lblEstado = new JLabel("Estado");
@@ -140,27 +168,27 @@ public class Jugador extends JDialog {
 		pnlAddPlayer.add(lblPeso);
 		
 		txtNombre = new JTextField();
-		txtNombre.setBounds(62, 8, 138, 20);
+		txtNombre.setBounds(72, 8, 128, 20);
 		pnlAddPlayer.add(txtNombre);
 		txtNombre.setColumns(10);
 		
 		txtJuegos = new JTextField();
-		txtJuegos.setBounds(62, 33, 138, 20);
+		txtJuegos.setBounds(72, 33, 128, 20);
 		pnlAddPlayer.add(txtJuegos);
 		txtJuegos.setColumns(10);
 		
 		txtErrores = new JTextField();
-		txtErrores.setBounds(62, 58, 138, 20);
+		txtErrores.setBounds(72, 58, 128, 20);
 		pnlAddPlayer.add(txtErrores);
 		txtErrores.setColumns(10);
 		
 		txtAltura = new JTextField();
-		txtAltura.setBounds(62, 83, 86, 20);
+		txtAltura.setBounds(72, 83, 70, 20);
 		pnlAddPlayer.add(txtAltura);
 		txtAltura.setColumns(10);
 		
 		txtPeso = new JTextField();
-		txtPeso.setBounds(62, 108, 86, 20);
+		txtPeso.setBounds(72, 108, 70, 20);
 		pnlAddPlayer.add(txtPeso);
 		txtPeso.setColumns(10);
 		
@@ -204,6 +232,7 @@ public class Jugador extends JDialog {
 		pnlAddPlayer.add(rdbtnPosicion);
 		
 		panelPosicion = new JPanel();
+		panelPosicion.setBackground(Color.LIGHT_GRAY);
 		panelPosicion.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panelPosicion.setBounds(504, 11, 344, 150);
 		pnlAddPlayer.add(panelPosicion);
@@ -214,11 +243,11 @@ public class Jugador extends JDialog {
 		panelPosicion.add(lblHits);
 		
 		JLabel lblAnotadas = new JLabel("Carreras Anotadas");
-		lblAnotadas.setBounds(10, 36, 97, 14);
+		lblAnotadas.setBounds(10, 36, 120, 14);
 		panelPosicion.add(lblAnotadas);
 		
 		JLabel lblEmpujadas = new JLabel("Carreras Empujadas");
-		lblEmpujadas.setBounds(10, 61, 110, 14);
+		lblEmpujadas.setBounds(10, 61, 120, 14);
 		panelPosicion.add(lblEmpujadas);
 		
 		JLabel lblBasesRobadas = new JLabel("Bases Robadas");
@@ -238,37 +267,37 @@ public class Jugador extends JDialog {
 		panelPosicion.add(lblPosicion);
 		
 		txtEmpujadas = new JTextField();
-		txtEmpujadas.setBounds(119, 58, 39, 20);
+		txtEmpujadas.setBounds(130, 58, 39, 20);
 		panelPosicion.add(txtEmpujadas);
 		txtEmpujadas.setColumns(10);
 		
 		txtAnotadas = new JTextField();
-		txtAnotadas.setBounds(119, 33, 39, 20);
+		txtAnotadas.setBounds(130, 33, 39, 20);
 		panelPosicion.add(txtAnotadas);
 		txtAnotadas.setColumns(10);
 		
 		txtHits = new JTextField();
-		txtHits.setBounds(119, 8, 39, 20);
+		txtHits.setBounds(130, 8, 39, 20);
 		panelPosicion.add(txtHits);
 		txtHits.setColumns(10);
 		
 		txtRobadas = new JTextField();
-		txtRobadas.setBounds(119, 83, 39, 20);
+		txtRobadas.setBounds(130, 83, 39, 20);
 		panelPosicion.add(txtRobadas);
 		txtRobadas.setColumns(10);
 		
 		txtHR = new JTextField();
-		txtHR.setBounds(262, 33, 39, 20);
+		txtHR.setBounds(272, 33, 39, 20);
 		panelPosicion.add(txtHR);
 		txtHR.setColumns(10);
 		
 		txtTurnos = new JTextField();
-		txtTurnos.setBounds(262, 8, 39, 20);
+		txtTurnos.setBounds(272, 8, 39, 20);
 		panelPosicion.add(txtTurnos);
 		txtTurnos.setColumns(10);
 		
 		txtPosicion = new JTextField();
-		txtPosicion.setBounds(262, 58, 39, 20);
+		txtPosicion.setBounds(272, 58, 39, 20);
 		panelPosicion.add(txtPosicion);
 		txtPosicion.setColumns(10);
 		
@@ -299,45 +328,46 @@ public class Jugador extends JDialog {
 		panelPitcher.add(lblPonches);
 		
 		JLabel lblBB = new JLabel("BB");
-		lblBB.setBounds(163, 11, 61, 14);
+		lblBB.setHorizontalAlignment(SwingConstants.LEFT);
+		lblBB.setBounds(195, 11, 61, 14);
 		panelPitcher.add(lblBB);
 		
 		JLabel lblSalvados = new JLabel("Salvados");
-		lblSalvados.setBounds(163, 36, 61, 14);
+		lblSalvados.setBounds(195, 36, 61, 14);
 		panelPitcher.add(lblSalvados);
 		
 		txtGanados = new JTextField();
-		txtGanados.setBounds(98, 8, 39, 20);
+		txtGanados.setBounds(130, 8, 39, 20);
 		panelPitcher.add(txtGanados);
 		txtGanados.setColumns(10);
 		
 		txtPerdidos = new JTextField();
-		txtPerdidos.setBounds(98, 33, 39, 20);
+		txtPerdidos.setBounds(130, 33, 39, 20);
 		panelPitcher.add(txtPerdidos);
 		txtPerdidos.setColumns(10);
 		
 		txtCarrLimpias = new JTextField();
-		txtCarrLimpias.setBounds(98, 58, 39, 20);
+		txtCarrLimpias.setBounds(130, 58, 39, 20);
 		panelPitcher.add(txtCarrLimpias);
 		txtCarrLimpias.setColumns(10);
 		
 		txtInnings = new JTextField();
-		txtInnings.setBounds(98, 83, 39, 20);
+		txtInnings.setBounds(130, 83, 39, 20);
 		panelPitcher.add(txtInnings);
 		txtInnings.setColumns(10);
 		
 		txtPonches = new JTextField();
-		txtPonches.setBounds(98, 108, 39, 20);
+		txtPonches.setBounds(130, 108, 39, 20);
 		panelPitcher.add(txtPonches);
 		txtPonches.setColumns(10);
 		
 		txtSalvados = new JTextField();
-		txtSalvados.setBounds(223, 33, 39, 20);
+		txtSalvados.setBounds(272, 33, 39, 20);
 		panelPitcher.add(txtSalvados);
 		txtSalvados.setColumns(10);
 		
 		txtBB = new JTextField();
-		txtBB.setBounds(223, 8, 39, 20);
+		txtBB.setBounds(272, 8, 39, 20);
 		panelPitcher.add(txtBB);
 		txtBB.setColumns(10);
 		
@@ -350,15 +380,14 @@ public class Jugador extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		rdbtnLesionado.setBounds(210, 107, 33, 23);
+		rdbtnLesionado.setBounds(210, 107, 46, 23);
 		pnlAddPlayer.add(rdbtnLesionado);
 		
 		rdbtnNoLesion = new JRadioButton("No");
-		rdbtnNoLesion.setBounds(245, 107, 42, 23);
+		rdbtnNoLesion.setBounds(253, 107, 42, 23);
 		pnlAddPlayer.add(rdbtnNoLesion);
 		
 		//LLAMANDO FUNCION PARA CARGAR EQUIPOS EN CBX
-		cbxEquipos();
 
 		
 		JButton btnRegistrar = new JButton("Insertar");
@@ -366,55 +395,90 @@ public class Jugador extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				Boolean auxBool=false;
 				Equipo miAux;
-				miAux = new Equipo("MiEquipo","30","Estadio","Yehudy",30,25,5);
+				logico.Jugador aux=null;
+				miAux = new Equipo("MiEquipo","30","Estadio","Yehudy",null);
 				Season.getInstance().insertarEquipo(miAux);
-				cbxEquipos();
 				if (rdbtnLesionado.isSelected()) {
 					auxBool = true;
 				}
 				if (rbtnPitcher.isSelected() && (rdbtnNoLesion.isSelected() || rdbtnLesionado.isSelected())) {
-					Pitcher aux;
 					aux = new Pitcher (txtNombre.getText(),txtDorsal.getText(), Float.parseFloat(txtJuegos.getText().toString()),
 							Float.parseFloat(txtErrores.getText().toString()),txtEquipo.getText().toString(),auxBool,
 							Float.parseFloat(txtAltura.getText().toString()), Float.parseFloat(txtPeso.getText().toString()));
-					//miSeason.buscarEquipoById(aux.getEquipo()).insertarJugador(aux);
-					miAux.insertarJugador(aux);
-					loadJugadores();
+					if 	(auxBool==true) {
+						Lesiones crearLesion = new Lesiones (aux, Season.getInstance().buscarEquipoByName(aux.getEquipo()));
+						crearLesion.setModal(true);
+						crearLesion.setVisible(true);
+					}
+					else {
+						Season.getInstance().buscarEquipoByName(aux.getEquipo()).insertarJugador(aux);
+						JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+
+					}
 				}
 				if (rdbtnPosicion.isSelected() && (rdbtnNoLesion.isSelected() || rdbtnLesionado.isSelected())) {
-					jugadorPosicion aux;
 					aux = new jugadorPosicion(txtNombre.getText(),txtDorsal.getText(), Float.parseFloat(txtJuegos.getText().toString()),
 							Float.parseFloat(txtErrores.getText().toString()),txtEquipo.getText().toString(),auxBool,
 							Float.parseFloat(txtAltura.getText().toString()),Float.parseFloat(txtPeso.getText().toString()),txtPosicion.getText());
+					if 	(auxBool==true) {
+						Lesiones crearLesionPosicion = new Lesiones (aux, Season.getInstance().buscarEquipoByName(aux.getEquipo()));
+						crearLesionPosicion.setModal(true);
+						crearLesionPosicion.setVisible(true);
+					}
+					else {
+						Season.getInstance().buscarEquipoByName(aux.getEquipo()).insertarJugador(aux);
+						JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
+				loadJugadores();
+				limpiarTextos();
 			}
 		});
 		btnRegistrar.setBounds(389, 57, 89, 23);
 		pnlAddPlayer.add(btnRegistrar);
 		
-		cbxEquipo = new JComboBox();
-		cbxEquipo.setModel(new DefaultComboBoxModel(new String[] {"<Equipos>"}));
-		cbxEquipo.setBounds(20, 136, 86, 20);
-		pnlAddPlayer.add(cbxEquipo);
-		
 		JPanel panelTabla = new JPanel();
-		panelTabla.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panelTabla.setBackground(Color.LIGHT_GRAY);
 		panelTabla.setBounds(10, 194, 566, 380);
+		panelTabla.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPanel.add(panelTabla);
 		panelTabla.setLayout(null);
 		
-		JPanel listaPlayers = new JPanel();
-		listaPlayers.setBounds(10, 67, 546, 302);
-		panelTabla.add(listaPlayers);
-		listaPlayers.setLayout(null);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(2, 49, 562, 329);
+		panelTabla.add(scrollPane);
 		{
-			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(0, 0, 546, 2);
-			listaPlayers.add(scrollPane);
-			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			{
+				
+				
 				tablaPlayers = new JTable();
-				tablaPlayers.setBounds(0, 302, 546, 0);
+				tablaPlayers.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if (tablaPlayers.getSelectedRow()>-1) {
+							int indexPlayer = tablaPlayers.getSelectedRow();
+							playerDorsal = tablaPlayers.getValueAt(indexPlayer, 0).toString();
+							PlayerName = tablaPlayers.getValueAt(indexPlayer, 1).toString();
+							for (Equipo auxEquipoTable : Season.getInstance().getMisEquipos()) {
+								for(logico.Jugador auxJugadorTable : auxEquipoTable.getMisJugadores()) {
+									if (auxJugadorTable.getNombre() == PlayerName) {
+										jugadorMostrar = auxJugadorTable;
+									}
+								}
+							}
+							
+							txtPesoNew.setText(String.valueOf(jugadorMostrar.getPeso()));
+							txtAlturaNew.setText(String.valueOf(jugadorMostrar.getAltura()));
+							if (jugadorMostrar instanceof jugadorPosicion) {
+								txtPosicionNew.setText(((jugadorPosicion) jugadorMostrar).getPosicion());
+							}
+							else {
+								txtPosicionNew.setText("Pitcher");
+							}
+						}
+					}
+				});
+				//tablaPlayers.setBounds(0, 302, 546, 0);
 				//listaPlayers.add(tablaPlayers);
 				scrollPane.setColumnHeaderView(tablaPlayers);
 				String[] columnas = {"#Dorsal","Nombre","Juegos", "Errores"};
@@ -423,9 +487,70 @@ public class Jugador extends JDialog {
 				tablaPlayers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				tablaPlayers.setModel(model);
 				scrollPane.setViewportView(tablaPlayers);
+				
+				cbxEquipo = new JComboBox();
+				cbxEquipo.setBounds(10, 18, 86, 20);
+				panelTabla.add(cbxEquipo);
+				cbxEquipo.setModel(new DefaultComboBoxModel(new String[] {"<Equipos>"}));
+				
+				panelCaracteristicas = new JPanel();
+				panelCaracteristicas.setBackground(Color.LIGHT_GRAY);
+				panelCaracteristicas.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+				panelCaracteristicas.setBounds(586, 194, 282, 380);
+				contentPanel.add(panelCaracteristicas);
+				panelCaracteristicas.setLayout(null);
+				
+				lblPesoNew = new JLabel("Peso");
+				lblPesoNew.setBounds(10, 256, 46, 14);
+				panelCaracteristicas.add(lblPesoNew);
+				
+				lblAlturaNew = new JLabel("Altura");
+				lblAlturaNew.setBounds(10, 281, 46, 14);
+				panelCaracteristicas.add(lblAlturaNew);
+				
+				lblPosicionNew = new JLabel("Posicion");
+				lblPosicionNew.setBounds(10, 306, 46, 14);
+				panelCaracteristicas.add(lblPosicionNew);
+				
+				txtPesoNew = new JTextField();
+				txtPesoNew.setEditable(false);
+				txtPesoNew.setBounds(78, 253, 86, 20);
+				panelCaracteristicas.add(txtPesoNew);
+				txtPesoNew.setColumns(10);
+				
+				txtAlturaNew = new JTextField();
+				txtAlturaNew.setEditable(false);
+				txtAlturaNew.setBounds(78, 278, 86, 20);
+				panelCaracteristicas.add(txtAlturaNew);
+				txtAlturaNew.setColumns(10);
+				
+				txtPosicionNew = new JTextField();
+				txtPosicionNew.setEditable(false);
+				txtPosicionNew.setBounds(78, 303, 86, 20);
+				panelCaracteristicas.add(txtPosicionNew);
+				txtPosicionNew.setColumns(10);
+				
+				btnVerLesiones = new JButton("Ver Lesiones");
+				btnVerLesiones.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						tablaLesiones misLesiones = new tablaLesiones(jugadorMostrar);
+						misLesiones.setModal(true);
+						misLesiones.setVisible(true);
+					}
+				});
+				btnVerLesiones.setBounds(60, 334, 117, 23);
+				panelCaracteristicas.add(btnVerLesiones);
 				loadJugadores();
+				
+				
+				/*String[] columnas = {"#Dorsal","Nombre","Juegos", "Errores"};
+				model = new DefaultTableModel();
+				model.setColumnIdentifiers(columnas);
+				loadJugadores();
+				*/
 			}
 		}
+	
 	} 
 	public static void loadJugadores() {
 		model.setRowCount(0);
@@ -440,11 +565,8 @@ public class Jugador extends JDialog {
 					model.addRow(fila);
 		}
 	}
-		tablaPlayers.setModel(model);
-		tablaPlayers.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		tablaPlayers.getTableHeader().setReorderingAllowed(false);
 		TableColumnModel columnModel = tablaPlayers.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(60);
+		columnModel.getColumn(0).setPreferredWidth(160);
 		columnModel.getColumn(1).setPreferredWidth(180);
 		columnModel.getColumn(2).setPreferredWidth(150);
 		columnModel.getColumn(3).setPreferredWidth(140);	
@@ -462,5 +584,30 @@ public class Jugador extends JDialog {
 			for (Equipo aux : Season.getInstance().getMisEquipos()) {
 				cbxEquipo.addItem(aux.getNombreEquipo());
 			}
+	}
+	public void limpiarTextos() {
+		txtNombre.setText("");
+		txtNombre.setText("");
+		txtJuegos.setText("");
+		txtErrores.setText("");
+		txtAltura.setText("");
+		txtPeso.setText("");
+		txtDorsal.setText("");
+		txtEquipo.setText("");
+		txtEstado.setText("");
+		txtGanados.setText("");
+		txtPerdidos.setText("");
+		txtCarrLimpias.setText("");
+		txtInnings.setText("");
+		txtPonches.setText("");
+		txtSalvados.setText("");
+		txtBB.setText("");
+		txtEmpujadas.setText("");
+		txtAnotadas.setText("");
+		txtHits.setText("");
+		txtRobadas.setText("");
+		txtHR.setText("");
+		txtTurnos.setText("");
+		txtPosicion.setText("");
 	}
 }

@@ -41,7 +41,20 @@ public static Season getInstance() {
     		 }
 		return  auxEquipo;
 	 }
-
+	 
+	 public Equipo buscarEquipoByName (String NameEquipo) { 
+    	 boolean encontrado = false; 
+    	Equipo auxEquipo =null;
+    	 int i=0;
+    	 while(i<getMisEquipos().size() && !encontrado) {
+    		 if(getMisEquipos().get(i).getNombreEquipo().equalsIgnoreCase(NameEquipo)) {
+    			 auxEquipo = getMisEquipos().get(i);
+    			 encontrado = true; 
+    			
+    		 } i++;  
+    		 }
+		return  auxEquipo;
+	 }
 	 
 	public ArrayList<Jugador> buscarJugadorNombreEquipo(String name) {
 		ArrayList <Jugador> teamPlayers;

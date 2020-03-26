@@ -81,6 +81,12 @@ public abstract class Jugador implements Serializable{
 	public void setPeso(float peso) {
 		this.peso = peso;
 	}
+	public ArrayList<Lesion> getMisLesiones() {
+		return misLesiones;
+	}
+	public void setMisLesiones(ArrayList<Lesion> misLesiones) {
+		this.misLesiones = misLesiones;
+	}
 
 	
   

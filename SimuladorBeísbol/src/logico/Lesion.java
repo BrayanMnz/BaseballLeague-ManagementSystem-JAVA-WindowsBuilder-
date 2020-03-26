@@ -9,7 +9,6 @@ public class Lesion implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	//private Equipo miEquipo;
 	private String miJugador;
 	private String fechaInicioLesion;
 	private String tipoLesion;
