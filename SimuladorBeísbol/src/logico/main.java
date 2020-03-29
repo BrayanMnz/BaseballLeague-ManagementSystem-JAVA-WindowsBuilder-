@@ -36,7 +36,7 @@ public class main implements Serializable {
 		jugadorPosicion bate1 = new jugadorPosicion("Yehudy","24", 2,3,"Yankees",false,10,12,"2");
 		jugadorPosicion bate2 = new jugadorPosicion("Brayan","25", 5,6,"Redsox",false,10,14,"5");
 		Equipo redsox = new Equipo ("Redsox","BOS","FenWay","Roe Roenicke",null);
-		Equipo Yankees = new Equipo("Yankees", "NYY", "Yankee Stadium", "Aaron Boone", null);
+		Equipo Yankees = new Equipo("Yankees", "NYY", "Yankee Stadium", "Aaron Boone", "22");
 		
 		e1.insertarSeason(s1);
         s1.insertarEquipo(Yankees);  
@@ -98,7 +98,8 @@ public class main implements Serializable {
 		//redsox.insertarJugador(b8);
 		//redsox.insertarJugador(b9);
 		System.out.println(redsox.nominaEquipo());
-
+		
+       System.out.println(Yankees.getFechaFundacion());
 
 		
 	}

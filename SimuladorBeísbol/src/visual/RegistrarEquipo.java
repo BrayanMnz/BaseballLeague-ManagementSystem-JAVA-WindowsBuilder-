@@ -3,25 +3,34 @@ package visual;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
 
 import logico.Equipo;
-import logico.Season;
+import logico.Liga;
+
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
-import java.util.Date;
-import java.util.Calendar;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
+import javax.swing.JFormattedTextField;
+import java.awt.Font;
+import java.awt.Image;
 
 public class RegistrarEquipo extends JDialog {
 
@@ -35,8 +44,9 @@ public class RegistrarEquipo extends JDialog {
 	private JTextField txtEstadio;
 	private JTextField txtEntrenador;
 	private Equipo miEquipo;
-	private JSpinner spnFechaFundacion;
-	
+	private ListarEquipos listarEquipo;
+	private JFormattedTextField formattedFechaFundacion;
+	private static Boolean selectionFoto = false;
 
 	/**
 	 * Launch the application.
@@ -57,7 +67,7 @@ public class RegistrarEquipo extends JDialog {
 	public RegistrarEquipo() {
 		
 		setTitle("Registro de Equipos ");
-		setBounds(100, 100, 535, 348);
+		setBounds(100, 100, 788, 348);
 		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.BLUE);
@@ -104,11 +114,6 @@ public class RegistrarEquipo extends JDialog {
 			lblFechaFundacion.setBounds(284, 118, 102, 14);
 			panel.add(lblFechaFundacion);
 			
-			spnFechaFundacion = new JSpinner();
-			spnFechaFundacion.setModel(new SpinnerDateModel(new Date(1585108800000L), null, null, Calendar.YEAR));
-			spnFechaFundacion.setBounds(284, 143, 205, 20);
-			panel.add(spnFechaFundacion);
-			
 			JLabel lblEntrenadorPrincipal = new JLabel("Entrenador Principal:");
 			lblEntrenadorPrincipal.setBounds(203, 195, 148, 20);
 			panel.add(lblEntrenadorPrincipal);
@@ -117,7 +122,73 @@ public class RegistrarEquipo extends JDialog {
 			txtEntrenador.setBounds(162, 214, 205, 20);
 			panel.add(txtEntrenador);
 			txtEntrenador.setColumns(10);
+			 
+			MaskFormatter fechaFormato = null;
+			try {
+				fechaFormato = new MaskFormatter("##/##/####");
+			} catch (ParseException e) {
+			
+				e.printStackTrace();
+			}
+			
+		     formattedFechaFundacion = new JFormattedTextField(fechaFormato);
+			formattedFechaFundacion.setBounds(284, 143, 205, 20);
+			panel.add(formattedFechaFundacion);
 		}
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.GRAY);
+		panel.setBounds(519, 10, 243, 255);
+		contentPanel.add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblLogoEquipo = new JLabel("");
+		lblLogoEquipo.setBounds(10, 26, 223, 173);
+		panel.add(lblLogoEquipo);
+		
+		JButton btnSeleccionarFoto = new JButton("Seleccionar");
+		btnSeleccionarFoto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.showOpenDialog(null);
+				
+				BufferedImage foto;
+				File fileFoto = fileChooser.getSelectedFile();
+		
+				String routeOfFoto=null;
+				
+				try {
+					 routeOfFoto = fileFoto.getAbsolutePath();
+					
+				}catch (NullPointerException  e1) {
+					e1.printStackTrace();
+				}
+				try {
+					foto = ImageIO.read(fileFoto);
+					String routetosave = "LogosEquipos/"+ txtNombreEquipo.getText() + ".png";
+					ImageIO.write(foto, "png", new File(routetosave));
+					/** to adjust image at size of JLabel **/
+					ImageIcon fotoJugador = new ImageIcon(routeOfFoto);
+					Icon fotoJ = new ImageIcon(fotoJugador.getImage().getScaledInstance(lblLogoEquipo.getWidth(), lblLogoEquipo.getHeight(), Image.SCALE_SMOOTH));
+					lblLogoEquipo.setIcon(fotoJ);
+					selectionFoto = true;
+					
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}catch (IllegalArgumentException e2) {
+					JOptionPane.showMessageDialog(null, "Solo se permiten fotos." , "Error:", JOptionPane.ERROR_MESSAGE);
+				}	
+			}
+		});
+		btnSeleccionarFoto.setBounds(10, 211, 223, 33);
+		panel.add(btnSeleccionarFoto);
+		
+		JLabel lblLogo = new JLabel("            Logo");
+		lblLogo.setFont(new Font("Courier New", Font.BOLD, 14));
+		lblLogo.setBounds(10, 1, 223, 22);
+		panel.add(lblLogo);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -127,36 +198,28 @@ public class RegistrarEquipo extends JDialog {
 				btnRegistrar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(txtNombreEquipo.getText().isEmpty() || txtidEquipo.getText().isEmpty() || txtEntrenador.getText().isEmpty()
-								|| txtEstadio.getText().isEmpty() ) { 
+								|| txtEstadio.getText().isEmpty() || formattedFechaFundacion.getText().isEmpty() ) { 
 							JOptionPane.showMessageDialog(null, "Debe llenar todos los campos", "Error", JOptionPane.WARNING_MESSAGE);
 							} 
 						else if(miEquipo == null) { 
-							miEquipo = new Equipo(txtNombreEquipo.getText(),txtidEquipo.getText(),txtEstadio.getText(),txtEntrenador.getText(), (Date) spnFechaFundacion.getValue());
-						   Season.getInstance().insertarEquipo(miEquipo);
+							miEquipo = new Equipo(txtNombreEquipo.getText(),txtidEquipo.getText(),txtEstadio.getText(),txtEntrenador.getText(), formattedFechaFundacion.getText());
+						     Liga.getInstance().insertarEquipo(miEquipo);
 						   JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 						   clean();
-						   dispose();
-						} else { 
-							miEquipo.setNombreEquipo(txtNombreEquipo.getText());
-							miEquipo.setEstadio(txtEstadio.getText());
-							miEquipo.setId(txtidEquipo.getText());
-							miEquipo.setTrainer(txtEntrenador.getText());
-							miEquipo.setFechaFundacion((Date) spnFechaFundacion.getValue());
-							JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
-							clean();
-							dispose();
-								
-						}
 
-						
-					}
-					Date today = new Date();
+						} else { 
+							miEquipo = new Equipo(txtNombreEquipo.getText(),txtidEquipo.getText(),txtEstadio.getText(),txtEntrenador.getText(), formattedFechaFundacion.getText());
+						     Liga.getInstance().insertarEquipo(miEquipo);
+							JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+							clean();  }
+						}
+					
 					private void clean() {
 					txtEntrenador.setText("");
 					txtNombreEquipo.setText("");
 					txtidEquipo.setText("");
 					txtEstadio.setText("");
-					spnFechaFundacion.setValue(today);
+					formattedFechaFundacion.setText("");
 						
 					}
 				});
@@ -172,3 +235,5 @@ public class RegistrarEquipo extends JDialog {
 		}
 	}
 }
+
+

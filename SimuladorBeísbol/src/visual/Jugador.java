@@ -12,8 +12,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import logico.Equipo;
+import logico.Liga;
 import logico.Pitcher;
-import logico.Season;
+
 import logico.jugadorPosicion;
 
 import javax.swing.JLabel;
@@ -407,12 +408,12 @@ public class Jugador extends JDialog {
 							Float.parseFloat(txtErrores.getText().toString()),txtEquipo.getText().toString(),auxBool,
 							Float.parseFloat(txtAltura.getText().toString()), Float.parseFloat(txtPeso.getText().toString()));
 					if 	(auxBool==true) {
-						Lesiones crearLesion = new Lesiones (aux, Season.getInstance().buscarEquipoByName(aux.getEquipo()));
+						Lesiones crearLesion = new Lesiones (aux, Liga.getInstance().buscarEquipoByName(aux.getEquipo()));
 						crearLesion.setModal(true);
 						crearLesion.setVisible(true);
 					}
 					else {
-						Season.getInstance().buscarEquipoByName(aux.getEquipo()).insertarJugador(aux);
+						Liga.getInstance().buscarEquipoByName(aux.getEquipo()).insertarJugador(aux);
 						JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 
 					}
@@ -422,12 +423,12 @@ public class Jugador extends JDialog {
 							Float.parseFloat(txtErrores.getText().toString()),txtEquipo.getText().toString(),auxBool,
 							Float.parseFloat(txtAltura.getText().toString()),Float.parseFloat(txtPeso.getText().toString()),txtPosicion.getText());
 					if 	(auxBool==true) {
-						Lesiones crearLesionPosicion = new Lesiones (aux, Season.getInstance().buscarEquipoByName(aux.getEquipo()));
+						Lesiones crearLesionPosicion = new Lesiones (aux, Liga.getInstance().buscarEquipoByName(aux.getEquipo()));
 						crearLesionPosicion.setModal(true);
 						crearLesionPosicion.setVisible(true);
 					}
 					else {
-						Season.getInstance().buscarEquipoByName(aux.getEquipo()).insertarJugador(aux);
+						Liga.getInstance().buscarEquipoByName(aux.getEquipo()).insertarJugador(aux);
 						JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
@@ -488,7 +489,7 @@ public class Jugador extends JDialog {
 							int indexPlayer = tablaPlayers.getSelectedRow();
 							playerDorsal = tablaPlayers.getValueAt(indexPlayer, 0).toString();
 							PlayerName = tablaPlayers.getValueAt(indexPlayer, 1).toString();
-							for (Equipo auxEquipoTable : Season.getInstance().getMisEquipos()) {
+							for (Equipo auxEquipoTable : Liga.getInstance().getMisEquipos()) {
 								for(logico.Jugador auxJugadorTable : auxEquipoTable.getMisJugadores()) {
 									if (auxJugadorTable.getNombre() == PlayerName) {
 										jugadorMostrar = auxJugadorTable;
@@ -591,7 +592,7 @@ public class Jugador extends JDialog {
 		model.setRowCount(0);
 		//DecimalFormat df = new DecimalFormat("#.##");
 		fila = new Object[model.getColumnCount()];
-		for (Equipo aux : Season.getInstance().getMisEquipos()) {
+		for (Equipo aux : Liga.getInstance().getMisEquipos()) {
 			for(logico.Jugador auxPlayer : aux.getMisJugadores()) {
 					fila[0] = auxPlayer.getNoDorsal();
 					fila[1] = auxPlayer.getNombre();
@@ -616,7 +617,7 @@ public class Jugador extends JDialog {
 	
 	public static void cbxEquipos () {
 		
-			for (Equipo aux : Season.getInstance().getMisEquipos()) {
+			for (Equipo aux : Liga.getInstance().getMisEquipos()) {
 				cbxEquipo.addItem(aux.getNombreEquipo());
 			}
 	}

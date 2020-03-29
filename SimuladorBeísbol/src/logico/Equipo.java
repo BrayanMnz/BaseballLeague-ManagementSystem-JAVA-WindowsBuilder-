@@ -1,5 +1,10 @@
 package logico;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,7 +14,7 @@ public class Equipo implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ArrayList <Jugador> misJugadores;
+	private static ArrayList <Jugador> misJugadores;
 	private ArrayList <Jugador> Alineacion;
 	public String nombreEquipo; 
 	public String id; // Boston el id seria "BOS", Yankees "NYY"
@@ -17,16 +22,17 @@ public class Equipo implements Serializable{
     public String trainer;
     private float cantJuegos; 
     private float ganados; 
-    private Date fechaFundacion;
+    private String fechaFundacion;
     private Season miSeason;
     private int carrerasPorPartido;
 
 	private float perdidos;
     
-	public Equipo(String nombreEquipo, String id, String estadio, String trainer, Date fechaFundacion) {
+	public Equipo(String nombreEquipo, String id, String estadio, String trainer, String fechaFundacion) {
 		misJugadores = new ArrayList <Jugador>();
 		Alineacion = new ArrayList <Jugador>();
 		this.nombreEquipo = nombreEquipo;
+		this.fechaFundacion = fechaFundacion;
 		this.id = id;
 		this.estadio = estadio;
 		this.trainer = trainer;
@@ -80,10 +86,10 @@ public class Equipo implements Serializable{
 	public void setGanados(float ganados) {
 		this.ganados = ganados;
 	}
-	public Date getFechaFundacion() {
+	public String getFechaFundacion() {
 		return fechaFundacion;
 	}
-	public void setFechaFundacion(Date fechaFundacion) {
+	public void setFechaFundacion(String fechaFundacion) {
 		this.fechaFundacion = fechaFundacion;
 	}
 	public void setPerdidos(float perdidos) {
@@ -104,6 +110,7 @@ public class Equipo implements Serializable{
 	public  void insertarJugador(Jugador aux) {  
 		misJugadores.add(aux);  
 	}
+	
 	public  void insertarJugadorAlineacion(Jugador aux) {  
 		if(aux.lesionado == true) { 
 			System.out.println("El jugador esta lesionado, no puede pertenecer a la alineacion");
@@ -120,6 +127,7 @@ public class Equipo implements Serializable{
 	}
 	return cantHits;
 } 
+    
     //Calcular total de turnos del equipo
     public float totalTurnos() { 
     	float cantTurnos = 0;
@@ -130,6 +138,7 @@ public class Equipo implements Serializable{
 	}
 	return cantTurnos;
 } 
+    
 //Calcular total Carreras del equipo
     public float totalCarreras() { 
     	float cantCarreras = 0;
@@ -140,6 +149,7 @@ public class Equipo implements Serializable{
 	}
 	return cantCarreras;
 } 
+    
     //Calcular efectividad individual de un jugador del equipo.
     public float efectividad (String noJugador) {
  	   float era=0;
@@ -148,6 +158,7 @@ Jugador auxJugador = buscarJugadorByDorsal(noJugador);
  era = ( (((Pitcher) auxJugador).getCarrerasLimpias() *9 ) / (((Pitcher) auxJugador).getInningsLanzados())  );
  } return era;  }
  
+    
 //Total innings lanzados del equipo    
     public float totalInnings() { 
     	float cantInnings = 0;
@@ -158,6 +169,7 @@ Jugador auxJugador = buscarJugadorByDorsal(noJugador);
 	}
 	return cantInnings;
 } 
+    
        
  //BuscarJugador por # de chaqueta del equipo
 	 public Jugador buscarJugadorByDorsal (String noDorsal) { 
@@ -238,7 +250,35 @@ Jugador auxJugador = buscarJugadorByDorsal(noJugador);
 		return aux;
 		
 	 }*/
-	 
+	 //Probando ficherossss! 
+ /*	public static void guardarJugadores() {
+		File fileJugadores = new File("misJugadores.dat");
+		FileOutputStream fileOutput;
+		ObjectOutputStream fileObjectOutput = null;
+
+		try {
+			fileOutput = new FileOutputStream(fileJugadores);
+			fileObjectOutput = new ObjectOutputStream(fileOutput);
+			for (Jugador auxJugador : misJugadores) {
+				fileObjectOutput.writeObject(auxJugador);
+			
+			}
+
+			fileOutput.close();
+			fileObjectOutput.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				fileObjectOutput.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	} */
 	 
 }
 
