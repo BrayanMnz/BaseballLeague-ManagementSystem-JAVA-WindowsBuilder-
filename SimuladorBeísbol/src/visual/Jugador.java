@@ -118,6 +118,7 @@ public class Jugador extends JDialog {
 			@Override
 			public void windowActivated(WindowEvent e) {
 				cbxEquipos();
+				loadJugadores();
 			}
 		});
 		setTitle("Jugadores");
@@ -478,9 +479,7 @@ public class Jugador extends JDialog {
 		scrollPane.setBounds(2, 49, 562, 329);
 		panelTabla.add(scrollPane);
 		{
-			{
-				
-				
+			{	
 				tablaPlayers = new JTable();
 				tablaPlayers.addMouseListener(new MouseAdapter() {
 					@Override
@@ -519,12 +518,7 @@ public class Jugador extends JDialog {
 				scrollPane.setViewportView(tablaPlayers);
 				
 				cbxEquipo = new JComboBox();
-				cbxEquipo.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						
-					}
-				});
+
 				cbxEquipo.setBounds(10, 18, 86, 20);
 				panelTabla.add(cbxEquipo);
 				cbxEquipo.setModel(new DefaultComboBoxModel(new String[] {"<Equipos>"}));
@@ -576,7 +570,6 @@ public class Jugador extends JDialog {
 				});
 				btnVerLesiones.setBounds(60, 334, 117, 23);
 				panelCaracteristicas.add(btnVerLesiones);
-				loadJugadores();
 				
 				
 				/*String[] columnas = {"#Dorsal","Nombre","Juegos", "Errores"};
@@ -615,7 +608,7 @@ public class Jugador extends JDialog {
 	
 	//FUNCION DE CARGAR EQUIPOS EN COMBOBOX 
 	
-	public static void cbxEquipos () {
+	private void cbxEquipos () {
 		
 			for (Equipo aux : Liga.getInstance().getMisEquipos()) {
 				cbxEquipo.addItem(aux.getNombreEquipo());
