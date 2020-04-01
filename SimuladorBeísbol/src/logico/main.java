@@ -1,4 +1,4 @@
-package logico;
+/* package logico;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -11,7 +11,7 @@ public class main implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+/*	private static final long serialVersionUID = 1L;
 	private static Season s1;
 	private static Estadisticas e1;
 
@@ -103,4 +103,4 @@ public class main implements Serializable {
 
 		
 	}
-}
+}*/

@@ -2,6 +2,7 @@ package logico;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Partido implements Serializable{
 	/**
@@ -23,7 +24,8 @@ public class Partido implements Serializable{
 	private int localHits=0;
 	private int errorLocal=0;
 	private int errorVisita=0;
-	public Partido(Equipo visitante, Equipo local, String estadio, int innnings) {
+	private Partido miPartido;
+	public Partido(Equipo local, Equipo visitante, String estadio, String Fecha) {
 		super();
 		this.Equipovisitante = visitante;
 		this.Equipolocal = local;
@@ -33,6 +35,8 @@ public class Partido implements Serializable{
 		visitaRun = 0;
 		this.innnings = innnings;
 	}
+	
+
 	public Equipo getVisitante() {
 		return Equipovisitante;
 	}
@@ -125,15 +129,15 @@ public class Partido implements Serializable{
 			System.out.println("El partido no ha terminado, debe completar las 9 entradas");
 		}
 	}
-public Equipo ganadorPartido() { 
-	Equipo winner = null;
+public String ganadorPartido() { 
+	String winner = null;
 	
 	       if((localRun> visitaRun) && (innnings>=9)) {
-		   winner = getLocal();
+		   winner = getLocal().nombreEquipo;
 		   terminado = true; 
 		  }
 	   else if ((localRun< visitaRun) && (innnings>=9)  ) { 
-		   winner = getVisitante();
+		   winner = getVisitante().nombreEquipo;
 		   terminado = true;
 	   }   /*  else  if(innnings < 9) { 
 			System.out.println("El partido no ha terminado, debe completar las 9 entradas");

@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -31,10 +32,14 @@ public class ListarEquipos extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
-	private static 	JButton btnVerEquipo;
+	private static 	JButton btnModify;
+	private static JButton btnEliminar;
 	private static DefaultTableModel model; 
 	private static Object[] fila; 
+	private static String identificador;
 	private VerEquipo verTeam;
+	private int index;
+    private static JButton btnVerEquipo;
 
 	/**
 	 * Launch the application.
@@ -62,14 +67,14 @@ public class ListarEquipos extends JDialog {
 		setTitle("Equipos");
 		setBounds(100, 100, 687, 439);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBackground(Color.BLUE);
+		contentPanel.setBackground(new Color(102, 204, 255));
 		contentPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
 			JPanel panel = new JPanel();
 			panel.setBackground(Color.LIGHT_GRAY);
-			panel.setBorder(new TitledBorder(null, "Listado de Equipos: ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Listado de Equipos: ", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 			panel.setBounds(10, 10, 651, 346);
 			contentPanel.add(panel);
 			panel.setLayout(null);
@@ -82,16 +87,18 @@ public class ListarEquipos extends JDialog {
 				table.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						int index = table.getSelectedRow();
+						index = table.getSelectedRow();
 						if(index >= 0) { 
+							identificador = (String)table.getModel().getValueAt(index, 0).toString();
+							btnModify.setEnabled(true);
+							btnEliminar.setEnabled(true);
 							btnVerEquipo.setEnabled(true);
-							
 							
 						}
 						
 					}
 				});
-				table.setBackground(Color.LIGHT_GRAY);
+				table.setBackground(Color.WHITE);
 				table.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 				model = new DefaultTableModel(); 
 				String[] columnNames = {"Nombre", "id Equipo", "Estadio", "Manager", "Fecha de Fundacion"};
@@ -106,21 +113,62 @@ public class ListarEquipos extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				btnVerEquipo = new JButton("Ver Equipo");
-				btnVerEquipo.setEnabled(false);
-				btnVerEquipo.addActionListener(new ActionListener() {
+				btnModify = new JButton("Modificar");
+				btnModify.setEnabled(false);
+				btnModify.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						VerEquipo equipo1 = new VerEquipo();
-						equipo1.setModal(true);
-						equipo1.setVisible(true);
-					
+						  for(Equipo auxEquipo : Liga.getInstance().getMisEquipos()) {
+								if(identificador.equalsIgnoreCase(auxEquipo.getNombreEquipo())) { 
+	int option = JOptionPane.showConfirmDialog(null, "Está seguro que desea modificar este equipo: " ,"Información",JOptionPane.WARNING_MESSAGE);
+		if(option == JOptionPane.OK_OPTION) { 
+		   RegistrarEquipo e1 = new RegistrarEquipo();
+		   e1.setModal(true);
+		   e1.setLocationRelativeTo(null);
+		   e1.setVisible(true);
+			cargarEquipos();
+			btnEliminar.setEnabled(false);
+			btnModify.setEnabled(false);
+			btnVerEquipo.setEnabled(false);
+		}}}
 						
 						
 					}
 				});
-				btnVerEquipo.setActionCommand("OK");
-				buttonPane.add(btnVerEquipo);
-				getRootPane().setDefaultButton(btnVerEquipo);
+				{
+					 btnEliminar = new JButton("Eliminar");
+					btnEliminar.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+						   for(Equipo auxEquipo : Liga.getInstance().getMisEquipos()) {
+							if(identificador.equalsIgnoreCase(auxEquipo.getNombreEquipo())) { 
+int option = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar este equipo: " ,"Información",JOptionPane.WARNING_MESSAGE);
+	if(option == JOptionPane.OK_OPTION) { 
+		Liga.getInstance().EliminarEquipo(auxEquipo);
+		cargarEquipos();
+		btnEliminar.setEnabled(false);
+		btnModify.setEnabled(false);
+		btnVerEquipo.setEnabled(false);
+	}}}}
+	 });
+					
+					 btnVerEquipo = new JButton("Ver Equipo");
+					btnVerEquipo.setEnabled(false);
+					btnVerEquipo.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							insertarEstadisticas();
+							VerEquipo v1 = new VerEquipo(identificador);
+							v1.setModal(true);
+							v1.setVisible(true);
+							v1.setLocationRelativeTo(null);
+							
+						}
+					});
+					buttonPane.add(btnVerEquipo);
+					btnEliminar.setEnabled(false);
+					buttonPane.add(btnEliminar);
+				}
+				btnModify.setActionCommand("OK");
+				buttonPane.add(btnModify);
+				getRootPane().setDefaultButton(btnModify);
 				}
 			cargarEquipos();
 			
@@ -150,4 +198,16 @@ public class ListarEquipos extends JDialog {
 			
 		}
 	}
+	
+	private static void insertarEstadisticas() { 
+		for (Equipo auxEquipo : Liga.getInstance().getMisEquipos()) {
+			if(auxEquipo.nombreEquipo.equalsIgnoreCase(Liga.getInstance().buscarEquipoByName(identificador).nombreEquipo));
+			auxEquipo.setCarrerasLimpiasPermitidas(5);
+			auxEquipo.setGanados(10);
+			auxEquipo.setPerdidos(3);
+		
+		}
+		
+	}
+	
 }

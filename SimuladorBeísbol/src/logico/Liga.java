@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 
 
+
 public class Liga implements Serializable{
 	/**
 	 * 
@@ -22,12 +23,12 @@ public class Liga implements Serializable{
 	private ArrayList <Jugador> misJugadores;
 	private ArrayList <Equipo> misEquipos;
 	private ArrayList <Partido> misPartidos; 
-	private static Liga miLiga;
+	private static Liga miLiga; 
 	
 	public Liga() {
 		misJugadores = new ArrayList<Jugador>();
 		misEquipos = new ArrayList<Equipo>();
-	    misPartidos = new ArrayList<Partido>();
+	    setMisPartidos(new ArrayList<Partido>());
 		
 	}
 	public static Liga getInstance() { 
@@ -42,6 +43,12 @@ public class Liga implements Serializable{
 	}
 	public ArrayList<Equipo> getMisEquipos() {
 		return misEquipos;
+	}
+	public ArrayList <Partido> getMisPartidos() {
+		return misPartidos;
+	}
+	public void setMisPartidos(ArrayList <Partido> misPartidos) {
+		this.misPartidos = misPartidos;
 	}
 	public static Liga getMiLiga() {
 		return miLiga;
@@ -61,11 +68,23 @@ public class Liga implements Serializable{
 		getMisEquipos().add(aux);  
 	}
 	public void insertarJugador(Jugador aux) { 
-		misJugadores.add(aux);
+		getMisJugadores().add(aux);
 	} 
 	public void insertarPartido(Partido aux) { 
-		misPartidos.add(aux);
+	getMisPartidos().add(aux);
 	}
+	
+	//Metodos para eliminar 
+	public void EliminarJugador(Jugador aux) {
+		getMisJugadores().remove(aux);
+		}
+	public void EliminarEquipo(Equipo aux) {
+		getMisEquipos().remove(aux);
+		}
+	public void EliminarPartido(Partido aux) { 
+		getMisPartidos().remove(aux);
+	}
+	
 	//Buscar Equipo 
 	 public Equipo buscarEquipoById (String idEquipo) { 
    	 boolean encontrado = false; 
@@ -77,7 +96,7 @@ public class Liga implements Serializable{
    			 encontrado = true; 
    			
    		 } i++;  
-   		 }
+   		 } 
 		return  auxEquipo;
 	 }
 	 public Equipo buscarEquipoByName (String NameEquipo) { 

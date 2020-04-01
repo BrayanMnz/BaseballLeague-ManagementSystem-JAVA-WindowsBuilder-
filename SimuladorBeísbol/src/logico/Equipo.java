@@ -25,6 +25,7 @@ public class Equipo implements Serializable{
     private String fechaFundacion;
     private Season miSeason;
     private int carrerasPorPartido;
+    private float carrerasLimpiasPermitidas;
 
 	private float perdidos;
     
@@ -79,6 +80,12 @@ public class Equipo implements Serializable{
 	} 
     public float getGanados() {
 		return ganados;
+	}
+	public float getCarrerasLimpiasPermitidas() {
+		return carrerasLimpiasPermitidas;
+	}
+	public void setCarrerasLimpiasPermitidas(float carrerasLimpiasPermitidas) {
+		this.carrerasLimpiasPermitidas = carrerasLimpiasPermitidas;
 	}
 	public float getPerdidos() {
 		return perdidos;
@@ -149,6 +156,10 @@ public class Equipo implements Serializable{
 	}
 	return cantCarreras;
 } 
+    public float promColectivo() {
+    	float auxProm=0;
+    return auxProm = (totalHits()/totalTurnos());
+    }
     
     //Calcular efectividad individual de un jugador del equipo.
     public float efectividad (String noJugador) {
@@ -209,6 +220,11 @@ Jugador auxJugador = buscarJugadorByDorsal(noJugador);
 	    		}	}   
 	    	return cantPonches;   }
 	 
+	 
+	 public float eraColectiva() { 
+		 float auxEra = 0;
+		 return auxEra = getCarrerasLimpiasPermitidas()/totalInnings();
+	 }
 	 // Cantidad Ponches por equipo 
 	 public float totalBasePorBolas() {
 	    	float cantBB = 0;

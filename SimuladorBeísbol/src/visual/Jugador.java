@@ -118,7 +118,7 @@ public class Jugador extends JDialog {
 			@Override
 			public void windowActivated(WindowEvent e) {
 				cbxEquipos();
-				loadJugadores();
+				//loadJugadores();
 			}
 		});
 		setTitle("Jugadores");

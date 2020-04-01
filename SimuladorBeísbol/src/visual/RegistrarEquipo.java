@@ -16,8 +16,9 @@ import javax.swing.text.MaskFormatter;
 import logico.Equipo;
 import logico.Liga;
 
-
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.SoftBevelBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -31,6 +32,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFormattedTextField;
 import java.awt.Font;
 import java.awt.Image;
+import javax.swing.UIManager;
 
 public class RegistrarEquipo extends JDialog {
 
@@ -70,7 +72,7 @@ public class RegistrarEquipo extends JDialog {
 		setBounds(100, 100, 788, 348);
 		
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBackground(Color.BLUE);
+		contentPanel.setBackground(UIManager.getColor("Button.background"));
 		contentPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
@@ -80,6 +82,7 @@ public class RegistrarEquipo extends JDialog {
 			panel.setBorder(new TitledBorder(null, "Informacion del equipo: ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			panel.setBounds(10, 10, 499, 255);
 			contentPanel.add(panel);
+			panel.setOpaque(false);
 			panel.setLayout(null);
 			{
 				JLabel lblNombreEquipo = new JLabel("Nombre del Equipo:");
@@ -141,6 +144,8 @@ public class RegistrarEquipo extends JDialog {
 		panel.setBounds(519, 10, 243, 255);
 		contentPanel.add(panel);
 		panel.setLayout(null);
+		panel.setOpaque(false);
+		panel.setBorder(new TitledBorder(null, "Logo: ", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		
 		JLabel lblLogoEquipo = new JLabel("");
 		lblLogoEquipo.setBounds(10, 26, 223, 173);
@@ -184,11 +189,12 @@ public class RegistrarEquipo extends JDialog {
 		});
 		btnSeleccionarFoto.setBounds(10, 211, 223, 33);
 		panel.add(btnSeleccionarFoto);
+
 		
-		JLabel lblLogo = new JLabel("            Logo");
-		lblLogo.setFont(new Font("Courier New", Font.BOLD, 14));
-		lblLogo.setBounds(10, 1, 223, 22);
-		panel.add(lblLogo);
+		JLabel lblFondo = new JLabel("");
+		lblFondo.setIcon(new ImageIcon(RegistrarEquipo.class.getResource("/Imagenes/mlb-logo-drawing-11.jpg")));
+		lblFondo.setBounds(0, 0, 772, 276);
+		contentPanel.add(lblFondo);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
