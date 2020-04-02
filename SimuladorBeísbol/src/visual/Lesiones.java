@@ -38,7 +38,7 @@ public class Lesiones extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public Lesiones(logico.Jugador aux, Equipo teamAux) {
+	public Lesiones(logico.Jugador aux) {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -115,8 +115,11 @@ public class Lesiones extends JDialog {
 		JButton btnTerminado = new JButton("Terminado");
 		btnTerminado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				teamAux.insertarJugador(aux);
-				Liga.getInstance().insertarJugador(aux);
+				for (Equipo auxTeam : Liga.getInstance().getMisEquipos()) {
+					if (auxTeam.getNombreEquipo() == aux.getEquipo()) {
+						auxTeam.insertarJugador(aux);
+					}
+				}
 				 JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 				dispose();
 			}

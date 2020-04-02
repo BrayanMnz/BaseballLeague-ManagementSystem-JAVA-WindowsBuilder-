@@ -115,7 +115,7 @@ public class Equipo implements Serializable{
 		Alineacion = alineacion;
 	}
 	public  void insertarJugador(Jugador aux) {  
-		misJugadores.add(aux);  
+			misJugadores.add(aux);  
 	}
 	
 	public  void insertarJugadorAlineacion(Jugador aux) {  

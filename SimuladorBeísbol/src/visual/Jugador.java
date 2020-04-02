@@ -407,12 +407,12 @@ public class Jugador extends JDialog {
 							Float.parseFloat(txtErrores.getText().toString()),cbxSelectEquipo.getSelectedItem().toString(),auxBool,
 							Float.parseFloat(txtAltura.getText().toString()), Float.parseFloat(txtPeso.getText().toString()));
 					if 	(auxBool==true) {
-						Lesiones crearLesion = new Lesiones (miJugador, Liga.getInstance().buscarEquipoByName(cbxSelectEquipo.getSelectedItem().toString()));
+						Lesiones crearLesion = new Lesiones (miJugador);
 						crearLesion.setModal(true);
 						crearLesion.setVisible(true);
 					}
 					else {
-						Liga.getInstance().buscarEquipoByName(cbxSelectEquipo.getSelectedItem().toString()).insertarJugador(miJugador);
+						//Liga.getInstance().buscarEquipoByName(cbxSelectEquipo.getSelectedItem().toString()).insertarJugador(miJugador);
 						Liga.getInstance().insertarJugador(miJugador);
 						JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 					}
@@ -422,15 +422,20 @@ public class Jugador extends JDialog {
 							Float.parseFloat(txtErrores.getText().toString()),cbxSelectEquipo.getSelectedItem().toString(),auxBool,
 							Float.parseFloat(txtAltura.getText().toString()),Float.parseFloat(txtPeso.getText().toString()),txtPosicion.getText());
 					if 	(auxBool==true) {
-						Lesiones crearLesionPosicion = new Lesiones (miJugador, Liga.getInstance().buscarEquipoByName(cbxSelectEquipo.getSelectedItem().toString()));
+						Lesiones crearLesionPosicion = new Lesiones (miJugador);
 						crearLesionPosicion.setModal(true);
 						crearLesionPosicion.setVisible(true);
 					}
 					else {
-						Liga.getInstance().buscarEquipoByName(cbxSelectEquipo.getSelectedItem().toString()).insertarJugador(miJugador);						
+						//Liga.getInstance().buscarEquipoByName(cbxSelectEquipo.getSelectedItem().toString()).insertarJugador(miJugador);						
 						Liga.getInstance().insertarJugador(miJugador);
 						JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 						
+					}
+				}
+				for (Equipo auxTeam : Liga.getInstance().getMisEquipos()) {
+					if (auxTeam.getNombreEquipo() == cbxSelectEquipo.getSelectedItem()) {
+						auxTeam.insertarJugador(miJugador);
 					}
 				}
 				loadJugadores();
