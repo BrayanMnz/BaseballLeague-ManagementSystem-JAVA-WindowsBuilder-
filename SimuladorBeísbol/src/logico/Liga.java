@@ -103,17 +103,17 @@ public class Liga implements Serializable{
     	 boolean encontrado = false; 
     	Equipo auxEquipo =null;
     	 int i=0;
-    	 while(i<getMisEquipos().size() && !encontrado) {
+    	while(i<getMisEquipos().size() && !encontrado) {
     		 if(getMisEquipos().get(i).getNombreEquipo().equalsIgnoreCase(NameEquipo)) {
     			 auxEquipo = getMisEquipos().get(i);
     			 encontrado = true; 
     			
     		 } i++;  
-    		 }
-		return  auxEquipo;
+    		
+	
 	 }
-	 
-	 
+    	return  auxEquipo;
+}
 	 
 	
 	// para guardar los datos de la clase controladora

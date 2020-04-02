@@ -14,7 +14,7 @@ public class Equipo implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static ArrayList <Jugador> misJugadores;
+	private  ArrayList <Jugador> misJugadores;
 	private ArrayList <Jugador> Alineacion;
 	public String nombreEquipo; 
 	public String id; // Boston el id seria "BOS", Yankees "NYY"

@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import logico.Equipo;
 import logico.Jugador;
 import logico.Lesion;
+import logico.Liga;
 import logico.Pitcher;
 
 import java.awt.Color;
@@ -115,6 +116,7 @@ public class Lesiones extends JDialog {
 		btnTerminado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				teamAux.insertarJugador(aux);
+				Liga.getInstance().insertarJugador(aux);
 				 JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 				dispose();
 			}

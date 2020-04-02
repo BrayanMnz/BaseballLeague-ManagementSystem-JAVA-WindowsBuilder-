@@ -48,7 +48,6 @@ public class Jugador extends JDialog {
 	private JTextField txtAltura;
 	private JTextField txtPeso;
 	private JTextField txtDorsal;
-	private JTextField txtEquipo;
 	private JTextField txtGanados;
 	private JTextField txtPerdidos;
 	private JTextField txtCarrLimpias;
@@ -93,6 +92,9 @@ public class Jugador extends JDialog {
 	private JLabel lblEjemplo_3;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_3;
+	private String cbxItem;
+	private logico.Jugador miJugador;
+	private JComboBox cbxSelectEquipo;
 
 
 
@@ -117,8 +119,9 @@ public class Jugador extends JDialog {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowActivated(WindowEvent e) {
-				cbxEquipos();
-				//loadJugadores();
+			loadJugadores();
+			cbxEquipos();
+			cbxSelectEquipo ();
 			}
 		});
 		setTitle("Jugadores");
@@ -200,11 +203,6 @@ public class Jugador extends JDialog {
 		txtDorsal.setBounds(72, 133, 42, 20);
 		pnlAddPlayer.add(txtDorsal);
 		txtDorsal.setColumns(10);
-		
-		txtEquipo = new JTextField();
-		txtEquipo.setBounds(253, 8, 130, 20);
-		pnlAddPlayer.add(txtEquipo);
-		txtEquipo.setColumns(10);
 
 		rbtnPitcher = new JRadioButton("Pitcher");
 		rbtnPitcher.addActionListener(new ActionListener() {
@@ -400,37 +398,39 @@ public class Jugador extends JDialog {
 		btnRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Boolean auxBool=false;
-				logico.Jugador aux=null;
+				miJugador = null;
 				if (rdbtnLesionado.isSelected()) {
 					auxBool = true;
 				}
-				if (rbtnPitcher.isSelected() && (rdbtnNoLesion.isSelected() || rdbtnLesionado.isSelected())) {
-					aux = new Pitcher (txtNombre.getText(),txtDorsal.getText(), Float.parseFloat(txtJuegos.getText().toString()),
-							Float.parseFloat(txtErrores.getText().toString()),txtEquipo.getText().toString(),auxBool,
+				if (rbtnPitcher.isSelected()) {
+					miJugador = new Pitcher (txtNombre.getText(),txtDorsal.getText(), Float.parseFloat(txtJuegos.getText().toString()),
+							Float.parseFloat(txtErrores.getText().toString()),cbxSelectEquipo.getSelectedItem().toString(),auxBool,
 							Float.parseFloat(txtAltura.getText().toString()), Float.parseFloat(txtPeso.getText().toString()));
 					if 	(auxBool==true) {
-						Lesiones crearLesion = new Lesiones (aux, Liga.getInstance().buscarEquipoByName(aux.getEquipo()));
+						Lesiones crearLesion = new Lesiones (miJugador, Liga.getInstance().buscarEquipoByName(cbxSelectEquipo.getSelectedItem().toString()));
 						crearLesion.setModal(true);
 						crearLesion.setVisible(true);
 					}
 					else {
-						Liga.getInstance().buscarEquipoByName(aux.getEquipo()).insertarJugador(aux);
+						Liga.getInstance().buscarEquipoByName(cbxSelectEquipo.getSelectedItem().toString()).insertarJugador(miJugador);
+						Liga.getInstance().insertarJugador(miJugador);
 						JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
-
 					}
 				}
-				if (rdbtnPosicion.isSelected() && (rdbtnNoLesion.isSelected() || rdbtnLesionado.isSelected())) {
-					aux = new jugadorPosicion(txtNombre.getText(),txtDorsal.getText(), Float.parseFloat(txtJuegos.getText().toString()),
-							Float.parseFloat(txtErrores.getText().toString()),txtEquipo.getText().toString(),auxBool,
+				if (rdbtnPosicion.isSelected()) {
+					miJugador = new jugadorPosicion(txtNombre.getText(),txtDorsal.getText(), Float.parseFloat(txtJuegos.getText().toString()),
+							Float.parseFloat(txtErrores.getText().toString()),cbxSelectEquipo.getSelectedItem().toString(),auxBool,
 							Float.parseFloat(txtAltura.getText().toString()),Float.parseFloat(txtPeso.getText().toString()),txtPosicion.getText());
 					if 	(auxBool==true) {
-						Lesiones crearLesionPosicion = new Lesiones (aux, Liga.getInstance().buscarEquipoByName(aux.getEquipo()));
+						Lesiones crearLesionPosicion = new Lesiones (miJugador, Liga.getInstance().buscarEquipoByName(cbxSelectEquipo.getSelectedItem().toString()));
 						crearLesionPosicion.setModal(true);
 						crearLesionPosicion.setVisible(true);
 					}
 					else {
-						Liga.getInstance().buscarEquipoByName(aux.getEquipo()).insertarJugador(aux);
+						Liga.getInstance().buscarEquipoByName(cbxSelectEquipo.getSelectedItem().toString()).insertarJugador(miJugador);						
+						Liga.getInstance().insertarJugador(miJugador);
 						JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+						
 					}
 				}
 				loadJugadores();
@@ -468,6 +468,11 @@ public class Jugador extends JDialog {
 		lblNewLabel_3.setBounds(253, 136, 214, 14);
 		pnlAddPlayer.add(lblNewLabel_3);
 		
+		cbxSelectEquipo = new JComboBox();
+		cbxSelectEquipo.setModel(new DefaultComboBoxModel(new String[] {"<Equipo>"}));
+		cbxSelectEquipo.setBounds(253, 8, 90, 20);
+		pnlAddPlayer.add(cbxSelectEquipo);
+		
 		JPanel panelTabla = new JPanel();
 		panelTabla.setBackground(Color.LIGHT_GRAY);
 		panelTabla.setBounds(10, 194, 566, 380);
@@ -488,11 +493,9 @@ public class Jugador extends JDialog {
 							int indexPlayer = tablaPlayers.getSelectedRow();
 							playerDorsal = tablaPlayers.getValueAt(indexPlayer, 0).toString();
 							PlayerName = tablaPlayers.getValueAt(indexPlayer, 1).toString();
-							for (Equipo auxEquipoTable : Liga.getInstance().getMisEquipos()) {
-								for(logico.Jugador auxJugadorTable : auxEquipoTable.getMisJugadores()) {
-									if (auxJugadorTable.getNombre() == PlayerName) {
-										jugadorMostrar = auxJugadorTable;
-									}
+							for (logico.Jugador auxPlayer : Liga.getInstance().getMisJugadores()) {
+									if (auxPlayer.getNombre() == PlayerName) {
+										jugadorMostrar = auxPlayer;
 								}
 							}
 							
@@ -518,10 +521,26 @@ public class Jugador extends JDialog {
 				scrollPane.setViewportView(tablaPlayers);
 				
 				cbxEquipo = new JComboBox();
+				cbxEquipo.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						cbxEquipos();
+					}
+				});
+				cbxEquipo.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						cbxItem = (String) cbxEquipo.getSelectedItem();
+						loadJugadoresEquipo(Liga.getInstance().buscarEquipoByName(cbxItem));
+					}
+				});
 
 				cbxEquipo.setBounds(10, 18, 86, 20);
 				panelTabla.add(cbxEquipo);
 				cbxEquipo.setModel(new DefaultComboBoxModel(new String[] {"<Equipos>"}));
+				
+
+				
+				
 				
 				panelCaracteristicas = new JPanel();
 				panelCaracteristicas.setBackground(Color.LIGHT_GRAY);
@@ -581,12 +600,37 @@ public class Jugador extends JDialog {
 		}
 	
 	} 
-	public static void loadJugadores() {
+	private static void loadJugadores() {
+		model.setRowCount(0);
+		//DecimalFormat df = new DecimalFormat("#.##");
+		fila = new Object[model.getColumnCount()];
+		//for (Equipo aux : Liga.getInstance().getMisEquipos()) {
+			for(logico.Jugador auxPlayer : Liga.getInstance().getMisJugadores()) {
+					fila[0] = auxPlayer.getNoDorsal();
+					fila[1] = auxPlayer.getNombre();
+					fila[2] = auxPlayer.getCantJuegos();
+					fila[3] = auxPlayer.getErrores();
+					model.addRow(fila);
+		}
+	//}
+		TableColumnModel columnModel = tablaPlayers.getColumnModel();
+		columnModel.getColumn(0).setPreferredWidth(160);
+		columnModel.getColumn(1).setPreferredWidth(180);
+		columnModel.getColumn(2).setPreferredWidth(150);
+		columnModel.getColumn(3).setPreferredWidth(140);	
+		/*if(tableModel.getRowCount()==0){
+			btnEliminar.setEnabled(false);
+			btnModificar.setEnabled(false);
+		}*/
+		
+	}
+	
+	private static void loadJugadoresEquipo(Equipo equipo) {
 		model.setRowCount(0);
 		//DecimalFormat df = new DecimalFormat("#.##");
 		fila = new Object[model.getColumnCount()];
 		for (Equipo aux : Liga.getInstance().getMisEquipos()) {
-			for(logico.Jugador auxPlayer : aux.getMisJugadores()) {
+			for(logico.Jugador auxPlayer : equipo.getMisJugadores()) {
 					fila[0] = auxPlayer.getNoDorsal();
 					fila[1] = auxPlayer.getNombre();
 					fila[2] = auxPlayer.getCantJuegos();
@@ -611,9 +655,15 @@ public class Jugador extends JDialog {
 	private void cbxEquipos () {
 		
 			for (Equipo aux : Liga.getInstance().getMisEquipos()) {
-				cbxEquipo.addItem(aux.getNombreEquipo());
+				cbxEquipo.addItem(aux.getNombreEquipo().toString());
 			}
 	}
+	private void cbxSelectEquipo () {
+		
+		for (Equipo aux : Liga.getInstance().getMisEquipos()) {
+			cbxSelectEquipo.addItem(aux.getNombreEquipo().toString());
+		}
+}
 	public void limpiarTextos() {
 		txtNombre.setText("");
 		txtNombre.setText("");
@@ -622,7 +672,6 @@ public class Jugador extends JDialog {
 		txtAltura.setText("");
 		txtPeso.setText("");
 		txtDorsal.setText("");
-		txtEquipo.setText("");
 		txtGanados.setText("");
 		txtPerdidos.setText("");
 		txtCarrLimpias.setText("");
