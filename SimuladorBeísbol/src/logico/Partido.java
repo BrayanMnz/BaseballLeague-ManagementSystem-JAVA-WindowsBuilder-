@@ -11,10 +11,11 @@ public class Partido implements Serializable{
 	private static final long serialVersionUID = 1L;
 	//CREAR MARCADOR PARA LA PARTE VISUAL
 	private ArrayList <Equipo> misEquipos;
+	private String idPartido;
 	private Equipo Equipovisitante;
 	private Equipo Equipolocal;
 	private String estadio;
-	private String hora;
+	private String horaJuego;
 	private String fecha;
 	private int innnings;
 	private boolean terminado = false;
@@ -25,11 +26,13 @@ public class Partido implements Serializable{
 	private int errorLocal=0;
 	private int errorVisita=0;
 	private Partido miPartido;
-	public Partido(Equipo local, Equipo visitante, String estadio, String Fecha) {
+	public Partido(Equipo local, Equipo visitante, String estadio, String horaJuego) {
 		super();
 		this.Equipovisitante = visitante;
 		this.Equipolocal = local;
 		this.estadio = estadio;
+		this.horaJuego = horaJuego;
+		this.idPartido = Liga.getInstance().generarIDPartido();
 		terminado = false;
 		localRun = 0;
 		visitaRun = 0;
@@ -56,10 +59,10 @@ public class Partido implements Serializable{
 		this.estadio = estadio;
 	}
 	public String getHora() {
-		return hora;
+		return horaJuego;
 	}
 	public void setHora(String hora) {
-		this.hora = hora;
+		this.horaJuego = hora;
 	}
 	public String getFecha() {
 		return fecha;
@@ -91,6 +94,17 @@ public class Partido implements Serializable{
 	public void setVisitaHits(int visitaHits) {
 		this.visitaHits = visitaHits;
 	}
+
+	public void setIdPartido(String idPartido) {
+		this.idPartido = Liga.getInstance().generarIDPartido();
+	}
+	public String getIdPartido() {
+		return idPartido;
+	}
+
+
+
+
 	public int getLocalHits() {
 		return localHits;
 	}
@@ -144,7 +158,7 @@ public String ganadorPartido() {
        } */
 	return winner;
 	   }
-	   
+	
  //  }
 	  
 	

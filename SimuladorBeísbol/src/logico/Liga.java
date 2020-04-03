@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale.Category;
 
 
 
@@ -24,6 +25,8 @@ public class Liga implements Serializable{
 	private ArrayList <Equipo> misEquipos;
 	private ArrayList <Partido> misPartidos; 
 	private static Liga miLiga; 
+	private int cantPartidos;
+	private static boolean control = true;
 	
 	public Liga() {
 		misJugadores = new ArrayList<Jugador>();
@@ -53,6 +56,12 @@ public class Liga implements Serializable{
 	public static Liga getMiLiga() {
 		return miLiga;
 	}
+	public static boolean isControl() {
+		return control;
+	}
+	public static void setControl(boolean control) {
+		Liga.control = control;
+	}
 	public static void setMiLiga(Liga miLiga) {
 		Liga.miLiga = miLiga;
 	}
@@ -63,6 +72,7 @@ public class Liga implements Serializable{
 		this.misEquipos = misEquipos;
 	}
 	
+
 	//Metodos para insertar
 	public  void insertarEquipo(Equipo aux) {  
 		getMisEquipos().add(aux);  
@@ -72,6 +82,8 @@ public class Liga implements Serializable{
 	} 
 	public void insertarPartido(Partido aux) { 
 	getMisPartidos().add(aux);
+	cantPartidos++;
+	
 	}
 	
 	//Metodos para eliminar 
@@ -83,6 +95,13 @@ public class Liga implements Serializable{
 		}
 	public void EliminarPartido(Partido aux) { 
 		getMisPartidos().remove(aux);
+		cantPartidos = cantPartidos - 1; 
+	}
+	public int getCantPartidos() {
+		return cantPartidos;
+	}
+	public  void setCantPartidos(int cantPartidos) {
+	   this.cantPartidos = cantPartidos;
 	}
 	
 	//Buscar Equipo 
@@ -114,8 +133,26 @@ public class Liga implements Serializable{
 	 }
     	return  auxEquipo;
 }
-	 
+	 //BuscarPartidoByID
+	 public Partido buscarPartidoById (String idPartido) { 
+	   	 boolean encontrado = false; 
+	   	Partido auxPartido =null;
+	   	 int i=0;
+	   	 while(i<getMisPartidos().size() && !encontrado) {
+	   		 if(misPartidos.get(i).getIdPartido().equalsIgnoreCase(idPartido)) {
+	   			 auxPartido = getMisPartidos().get(i);
+	   			 encontrado = true; 
+	   			
+	   		 } i++;  
+	   		 } 
+			return  auxPartido;
+		 }
 	
+	   public String generarIDPartido() { 
+		   String auxID="";
+		   return auxID = "MLB-00"+cantPartidos;
+		   }
+	 
 	// para guardar los datos de la clase controladora
 	public void guardarDatos(Liga miLiga) {
 		File file = new File("DatosLiga.dat");
@@ -142,6 +179,7 @@ public class Liga implements Serializable{
 			}
 		}
 	}
+
 	
 	public void cargarLiga(Liga miLiga) {
 

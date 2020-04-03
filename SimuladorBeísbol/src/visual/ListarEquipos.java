@@ -101,7 +101,7 @@ public class ListarEquipos extends JDialog {
 				table.setBackground(Color.WHITE);
 				table.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 				model = new DefaultTableModel(); 
-				String[] columnNames = {"Nombre", "id Equipo", "Estadio", "Manager", "Fecha de Fundacion"};
+				String[] columnNames = { "Nombre","ID Equipo", "Estadio", "Manager", "Fecha de Fundacion"};
 				model.setColumnIdentifiers(columnNames);
 				table.setModel(model);
 				scrollPane.setViewportView(table);
@@ -191,6 +191,7 @@ int option = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar
 		for (Equipo auxEquipo : Liga.getInstance().getMisEquipos()) {
 			fila[0] = auxEquipo.getNombreEquipo();
 			fila[1] = auxEquipo.getId();
+		
 			fila[2] = auxEquipo.getEstadio();
 			fila[3] = auxEquipo.getTrainer();
 			fila[4] = auxEquipo.getFechaFundacion();

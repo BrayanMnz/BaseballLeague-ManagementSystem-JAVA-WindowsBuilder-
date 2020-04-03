@@ -40,7 +40,7 @@ import javax.swing.ImageIcon;
 import java.awt.SystemColor;
 import javax.swing.JFormattedTextField;
 
-public class ProgramarPartido extends JDialog {
+public class ModificarPartido extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JComboBox<String> comboBoxLocal;
@@ -58,7 +58,7 @@ public class ProgramarPartido extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			ProgramarPartido dialog = new ProgramarPartido();
+			ModificarPartido dialog = new ModificarPartido();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -69,7 +69,7 @@ public class ProgramarPartido extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ProgramarPartido() {
+	public ModificarPartido() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowActivated(WindowEvent e) {
@@ -77,9 +77,9 @@ public class ProgramarPartido extends JDialog {
 				 
 			}
 		});
-		
+		Partido aux = mainVisual.partidoSeleccionadoTabla();
 		setModal(true);
-		setTitle("Programar partidos ");
+		setTitle("Reprogramar partido ");
 		setBounds(100, 100, 484, 321);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
@@ -145,7 +145,8 @@ public class ProgramarPartido extends JDialog {
 			 lblIDPartido.setBounds(290, 33, 66, 14);
 			 panelProgramar.add(lblIDPartido);
 			 
-			 txtIDPartido = new JTextField("MLB-00"+Liga.getInstance().getCantPartidos());
+			 txtIDPartido = new JTextField();
+			 txtIDPartido.setText(aux.getIdPartido());
 			 txtIDPartido.setEnabled(false);
 			 txtIDPartido.setBounds(290, 53, 130, 20);
 			 panelProgramar.add(txtIDPartido);
@@ -188,7 +189,7 @@ public class ProgramarPartido extends JDialog {
 		}
 		{
 			JLabel lblFondo = new JLabel("");
-			lblFondo.setIcon(new ImageIcon(ProgramarPartido.class.getResource("/Imagenes/unnamed.jpg")));
+			lblFondo.setIcon(new ImageIcon(ModificarPartido.class.getResource("/Imagenes/unnamed.jpg")));
 			lblFondo.setBounds(0, 0, 468, 249);
 			contentPanel.add(lblFondo);
 		}
@@ -198,7 +199,7 @@ public class ProgramarPartido extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				 btnProgramar = new JButton("Programar Partido");
+				 btnProgramar = new JButton("Reprogramar Partido");
 				btnProgramar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 				
@@ -212,9 +213,10 @@ public class ProgramarPartido extends JDialog {
 					else if(miPartido == null) { 
 						miPartido = new Partido(buscarEquipo(comboBoxLocal.getSelectedItem().toString()), buscarEquipo(comboBoxVisitante.getSelectedItem().toString()), 
 								estadioEquipoLocal(), horaJuego);
+					
 				        Liga.getInstance().insertarPartido(miPartido);
 						    mainVisual.cargarPartidosHoy();
-						    System.out.println(Liga.getInstance().generarIDPartido());
+						    
 				        JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 						   dispose();
 					  }

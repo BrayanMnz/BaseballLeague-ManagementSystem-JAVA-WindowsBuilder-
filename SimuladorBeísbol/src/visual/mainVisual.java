@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import logico.Equipo;
+import logico.Jugador;
 import logico.Liga;
 import logico.Partido;
 
@@ -18,8 +19,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -51,6 +55,11 @@ public class mainVisual extends JFrame {
 	private JTable tablePartidosHoy; 
 	private static DefaultTableModel model; 
 	private static Object[] fila; 
+	private static int index;
+	private static String identificador;
+	private static JButton btnReprogramar;
+	private static JButton btnIniciarPartido;
+
 	//private static Season miSeason;
 	/**
 	 * 
@@ -80,7 +89,7 @@ public class mainVisual extends JFrame {
 			}
 			@Override
 			public void windowOpened(WindowEvent e) {
-			
+		
 			cargarPartidosHoy();
 			}
 		});
@@ -134,14 +143,15 @@ public class mainVisual extends JFrame {
 		mnEquipos.add(mntmListarEquipos);
 		
 		JMenu mnJugador = new JMenu("Jugadores");
+		mnJugador.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		mnJugador.setForeground(Color.BLACK);
 		menuBar.add(mnJugador);
 		
 		JMenuItem mntmRegistrarJugador = new JMenuItem("Registrar Jugadores");
 		mntmRegistrarJugador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Jugador jugador1 = new Jugador();
-				jugador1.setVisible(true);
+			//	Jugador jugador1 = new Jugador();
+			//	jugador1.setVisible(true);
 			}
 		});
 		mnJugador.add(mntmRegistrarJugador);
@@ -150,6 +160,7 @@ public class mainVisual extends JFrame {
 		mnJugador.add(mntmListarJugadores);
 		
 		JMenu mnPartido = new JMenu("Partido");
+		mnPartido.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		mnPartido.setForeground(Color.BLACK);
 		menuBar.add(mnPartido);
 		
@@ -185,23 +196,68 @@ public class mainVisual extends JFrame {
 		
 		tablePartidosHoy = new JTable();
 		model = new DefaultTableModel();
-		String[] columnNames = {"Local", "Visitante", "Estadio", "Hora"};
+		String[] columnNames = {"ID Partido","Local", "Visitante", "Estadio", "Hora"};
 		model.setColumnIdentifiers(columnNames);
 		tablePartidosHoy.setModel(model);
 		tablePartidosHoy.setOpaque(false);
 		tablePartidosHoy.setBorder(new CompoundBorder());
 		scrollPartidosHoy.setViewportView(tablePartidosHoy);
 		
-		JButton btnNewButton = new JButton("Iniciar Partido");
-		btnNewButton.addActionListener(new ActionListener() {
+		tablePartidosHoy.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				index = tablePartidosHoy.getSelectedRow();
+				if(index >= 0) { 
+					identificador = (String)tablePartidosHoy.getModel().getValueAt(index, 0);
+					btnReprogramar.setEnabled(true);
+					btnIniciarPartido.setEnabled(true);
+					
+				}
+				
+			}
+		});
+		 
+	
+		
+		btnIniciarPartido = new JButton("Iniciar Partido");
+		btnIniciarPartido.setEnabled(false);
+		btnIniciarPartido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				
 				
 			}
 		});
-		btnNewButton.setBounds(414, 292, 128, 23);
-		panelPartidos.add(btnNewButton);
+		btnIniciarPartido.setBounds(414, 292, 128, 23);
+		panelPartidos.add(btnIniciarPartido);
+		
+		btnReprogramar = new JButton("Reprogramar Partido");
+		btnReprogramar.setEnabled(false);
+		btnReprogramar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				 for (Partido auxPartido : Liga.getInstance().getMisPartidos()) {
+					if(identificador.equalsIgnoreCase(auxPartido.getIdPartido())) { 
+						int option = JOptionPane.showConfirmDialog(null, "Está seguro que desea reprogramar este partido? " ,"Información",JOptionPane.WARNING_MESSAGE);
+						if(option == JOptionPane.OK_OPTION) {  
+							
+							Liga.getInstance().EliminarPartido(auxPartido);
+							ModificarPartido p1 = new ModificarPartido();
+							p1.setModal(true);
+							p1.setVisible(true);
+							p1.setLocationRelativeTo(null); 
+							btnReprogramar.setEnabled(false);
+							btnIniciarPartido.setEnabled(false);
+							
+						}
+							  
+					}
+				}
+				
+			}
+		});
+		btnReprogramar.setBounds(230, 292, 174, 23);
+		panelPartidos.add(btnReprogramar);
 		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(mainVisual.class.getResource("/Imagenes/ws_Baseball_Stadium_Fenway_Park_1920x1440.jpg")));
@@ -213,15 +269,26 @@ public class mainVisual extends JFrame {
 		model.setRowCount(0);
 		fila = new Object[model.getColumnCount()];
 	for (Partido auxPartido : Liga.getInstance().getMisPartidos()) {
-		fila[0] = auxPartido.getLocal().getNombreEquipo();
-		fila[1] = auxPartido.getVisitante().getNombreEquipo();
-		fila[2] = auxPartido.getLocal().getEstadio();
-		fila[3] = auxPartido.getFecha();		
+		fila[0] = auxPartido.getIdPartido();
+		fila[1] = auxPartido.getLocal().getNombreEquipo();
+		fila[2] = auxPartido.getVisitante().getNombreEquipo();
+		fila[3] = auxPartido.getLocal().getEstadio();
+		fila[4] = auxPartido.getHora();
 		model.addRow(fila);
 		  }
 	}
 	
-
+	public static Partido partidoSeleccionadoTabla() { 
+		Partido aux =null;
+		for (Partido auxPartido : Liga.getInstance().getMisPartidos()) {
+		 	if(identificador.equalsIgnoreCase(auxPartido.getIdPartido())) { 
+		 		aux = auxPartido;
+		 	}
+		 		
+			
+		}
+		return aux;
+	}
 }
 
 
