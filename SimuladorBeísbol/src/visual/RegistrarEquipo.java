@@ -189,10 +189,9 @@ public class RegistrarEquipo extends JDialog {
 		});
 		btnSeleccionarFoto.setBounds(10, 211, 223, 33);
 		panel.add(btnSeleccionarFoto);
-
 		
 		JLabel lblFondo = new JLabel("");
-		lblFondo.setIcon(new ImageIcon(RegistrarEquipo.class.getResource("/Imagenes/mlb-logo-drawing-11.jpg")));
+
 		lblFondo.setBounds(0, 0, 772, 276);
 		contentPanel.add(lblFondo);
 		{

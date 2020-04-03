@@ -133,6 +133,9 @@ public class Liga implements Serializable{
 	 }
     	return  auxEquipo;
 }
+	 
+
+	 
 	 //BuscarPartidoByID
 	 public Partido buscarPartidoById (String idPartido) { 
 	   	 boolean encontrado = false; 

@@ -13,6 +13,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import logico.Equipo;
+import logico.Jugador;
 import logico.Liga;
 import logico.Season;
 
@@ -30,6 +31,7 @@ import java.awt.SystemColor;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.EtchedBorder;
 
 public class VerEquipo extends JDialog {
 
@@ -44,7 +46,10 @@ public class VerEquipo extends JDialog {
 	private static String identificador;
 	private JTable tableEstadisticasEquipo;
 	private static DefaultTableModel model; 
+	private static DefaultTableModel model1;
+	private static Object[] fila1;
 	private static Object[] fila; 
+	private JTable tablaNomina;
 
 	/**
 	 * Launch the application.
@@ -74,10 +79,11 @@ public class VerEquipo extends JDialog {
 				informacionEquipo();
 			
 				cargarEstadisticasEquipos();
+				cargarNomina();
 			}
 		});
 		setTitle("Informacion del equipo");
-		setBounds(100, 100, 799, 460);
+		setBounds(100, 100, 756, 460);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -185,16 +191,16 @@ public class VerEquipo extends JDialog {
 		panelDatosEquipo.add(txtDatosTrainer);
 		txtDatosTrainer.setColumns(10);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(192, 192, 192));
-		panel_1.setBorder(new TitledBorder(null, "Estadisticas del equipo", TitledBorder.CENTER, TitledBorder.TOP, null, null));
-		panel_1.setBounds(217, 78, 515, 93);
-		contentPanel.add(panel_1);
-		panel_1.setOpaque(true);
-		panel_1.setLayout(new BorderLayout(0, 0));
+		JPanel pnlStatsEquipo = new JPanel();
+		pnlStatsEquipo.setBackground(new Color(192, 192, 192));
+		pnlStatsEquipo.setBorder(new TitledBorder(null, "Estadisticas del equipo", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		pnlStatsEquipo.setBounds(217, 78, 515, 93);
+		contentPanel.add(pnlStatsEquipo);
+		pnlStatsEquipo.setOpaque(true);
+		pnlStatsEquipo.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
-		panel_1.add(scrollPane, BorderLayout.CENTER);
+		pnlStatsEquipo.add(scrollPane, BorderLayout.CENTER);
 		
 		tableEstadisticasEquipo = new JTable();
 		model = new DefaultTableModel();
@@ -203,11 +209,31 @@ public class VerEquipo extends JDialog {
         tableEstadisticasEquipo.setModel(model);
 		scrollPane.setViewportView(tableEstadisticasEquipo);
 		
-		JLabel lblFondoPrincipal = new JLabel("");
-		lblFondoPrincipal.setIcon(new ImageIcon(VerEquipo.class.getResource("/Imagenes/616629-sand-baseball-ball-ground-748x499.jpg")));
-		lblFondoPrincipal.setBounds(0, 0, 783, 384);
-		contentPanel.add(lblFondoPrincipal);
-		panel_1.setVisible(true);
+		JPanel pnlListaJugadores = new JPanel();
+		pnlListaJugadores.setBackground(new Color(204, 204, 204));
+		pnlListaJugadores.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Nomina del equipo: ", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		pnlListaJugadores.setBounds(217, 229, 515, 144);
+		contentPanel.add(pnlListaJugadores);
+		pnlListaJugadores.setLayout(new BorderLayout(0, 0));
+		
+		JScrollPane scrollPaneNomina = new JScrollPane();
+		pnlListaJugadores.add(scrollPaneNomina, BorderLayout.CENTER);
+		
+		tablaNomina = new JTable();
+	
+		model1 = new DefaultTableModel();
+		String[] columnNamesNomina = {"Nombre","No. Dorsal", "Posicion"};
+		model1.setColumnIdentifiers(columnNamesNomina);
+		tablaNomina.setModel(model1);
+		scrollPaneNomina.setViewportView(tablaNomina);
+		
+		
+		JLabel lblFondo = new JLabel("");
+		lblFondo.setIcon(new ImageIcon(VerEquipo.class.getResource("/Imagenes/616629-sand-baseball-ball-ground-748x499.jpg")));
+		lblFondo.setBounds(0, 0, 740, 388);
+		contentPanel.add(lblFondo);
+		pnlListaJugadores.setVisible(true);
+		pnlStatsEquipo.setVisible(true);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -248,6 +274,23 @@ public class VerEquipo extends JDialog {
 			model.addRow(fila);
 			
 		}
+	private static void cargarNomina() { 
+		model1.setRowCount(0);
+		fila1 = new Object[model1.getColumnCount()];
+		Equipo auxEquipo = Liga.getInstance().buscarEquipoByName(identificador);
+		 for (Jugador auxJugador : Liga.getInstance().getMisJugadores()) {
+			 if(auxJugador.getEquipo().equalsIgnoreCase(auxEquipo.getNombreEquipo()))
+			 {   
+			
+				 fila1[0] = auxJugador.getNombre();
+				 fila1[1] = auxJugador.getNoDorsal(); 
+				 fila1[2] = auxJugador.getPosicion();
+				 model1.addRow(fila1);
+			 } 
+			 
+			
+		}
+	}
 	
 
 	

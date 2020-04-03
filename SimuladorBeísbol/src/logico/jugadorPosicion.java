@@ -11,13 +11,13 @@ public class jugadorPosicion extends Jugador {
 	private float basesRobadas; 
 	private float turnos; //turnos al bate 
 	private float hr;
-	private String posicion; //posicion a la defensiva.
 
-public jugadorPosicion(String nombre, String noDorsal, float cantJuegos, float errores, String equipo,
-			boolean lesionado, float altura, float peso,String posicion) {
-		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso);
 
-		this.posicion = posicion;
+public jugadorPosicion(String nombre, String noDorsal,  String equipo,
+			String altura, String peso, String posicion, String batea, String lanza) {
+		super(nombre, noDorsal,  equipo, altura, peso, posicion, batea, lanza);
+
+	
 	}
 
 public float getHits() {
@@ -36,9 +36,6 @@ public float getTurnos() {
 	return turnos;
 }
 
-public String getPosicion() {
-	return posicion;
-}
 
 public void setHits(float hits) {
 	this.hits = hits;
@@ -56,9 +53,7 @@ public void setTurnos(float turnos) {
 	this.turnos = turnos;
 }
 
-public void setPosicion(String posicion) {
-	this.posicion = posicion;
-}
+
 
 public float getCarrerasAnotadas() {
 	return carrerasAnotadas;

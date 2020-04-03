@@ -12,9 +12,9 @@ public class Pitcher extends Jugador {
 	private float ponches; 
 	private float BB;
 	private float juegosSalvados;
-	public Pitcher(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado,
-			float altura, float peso) {
-		super(nombre, noDorsal, cantJuegos, errores, equipo, lesionado, altura, peso);
+	public Pitcher(String nombre, String noDorsal, String equipo,
+			String altura, String peso, String posicion, String batea, String lanza) {
+		super(nombre, noDorsal, equipo, altura, peso,posicion, batea, lanza);
 
 	}
 	public float getCarrerasLimpias() {

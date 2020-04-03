@@ -82,6 +82,7 @@ public class mainVisual extends JFrame {
 	 * Create the frame.
 	 */
 	public mainVisual() {
+		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -150,8 +151,10 @@ public class mainVisual extends JFrame {
 		JMenuItem mntmRegistrarJugador = new JMenuItem("Registrar Jugadores");
 		mntmRegistrarJugador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			//	Jugador jugador1 = new Jugador();
-			//	jugador1.setVisible(true);
+		  ManejarJugador j1 = new ManejarJugador();
+		  j1.setLocationRelativeTo(null);
+		  j1.setModal(true);
+		  j1.setVisible(true);
 			}
 		});
 		mnJugador.add(mntmRegistrarJugador);

@@ -15,23 +15,27 @@ public abstract class Jugador implements Serializable{
 	protected float errores;
 	protected String equipo;
 	protected boolean lesionado = false; 
-	protected float altura;// en metros 
-	protected float peso; //en libras 
+	protected String altura;// en metros 
+	protected String peso; //en libras 
 	protected float juegos;
+	protected String batea;
+	protected String lanza;
 	protected ArrayList<Lesion> misLesiones; 
+	protected  String posicion; //posicion a la defensiva.
 	
 	
-	public Jugador(String nombre, String noDorsal, float cantJuegos, float errores, String equipo, boolean lesionado, float altura,float peso) {
+	public Jugador(String nombre, String noDorsal,  String equipo, String altura,String peso,String posicion,String batea, String lanza) {
 	   misLesiones = new ArrayList <Lesion>();
 		this.nombre = nombre;
 		this.noDorsal = noDorsal;
-		this.cantJuegos = cantJuegos;
-		this.errores = errores;
+		this.posicion = posicion;
 		this.equipo = equipo;
+		this.lanza = lanza; 
+		this.batea = batea;
 		
 		this.altura = altura; 
 		this.peso = peso;
-		this.juegos = juegos;
+		
 	}
 	public String getNombre() {
 		return nombre;
@@ -44,6 +48,12 @@ public abstract class Jugador implements Serializable{
 	}
 	public float getErrores() {
 		return errores;
+	}
+	public String getPosicion() {
+		return posicion;
+	}
+	public void setPosicion(String posicion) {
+		this.posicion = posicion;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
@@ -63,10 +73,10 @@ public abstract class Jugador implements Serializable{
 	public boolean isLesionado() {
 		return lesionado;
 	}
-	public float getAltura() {
+	public String getAltura() {
 		return altura;
 	}
-	public float getPeso() {
+	public String getPeso() {
 		return peso;
 	}
 	public void setEquipo(String equipo) {
@@ -75,10 +85,10 @@ public abstract class Jugador implements Serializable{
 	public void setLesionado(boolean lesionado) {
 		this.lesionado = lesionado;
 	}
-	public void setAltura(float altura) {
+	public void setAltura(String altura) {
 		this.altura = altura;
 	}
-	public void setPeso(float peso) {
+	public void setPeso(String peso) {
 		this.peso = peso;
 	}
 	public ArrayList<Lesion> getMisLesiones() {

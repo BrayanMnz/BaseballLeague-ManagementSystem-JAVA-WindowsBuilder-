@@ -58,6 +58,7 @@ public class ListarEquipos extends JDialog {
 	 * Create the dialog.
 	 */
 	public ListarEquipos() {
+		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
