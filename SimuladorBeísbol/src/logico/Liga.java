@@ -16,6 +16,7 @@ import java.util.Locale.Category;
 
 
 
+
 public class Liga implements Serializable{
 	/**
 	 * 
@@ -27,10 +28,14 @@ public class Liga implements Serializable{
 	private static Liga miLiga; 
 	private int cantPartidos;
 	private static boolean control = true;
+	private ArrayList <User> usuarios;
+	private static User loginUser;
+
 	
 	public Liga() {
 		misJugadores = new ArrayList<Jugador>();
 		misEquipos = new ArrayList<Equipo>();
+		setUsuarios(new ArrayList<User>());
 	    setMisPartidos(new ArrayList<Partido>());
 		
 	}
@@ -206,6 +211,27 @@ public class Liga implements Serializable{
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	//AGREGAR USUARIO
+	public void regUser (User aux) {
+		getUsuarios().add(aux);
+	}
+	//VERIFICAR USUARIO
+	public boolean confirmLogin(String text, String text2) {
+		boolean login = false;
+		for (User user : getUsuarios()) {
+			if(user.getUserName().equals(text)){
+				loginUser = user;
+				login = true;
+			}
+		}
+		return login;
+	}
+	public ArrayList <User> getUsuarios() {
+		return usuarios;
+	}
+	public void setUsuarios(ArrayList <User> usuarios) {
+		this.usuarios = usuarios;
 	}
 	
 }

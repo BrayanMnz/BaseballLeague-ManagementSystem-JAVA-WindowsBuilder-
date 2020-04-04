@@ -1,6 +1,8 @@
 package visual;
 
 import java.awt.EventQueue;
+
+import logico.Liga;
 import logico.Season;
 import logico.User;
 
@@ -40,7 +42,7 @@ public class Login extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtUsuario;
-	private JPasswordField passwordField;
+	private static JPasswordField passwordField;
 	private Border emptyBorder = BorderFactory.createEmptyBorder();
 	
 
@@ -59,15 +61,19 @@ public class Login extends JFrame {
 				ObjectInputStream temporadaRead;
 				ObjectOutputStream temporadaWrite;
 				try { 
-					temporada = new FileInputStream("Season.dat");
+					temporada = new FileInputStream("DatosLiga.dat");
 					temporadaRead = new ObjectInputStream(temporada);
-					Season temp = (logico.Season) temporadaRead.readObject();
-					Season.getInstance();
-					Season.setSeason(temp);
+					Liga temp = (logico.Liga) temporadaRead.readObject();
+					Liga.getInstance();
+					Liga.setMiLiga(temp);
 					temporada.close();
 					temporadaRead.close();
 				} catch(FileNotFoundException e ) { 
-					try { 
+					regUser registro = new regUser();
+					registro.setModal(true);
+					registro.setVisible(true);
+					
+					/*try { 
 						temporada2 = new FileOutputStream("Season.dat");
 						temporadaWrite = new ObjectOutputStream(temporada2);
 						User auxUser = new User("Administrador","admin","12345");
@@ -79,6 +85,7 @@ public class Login extends JFrame {
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 					}
+					*/
 				} catch (IOException e) {
 					
 					
@@ -102,7 +109,6 @@ public class Login extends JFrame {
 	 */
 	public Login() {
 		setUndecorated(true);
-		setLocationRelativeTo(null);
 		setTitle("Iniciar Sesion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 683, 428);
@@ -111,6 +117,8 @@ public class Login extends JFrame {
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
+
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -133,12 +141,11 @@ public class Login extends JFrame {
 		btnNewButton.setBackground(new Color(192, 192, 192));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String Usuario = "admin";
+/*				String Usuario = "admin";
 				String contrasena = "12345";
-				
-				 String password = new String(passwordField.getPassword());
-				 
-				 if(txtUsuario.getText().equalsIgnoreCase(Usuario) && password.equals(contrasena)) {
+				*/
+				// String password = new String(passwordField.getPassword());
+				 if(Liga.getInstance().confirmLogin(txtUsuario.getText(), new String (passwordField.getPassword()))) {
 					mainVisual p1 = new mainVisual();
 					 p1.setVisible(true);
 					 dispose();
