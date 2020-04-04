@@ -11,6 +11,7 @@ import logico.Equipo;
 import logico.Jugador;
 import logico.Liga;
 import logico.Partido;
+import logico.User;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -43,6 +44,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
+import javax.swing.JTextPane;
 
 public class mainVisual extends JFrame {
 
@@ -59,17 +61,24 @@ public class mainVisual extends JFrame {
 	private static String auxIDPartido;
 	private static JButton btnReprogramar;
 	private static JButton btnIniciarPartido;
+	private JMenu mnJugador;
+	private JMenu mnEquipos;
+	private JMenu mnPartido;
+	private JMenu mnUsuarios;
+	private JMenuItem menuitemRegEquipos;
+
 
 	//private static Season miSeason;
 	/**
 	 * 
 	 * Launch the application.
 	 */
+	/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					mainVisual frame = new mainVisual();
+					mainVisual frame = new mainVisual(user);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -77,11 +86,11 @@ public class mainVisual extends JFrame {
 			}
 		});
 	}
-
+*/
 	/**
 	 * Create the frame.
 	 */
-	public mainVisual() {
+	public mainVisual(User userLog) {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -93,8 +102,9 @@ public class mainVisual extends JFrame {
 			cargarPartidosHoy();
 			}
 		});
-	
+		
 
+		
 		setTitle("Simulador de Be\u00EDsbol");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 816, 557);
@@ -113,7 +123,7 @@ public class mainVisual extends JFrame {
 		menuBar.setBounds(0, 0, 1350, 22);
 		panelPrincipal.add(menuBar);
 		
-		JMenu mnEquipos = new JMenu("Equipos");
+		mnEquipos = new JMenu("Equipos");
 		mnEquipos.setForeground(Color.BLACK);
 		mnEquipos.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		menuBar.add(mnEquipos);
@@ -121,12 +131,17 @@ public class mainVisual extends JFrame {
 
 		
 		
-		JMenuItem menuitemRegEquipos = new JMenuItem("Registrar Equipos");
+		menuitemRegEquipos = new JMenuItem("Registrar Equipos");
 		menuitemRegEquipos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistrarEquipo equipo1 = new RegistrarEquipo();
-				equipo1.setModal(true);
-				equipo1.setVisible(true);
+				if (userLog.getTipo() == 0) {
+					RegistrarEquipo equipo1 = new RegistrarEquipo();
+					equipo1.setModal(true);
+					equipo1.setVisible(true);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Usted no es el administrador", "Error", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		mnEquipos.add(menuitemRegEquipos);
@@ -134,15 +149,20 @@ public class mainVisual extends JFrame {
 		JMenuItem mntmListarEquipos = new JMenuItem("Listar Equipos");
 		mntmListarEquipos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				ListarEquipos listar1 = new ListarEquipos();
-				listar1.setModal(true);
-				listar1.setVisible(true);
+				if (userLog.getTipo() == 0) {
+
+					ListarEquipos listar1 = new ListarEquipos();
+					listar1.setModal(true);
+					listar1.setVisible(true);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Usted no es el administrador", "Error", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		mnEquipos.add(mntmListarEquipos);
 		
-		JMenu mnJugador = new JMenu("Jugadores");
+		mnJugador = new JMenu("Jugadores");
 		mnJugador.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		mnJugador.setForeground(Color.BLACK);
 		menuBar.add(mnJugador);
@@ -150,10 +170,16 @@ public class mainVisual extends JFrame {
 		JMenuItem mntmRegistrarJugador = new JMenuItem("Registrar Jugadores");
 		mntmRegistrarJugador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		  ManejarJugador j1 = new ManejarJugador();
-		  j1.setLocationRelativeTo(null);
-		  j1.setModal(true);
-		  j1.setVisible(true);
+				if (userLog.getTipo() == 0) {
+
+					 ManejarJugador j1 = new ManejarJugador();
+					  j1.setLocationRelativeTo(null);
+					  j1.setModal(true);
+					  j1.setVisible(true);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Usted no es el administrador", "Error", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		mnJugador.add(mntmRegistrarJugador);
@@ -161,7 +187,7 @@ public class mainVisual extends JFrame {
 		JMenuItem mntmListarJugadores = new JMenuItem("Listar Jugadores");
 		mnJugador.add(mntmListarJugadores);
 		
-		JMenu mnPartido = new JMenu("Partido");
+		mnPartido = new JMenu("Partido");
 		mnPartido.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		mnPartido.setForeground(Color.BLACK);
 		menuBar.add(mnPartido);
@@ -169,15 +195,40 @@ public class mainVisual extends JFrame {
 		JMenuItem mntmProgramarPartido = new JMenuItem("Programar Partidos");
 		mntmProgramarPartido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ProgramarPartido p1 = new ProgramarPartido ();
-				p1.setVisible(true);
-				p1.setModal(true);
-				p1.setLocationRelativeTo(null);
-				
-				
+				if (userLog.getTipo() == 0) {
+
+					ProgramarPartido p1 = new ProgramarPartido ();
+					p1.setVisible(true);
+					p1.setModal(true);
+					p1.setLocationRelativeTo(null);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Usted no es el administrador", "Error", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		mnPartido.add(mntmProgramarPartido);
+		
+		mnUsuarios = new JMenu("Gestion de Usuarios");
+		mnUsuarios.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		mnUsuarios.setForeground(Color.BLACK);
+		menuBar.add(mnUsuarios);
+		
+		JMenuItem mntmAnotador = new JMenuItem("Ingresar Anotadores");
+		mntmAnotador.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (userLog.getTipo() == 0) {
+
+					regUser anotador = new regUser();
+					anotador.setVisible(true);
+					anotador.setModal(true);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Usted no es el administrador", "Error", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		mnUsuarios.add(mntmAnotador);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 22, 1350, 657);
@@ -294,6 +345,7 @@ public class mainVisual extends JFrame {
 		}
 		return aux;
 	}
+	
 }
 
 

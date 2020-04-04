@@ -108,6 +108,7 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/Imagenes/baseball_ball_128px.png")));
 		setUndecorated(true);
 		setTitle("Iniciar Sesion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -146,9 +147,9 @@ public class Login extends JFrame {
 				*/
 				// String password = new String(passwordField.getPassword());
 				 if(Liga.getInstance().confirmLogin(txtUsuario.getText(), new String (passwordField.getPassword()))) {
-					mainVisual p1 = new mainVisual();
-					 p1.setVisible(true);
-					 dispose();
+					mainVisual p1 = new mainVisual(Liga.getInstance().getLoginUser());
+					p1.setVisible(true);
+					dispose();
 				 }
 				 else { 
 					 JOptionPane.showMessageDialog(null, "El usuario o la contraseña no son validos");

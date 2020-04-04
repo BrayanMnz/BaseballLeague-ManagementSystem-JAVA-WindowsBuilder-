@@ -27,7 +27,8 @@ public class regUser extends JDialog {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	private JComboBox comboBox;
+	User auxiliar=null;
+
 
 	/**
 	 * Launch the application.
@@ -47,7 +48,7 @@ public class regUser extends JDialog {
 	 */
 	public regUser() {
 		setResizable(false);
-		setBounds(100, 100, 367, 205);
+		setBounds(100, 100, 367, 189);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.LIGHT_GRAY);
@@ -60,7 +61,7 @@ public class regUser extends JDialog {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(20, 29, 347,7687);
+		panel.setBounds(20, 29, 347,160);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
@@ -85,23 +86,10 @@ public class regUser extends JDialog {
 		lblNombreUsuario.setFont(new Font("TI-Nspire Sans", Font.BOLD, 11));
 		lblNombreUsuario.setBounds(10, 11, 97, 14);
 		panel.add(lblNombreUsuario);
-		
-		JLabel lblTipo = new JLabel("Tipo:");
-		lblTipo.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblTipo.setBounds(10, 63, 97, 14);
-		panel.add(lblTipo);
-		
-		comboBox = new JComboBox();
-		comboBox.setFont(new Font("TI-Nspire Sans", Font.BOLD, 11));
-		comboBox.setBounds(10, 88, 127, 20);
-		panel.add(comboBox);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>", "Administrador", "Comercial"}));
-		if (Liga.getInstance().getUsuarios().size()==0){
-			comboBox.setEnabled(false);
-		}
+
 		{
 			JButton cancelButton = new JButton("CANCELAR");
-			cancelButton.setBounds(10, 128, 97, 23);
+			cancelButton.setBounds(10, 126, 114, 23);
 			panel.add(cancelButton);
 			cancelButton.setFont(new Font("TI-Nspire Sans", Font.BOLD, 11));
 			cancelButton.setBackground(Color.LIGHT_GRAY);
@@ -113,31 +101,39 @@ public class regUser extends JDialog {
 			cancelButton.setActionCommand("Cancel");
 		}
 		{
+
 			JButton okButton = new JButton("REGISTRAR");
-			okButton.setBounds(192, 128, 114, 23);
+			okButton.setBounds(10, 87, 114, 23);
 			panel.add(okButton);
 			okButton.setFont(new Font("TI-Nspire Sans", Font.BOLD, 11));
 			okButton.setBackground(Color.LIGHT_GRAY);
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					User user = null;
+					for (User u1 : Liga.getInstance().getUsuarios()) {
+						if (u1.getUserName() == textField.getText()) {
+							auxiliar = u1;
+						}
+					}
 					if (textField.getText().isEmpty() || textField_1.getText().isEmpty() || textField_2.getText().isEmpty()) {
-						JOptionPane.showMessageDialog(null, "Debe llenar todos los campos!" , "Error:", JOptionPane.ERROR_MESSAGE);
-
-					}
-					else {
-						if (Liga.getInstance().getUsuarios().size()==0) {
-							User user = new User("Administrador",textField.getText(),textField_1.getText());
-						    Liga.getInstance().regUser(user);
-						    Liga.getInstance().guardarDatos(Liga.getInstance());
-						    dispose();
-						}
-						else {
-							User user = new User(comboBox.getSelectedItem().toString(),textField.getText(),textField_1.getText());
-						    Liga.getInstance().regUser(user);
-						    Liga.getInstance().guardarDatos(Liga.getInstance());
-						    dispose();
-						}
-					}
+										JOptionPane.showMessageDialog(null, "Debe llenar todos los campos!" , "Error:", JOptionPane.WARNING_MESSAGE);
+									} 
+									 else if(Liga.getInstance().getUsuarios().size()==0) {
+											 user = new User(0,textField.getText(),textField_1.getText());
+										    Liga.getInstance().regUser(user);
+										    Liga.getInstance().guardarDatos(Liga.getInstance());
+										    dispose();
+									} 
+									 else if (Liga.getInstance().buscarUser(textField.getText() ) == null && auxiliar == null){
+										 user = new User(1,textField.getText(),textField_1.getText());
+									    Liga.getInstance().regUser(user);
+									    Liga.getInstance().guardarDatos(Liga.getInstance());
+									    dispose();
+												}
+									 else if (auxiliar != null){
+										JOptionPane.showMessageDialog(null, "Ya existe un usuario con este nombre" , "Error:", JOptionPane.WARNING_MESSAGE);
+									}
+								
 				}
 			});
 			okButton.setActionCommand("OK");

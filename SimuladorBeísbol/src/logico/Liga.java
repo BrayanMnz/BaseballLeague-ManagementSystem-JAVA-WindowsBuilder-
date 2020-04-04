@@ -29,14 +29,15 @@ public class Liga implements Serializable{
 	private int cantPartidos;
 	private static boolean control = true;
 	private ArrayList <User> usuarios;
-	private static User loginUser;
+	private  User loginUser;
 
 	
 	public Liga() {
 		misJugadores = new ArrayList<Jugador>();
 		misEquipos = new ArrayList<Equipo>();
-		setUsuarios(new ArrayList<User>());
-	    setMisPartidos(new ArrayList<Partido>());
+	    usuarios = new ArrayList<User>();
+		setMisPartidos(new ArrayList<Partido>());
+	    
 		
 	}
 	public static Liga getInstance() { 
@@ -213,25 +214,43 @@ public class Liga implements Serializable{
 		}
 	}
 	//AGREGAR USUARIO
+	public ArrayList <User> getUsuarios() {
+		return usuarios;
+	}
 	public void regUser (User aux) {
 		getUsuarios().add(aux);
+	}
+	public  void setLoginUser(User loginUser) {
+		this.loginUser = loginUser;
 	}
 	//VERIFICAR USUARIO
 	public boolean confirmLogin(String text, String text2) {
 		boolean login = false;
 		for (User user : getUsuarios()) {
 			if(user.getUserName().equals(text)){
-				loginUser = user;
+				setLoginUser(user);
 				login = true;
 			}
 		}
 		return login;
 	}
-	public ArrayList <User> getUsuarios() {
-		return usuarios;
-	}
+
 	public void setUsuarios(ArrayList <User> usuarios) {
 		this.usuarios = usuarios;
 	}
+	//BUSCAR USER POR NOMBRE
+	public User buscarUser(String aux) {
+		User retorno=null;
+		for (User auxUser : usuarios) {
+			if (auxUser.getUserName() == aux) {
+				retorno = auxUser;
+			}
+		}
+		return retorno;
+	}
+	public  User getLoginUser() {
+		return loginUser;
+	}
+
 	
 }

@@ -8,23 +8,23 @@ public class User implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String tipo;
+	private int tipo;
 	private String userName;
 	private String pass;
 	
 	
-	public User(String tipo, String userName, String pass) {
+	public User(int tipo, String userName, String pass) {
 		super();
 		this.tipo = tipo;
 		this.userName = userName;
 		this.pass = pass;
 	}
 
-	public String getTipo() {
+	public int getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(int tipo) {
 		this.tipo = tipo;
 	}
 
