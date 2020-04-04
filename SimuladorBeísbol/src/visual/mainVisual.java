@@ -56,7 +56,7 @@ public class mainVisual extends JFrame {
 	private static DefaultTableModel model; 
 	private static Object[] fila; 
 	private static int index;
-	private static String identificador;
+	private static String auxIDPartido;
 	private static JButton btnReprogramar;
 	private static JButton btnIniciarPartido;
 
@@ -82,7 +82,6 @@ public class mainVisual extends JFrame {
 	 * Create the frame.
 	 */
 	public mainVisual() {
-		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -211,7 +210,7 @@ public class mainVisual extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				index = tablePartidosHoy.getSelectedRow();
 				if(index >= 0) { 
-					identificador = (String)tablePartidosHoy.getModel().getValueAt(index, 0);
+					auxIDPartido = (String)tablePartidosHoy.getModel().getValueAt(index, 0);
 					btnReprogramar.setEnabled(true);
 					btnIniciarPartido.setEnabled(true);
 					
@@ -226,9 +225,12 @@ public class mainVisual extends JFrame {
 		btnIniciarPartido.setEnabled(false);
 		btnIniciarPartido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			
 				
-				
-				
+				LineupPartido p1 = new LineupPartido(auxIDPartido);
+				p1.setLocationRelativeTo(null);
+				p1.setModal(true);
+				p1.setVisible(true);
 			}
 		});
 		btnIniciarPartido.setBounds(414, 292, 128, 23);
@@ -240,7 +242,7 @@ public class mainVisual extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				 for (Partido auxPartido : Liga.getInstance().getMisPartidos()) {
-					if(identificador.equalsIgnoreCase(auxPartido.getIdPartido())) { 
+					if(auxIDPartido.equalsIgnoreCase(auxPartido.getIdPartido())) { 
 						int option = JOptionPane.showConfirmDialog(null, "Está seguro que desea reprogramar este partido? " ,"Información",JOptionPane.WARNING_MESSAGE);
 						if(option == JOptionPane.OK_OPTION) {  
 							
@@ -284,7 +286,7 @@ public class mainVisual extends JFrame {
 	public static Partido partidoSeleccionadoTabla() { 
 		Partido aux =null;
 		for (Partido auxPartido : Liga.getInstance().getMisPartidos()) {
-		 	if(identificador.equalsIgnoreCase(auxPartido.getIdPartido())) { 
+		 	if(auxIDPartido.equalsIgnoreCase(auxPartido.getIdPartido())) { 
 		 		aux = auxPartido;
 		 	}
 		 		

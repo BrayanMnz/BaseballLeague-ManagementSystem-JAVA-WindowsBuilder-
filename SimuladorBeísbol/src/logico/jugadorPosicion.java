@@ -41,6 +41,14 @@ public void setHits(float hits) {
 	this.hits = hits;
 }
 
+public float getHr() {
+	return hr;
+}
+
+public void setHr(float hr) {
+	this.hr = hr;
+}
+
 public void setCarrerasEmpujadas(float carrerasEmpujadas) {
 	this.carrerasEmpujadas = carrerasEmpujadas;
 }
@@ -74,5 +82,6 @@ public  void insertarLesion(Lesion aux) {
 	misLesiones.add(aux);  
 	lesionado = true;
 }
+
 }
 
