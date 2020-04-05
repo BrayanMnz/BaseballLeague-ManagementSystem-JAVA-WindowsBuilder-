@@ -9,13 +9,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
+
 public class Equipo implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private  ArrayList <Jugador> misJugadores;
-	private ArrayList <Jugador> Alineacion;
+	private ArrayList <jugadorPosicion> Alineacion;
+	private ArrayList <Pitcher> misLanzadores;
 	public String nombreEquipo; 
 	public String id; // Boston el id seria "BOS", Yankees "NYY"
     public String estadio; //Nombre del estadio 
@@ -31,7 +34,8 @@ public class Equipo implements Serializable{
     
 	public Equipo(String nombreEquipo, String id, String estadio, String trainer, String fechaFundacion) {
 		misJugadores = new ArrayList <Jugador>();
-		Alineacion = new ArrayList <Jugador>();
+		Alineacion = new ArrayList <jugadorPosicion>();
+		misLanzadores = new ArrayList <Pitcher>();
 		this.nombreEquipo = nombreEquipo;
 		this.fechaFundacion = fechaFundacion;
 		this.id = id;
@@ -108,10 +112,10 @@ public class Equipo implements Serializable{
 	public void setCarrerasPorPartido(int carrerasPorPartido) {
 		this.carrerasPorPartido = carrerasPorPartido;
 	}
-	public ArrayList <Jugador> getAlineacion() {
+	public ArrayList<jugadorPosicion> getAlineacion() {
 		return Alineacion;
 	}
-	public void setAlineacion(ArrayList <Jugador> alineacion) {
+	public void setAlineacion(ArrayList<jugadorPosicion> alineacion) {
 		Alineacion = alineacion;
 	}
 	public  void insertarJugador(Jugador aux) {  
@@ -121,11 +125,18 @@ public class Equipo implements Serializable{
 		getMisJugadores().remove(aux);
 		}
 	
-	public  void insertarJugadorAlineacion(Jugador aux) {  
+	public  void insertarJugadorAlineacion(jugadorPosicion aux) {  
 		if(aux.lesionado == true) { 
-			System.out.println("El jugador esta lesionado, no puede pertenecer a la alineacion");
+			JOptionPane.showMessageDialog(null, "El jugador esta lesionado no puede pertenecer a la alineacion", "Error", JOptionPane.WARNING_MESSAGE);
+			
 		} else
 		Alineacion.add(aux);  
+	}
+	public void insertarLanzador(Pitcher aux) { 
+		if(aux.lesionado == true) { 
+			JOptionPane.showMessageDialog(null, "El jugador esta lesionado no puede pertenecer a la alineacion", "Error", JOptionPane.WARNING_MESSAGE);
+			
+		}else misLanzadores.add(aux);
 	}
 	//Calcular total Hits del equipo
     public float totalHits() { 
@@ -192,6 +203,16 @@ Jugador auxJugador = buscarJugadorByDorsal(noJugador);
     	 int i=0;
     	 while(i<misJugadores.size() && !encontrado) {
     		 if(misJugadores.get(i).getNoDorsal().equalsIgnoreCase(noDorsal)) {
+    			 auxJugador = misJugadores.get(i);
+    			 encontrado = true;  } 
+    		 i++; }	return  auxJugador;
+	 }
+	 public Jugador buscarJugadorByNombre (String Nombre) { 
+    	 boolean encontrado = false; 
+    	Jugador auxJugador =null;
+    	 int i=0;
+    	 while(i<misJugadores.size() && !encontrado) {
+    		 if(misJugadores.get(i).getNombre().equalsIgnoreCase(Nombre)) {
     			 auxJugador = misJugadores.get(i);
     			 encontrado = true;  } 
     		 i++; }	return  auxJugador;

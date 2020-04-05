@@ -37,19 +37,21 @@ public class main implements Serializable {
 		liga1.insertarPartido(partido1);
 		liga1.insertarPartido(partido);
   //   System.out.println(liga1.getCantPartidos());
- System.out.println(Liga.isControl());
-		Estadisticas e1 = new Estadisticas();
-		Pitcher p1 = new Pitcher("Pepe", "2", 2, 1, "Redsox", false, 2, 2);
-		Pitcher p2 = new Pitcher("Elvis", "4", 2, 1, "Yankees", false, 2, 2);
-		jugadorPosicion bate1 = new jugadorPosicion("Yehudy","24", 2,3,"Yankees",false,10,12,"2");
-		jugadorPosicion bate2 = new jugadorPosicion("Brayan","25", 5,6,"Redsox",false,10,14,"5");
-
+// System.out.println(Liga.isControl());
+	 
+		jugadorPosicion bate1 = new jugadorPosicion("Yehudy","24", "2","3","Yankees","10","12","2");
+	//	jugadorPosicion bate2 = new jugadorPosicion("Brayan","25", "5","6","Redsox","10","14","5");
+		bate1.setHits(2);
+		
+	bate1.setHitsPartido(4);
+System.out.println(bate1.totalHits());
+bate1.getHits();
 		//s1.insertarJugador(bate1);
 		//s1.insertarJugador(bate2);
-		redsox.insertarJugador(p1);
-		Yankees.insertarJugador(p2);
-		Yankees.insertarJugador(bate1);
-		redsox.insertarJugador(bate2);
+	//	redsox.insertarJugador(p1);
+	//	Yankees.insertarJugador(p2);
+	//	Yankees.insertarJugador(bate1);
+	//	redsox.insertarJugador(bate2);
 	//	System.out.println(bate1.promBateo());
 	//	System.out.println(p1.efectividad());
 	// System.out.println(Yankees.totalCarreras());

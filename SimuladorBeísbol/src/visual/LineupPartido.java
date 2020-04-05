@@ -27,6 +27,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class LineupPartido extends JDialog {
 
@@ -89,14 +91,21 @@ public class LineupPartido extends JDialog {
 				    String[] columnNamesLocal = {"Jugador", "Slot", "Pos.","Turnos",".Prom","HR"};
 				    model.setColumnIdentifiers(columnNamesLocal);
 				    tablaLocal.setModel(model);
+		
 				    JComboBox<Integer> cbxSlot = new JComboBox<Integer>();
-				  for(int i =0; i<10 ; i++) {
+				    JComboBox<String> cbxPos = new JComboBox<String>();
+				  
+				  for(int i=1; i<=9 ; i++) {
 				    cbxSlot.addItem(i); }
-				    
+				  cbxPos.addItem("C");  cbxPos.addItem("1B");  cbxPos.addItem("2B");  cbxPos.addItem("3B"); 
+				  cbxPos.addItem("SS");  cbxPos.addItem("LF");  cbxPos.addItem("CF");  cbxPos.addItem("RF"); 
+				  cbxPos.addItem("DH");
+				    TableColumn tc1 = tablaLocal.getColumnModel().getColumn(2);
 				    TableColumn tc = tablaLocal.getColumnModel().getColumn(1);
 				    TableCellEditor tce = new DefaultCellEditor(cbxSlot);
+				    TableCellEditor tce1 = new DefaultCellEditor(cbxPos);
 				    tc.setCellEditor(tce);
-				    
+				    tc1.setCellEditor(tce1);
 				}
 			}
 		}
@@ -117,8 +126,22 @@ public class LineupPartido extends JDialog {
 					String[] columnNamesVisitante = {"Jugador", "Slot", "Pos.","Turnos",".Prom","HR"};
 					model1.setColumnIdentifiers(columnNamesVisitante);
 					tablaVisitante.setModel(model1);
+					 JComboBox<String> cbxPos = new JComboBox<String>();
+					    JComboBox<Integer> cbxSlot = new JComboBox<Integer>();
+					 cbxPos.addItem("C");  cbxPos.addItem("1B");  cbxPos.addItem("2B");  cbxPos.addItem("3B"); 
+					  cbxPos.addItem("SS");  cbxPos.addItem("LF");  cbxPos.addItem("CF");  cbxPos.addItem("RF"); 
+					  cbxPos.addItem("DH");
 			
-					
+				  
+				  for(int i=1; i<=9 ; i++) {
+				    cbxSlot.addItem(i); }
+				    TableColumn tc1 = tablaVisitante.getColumnModel().getColumn(2);
+				    TableColumn tc = tablaVisitante.getColumnModel().getColumn(1);
+				    TableCellEditor tce = new DefaultCellEditor(cbxSlot);
+				    TableCellEditor tce1 = new DefaultCellEditor(cbxPos);
+				    tc1.setCellEditor(tce1);
+				    tc.setCellEditor(tce);
+			
 					scrollPaneVisita.setViewportView(tablaVisitante);
 				}
 			}
@@ -133,10 +156,18 @@ public class LineupPartido extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				JButton btnIniciar = new JButton("Iniciar !");
+				btnIniciar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						IniciarPartido p1 = new IniciarPartido(LineupPartido.auxID);
+						p1.setModal(true);
+						p1.setLocationRelativeTo(null);
+						p1.setVisible(true);
+					}
+				});
+				btnIniciar.setActionCommand("OK");
+				buttonPane.add(btnIniciar);
+				getRootPane().setDefaultButton(btnIniciar);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
@@ -151,9 +182,10 @@ public class LineupPartido extends JDialog {
 		     
 		for (Jugador auxJugador : Liga.getInstance().getMisJugadores()) {
 	  if(auxJugador.getEquipo().equalsIgnoreCase(auxPartido.getLocal().getNombreEquipo())) { 
- if(!auxJugador.getPosicion().equalsIgnoreCase("Pitcher")) { 
+ if(auxJugador instanceof jugadorPosicion) { 
 		fila[0] = auxJugador.getNombre();
 		fila[1] = "Orden al bate";
+		fila[2] = "Pos Def.";
 		fila[3] = ((jugadorPosicion) auxJugador).promBateo();
 		model.addRow(fila);
 	//	fila[4] = auxJugador.totalHR();
@@ -164,9 +196,10 @@ public class LineupPartido extends JDialog {
 	     
 		for (Jugador auxJugador : Liga.getInstance().getMisJugadores()) {
 	      if(auxJugador.getEquipo().equalsIgnoreCase(auxPartido.getVisitante().getNombreEquipo())) { 
-	          if(!auxJugador.getPosicion().equalsIgnoreCase("Pitcher")) { 
+	          if(auxJugador instanceof jugadorPosicion) { 
 		fila1[0] = auxJugador.getNombre();
 		fila1[1] = "Orden al bate";
+		fila1[2] = "Pos Def.";
 		fila1[3] = ((jugadorPosicion) auxJugador).promBateo();
 		model1.addRow(fila1);
 	//	fila[4] = auxJugador.totalHR();

@@ -188,6 +188,7 @@ public class ProgramarPartido extends JDialog {
 		}
 		{
 			JLabel lblFondo = new JLabel("");
+			lblFondo.setIcon(new ImageIcon(ProgramarPartido.class.getResource("/Imagenes/unnamed.jpg")));
 			lblFondo.setBounds(0, 0, 468, 249);
 			contentPanel.add(lblFondo);
 		}
