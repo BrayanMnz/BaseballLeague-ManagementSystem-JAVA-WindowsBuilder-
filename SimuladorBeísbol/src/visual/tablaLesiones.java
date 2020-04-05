@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import logico.Equipo;
+import logico.Jugador;
 import logico.Lesion;
 import logico.Season;
 
@@ -33,7 +34,7 @@ public class tablaLesiones extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public tablaLesiones(logico.Jugador aux) {
+	public tablaLesiones(Jugador aux) {
 		setTitle("Lesiones");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());

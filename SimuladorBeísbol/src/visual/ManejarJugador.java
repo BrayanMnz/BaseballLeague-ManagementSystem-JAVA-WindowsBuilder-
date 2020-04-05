@@ -49,6 +49,8 @@ public class ManejarJugador extends JDialog {
 	private static Object[] fila; 
 	private static String auxTeam;
 	private static String auxDorsal;
+	private static String auxName;
+
 	private int index;
 	private JComboBox<String> cbxEquipos;
 	private JComboBox<String> cbxEquipos2;
@@ -61,6 +63,7 @@ public class ManejarJugador extends JDialog {
     private JButton btnVerJugador;
     private JLabel lblPos;
     private JComboBox<String> cbxTipoJugador;
+    private Jugador identificador;
 	
 
 	/**
@@ -253,6 +256,9 @@ public class ManejarJugador extends JDialog {
 				//	identificador = (String)tablaJugadores.getModel().getValueAt(index, 0).toString();
 				    auxTeam = (String)tablaJugadores.getModel().getValueAt(index, 3).toString();
 				    auxDorsal = (String)tablaJugadores.getModel().getValueAt(index, 1).toString();
+				    auxName = (String)tablaJugadores.getModel().getValueAt(index, 0).toString();
+
+				    identificador = Liga.getInstance().buscarDorsalTeamName(auxDorsal, auxTeam, auxName);
 				   			    
 					btnModify.setEnabled(true);
 					btnEliminar.setEnabled(true);
@@ -288,6 +294,13 @@ public class ManejarJugador extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			 
 		 btnVerJugador = new JButton("Ver Jugador");
+		 btnVerJugador.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
+		 		verJugador view = new  verJugador(identificador);
+		 		view.setVisible(true);
+		 		view.setModal(true);
+		 	}
+		 });
 			 buttonPane.add(btnVerJugador);
 			
 			 btnEliminar = new JButton("Eliminar");

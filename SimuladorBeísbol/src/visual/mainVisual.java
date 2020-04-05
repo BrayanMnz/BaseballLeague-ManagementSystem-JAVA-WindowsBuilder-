@@ -173,7 +173,6 @@ public class mainVisual extends JFrame {
 
 					 ManejarJugador j1 = new ManejarJugador();
 					  j1.setLocationRelativeTo(null);
-					  j1.setModal(true);
 					  j1.setVisible(true);
 				}
 				else {

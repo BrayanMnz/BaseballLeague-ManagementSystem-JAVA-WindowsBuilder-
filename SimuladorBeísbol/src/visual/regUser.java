@@ -122,12 +122,15 @@ public class regUser extends JDialog {
 											 user = new User(0,textField.getText(),textField_1.getText());
 										    Liga.getInstance().regUser(user);
 										    Liga.getInstance().guardarDatos(Liga.getInstance());
+											JOptionPane.showMessageDialog(null, "Operacion satisfactoria" , "Aviso:", JOptionPane.PLAIN_MESSAGE);
+
 										    dispose();
 									} 
 									 else if (Liga.getInstance().buscarUser(textField.getText() ) == null && auxiliar == null){
 										 user = new User(1,textField.getText(),textField_1.getText());
 									    Liga.getInstance().regUser(user);
 									    Liga.getInstance().guardarDatos(Liga.getInstance());
+										JOptionPane.showMessageDialog(null, "Operacion satisfactoria" , "Aviso:", JOptionPane.PLAIN_MESSAGE);
 									    dispose();
 												}
 									 else if (auxiliar != null){

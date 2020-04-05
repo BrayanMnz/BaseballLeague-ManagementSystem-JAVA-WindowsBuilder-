@@ -251,6 +251,22 @@ public class Liga implements Serializable{
 	public  User getLoginUser() {
 		return loginUser;
 	}
-
-	
+	public Jugador buscarPlayerByName(String nombre) {
+		Jugador aux = null;
+		for (Jugador index : misJugadores) {
+			if (index.getNombre() == nombre) {
+				aux = index;
+			}
+		}
+		return aux;
+	}
+	public Jugador buscarDorsalTeamName (String dorsal, String team, String name) {
+		Jugador player=null;
+		for (Jugador aux : misJugadores) {
+			if (aux.noDorsal.equals(dorsal) && aux.getEquipo().equalsIgnoreCase(team) && aux.getNombre().equalsIgnoreCase(name)) {
+				player = aux;
+			}
+		}
+		return player;
+	}
 }
