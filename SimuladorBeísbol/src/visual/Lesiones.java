@@ -5,8 +5,10 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 
 import logico.Equipo;
 import logico.Jugador;
@@ -22,6 +24,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Lesiones extends JDialog {
 
@@ -30,6 +35,11 @@ public class Lesiones extends JDialog {
 	private JTextField txtNombre;
 	private JTextField txtFechaInicio;
 	private JTextField txtTipo;
+	private JFormattedTextField formattedFechaInicio;
+	private JFormattedTextField formattedFechaFinal;
+
+	private JTextField txtFechaFinal;
+
 
 	/**
 	 * Launch the application.
@@ -45,6 +55,15 @@ public class Lesiones extends JDialog {
 				
 			}
 		});
+		
+		MaskFormatter fechaFormato = null;
+		try {
+			fechaFormato = new MaskFormatter("##/##/####");
+		} catch (ParseException e) {
+		
+			e.printStackTrace();
+		}
+		
 		setTitle("Insertar Lesion");
 		setBounds(100, 100, 385, 249);
 		getContentPane().setLayout(new BorderLayout());
@@ -59,7 +78,7 @@ public class Lesiones extends JDialog {
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblEqupo = new JLabel("Equipo");
+		JLabel lblEqupo = new JLabel("Equipo:");
 		lblEqupo.setBounds(10, 21, 80, 14);
 		panel.add(lblEqupo);
 		
@@ -68,11 +87,11 @@ public class Lesiones extends JDialog {
 		lblNombre.setBounds(10, 59, 80, 14);
 		panel.add(lblNombre);
 		
-		JLabel lblFechaInicio = new JLabel("Fecha de Inicio");
+		JLabel lblFechaInicio = new JLabel("Fecha de Inicio:");
 		lblFechaInicio.setBounds(10, 96, 111, 14);
 		panel.add(lblFechaInicio);
 		
-		JLabel lblTipo = new JLabel("Tipo");
+		JLabel lblTipo = new JLabel("Tipo:");
 		lblTipo.setBounds(10, 128, 46, 14);
 		panel.add(lblTipo);
 		
@@ -90,10 +109,15 @@ public class Lesiones extends JDialog {
 		txtNombre.setColumns(10);
 		txtNombre.setText(aux.getNombre());
 		
-		txtFechaInicio = new JTextField();
-		txtFechaInicio.setBounds(10, 109, 86, 20);
-		panel.add(txtFechaInicio);
-		txtFechaInicio.setColumns(10);
+		formattedFechaInicio = new JFormattedTextField(fechaFormato);
+		formattedFechaInicio.setBounds(10, 109, 86, 20);
+		panel.add(formattedFechaInicio);
+		//txtFechaInicio.setColumns(10);
+		
+		formattedFechaFinal = new JFormattedTextField(fechaFormato);
+		formattedFechaFinal.setBounds(106, 109, 86, 20);
+		panel.add(formattedFechaFinal);
+		
 		
 		txtTipo = new JTextField();
 		txtTipo.setBounds(10, 143, 86, 20);
@@ -104,31 +128,41 @@ public class Lesiones extends JDialog {
 		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Lesion auxLesion=null;
-				auxLesion = new Lesion(aux.getNombre(),txtFechaInicio.getText(),null,txtTipo.getText());
+				auxLesion = new Lesion(aux.getNombre(),formattedFechaInicio.getText(),formattedFechaFinal.getText(),txtTipo.getText());
 				aux.getMisLesiones().add(auxLesion);
+				JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 				limpiarTexto();
 			}
 		});
 		btnInsertar.setBounds(107, 142, 89, 23);
 		panel.add(btnInsertar);
 		
+		
 		JButton btnTerminado = new JButton("Terminado");
 		btnTerminado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for (Equipo auxTeam : Liga.getInstance().getMisEquipos()) {
-					if (auxTeam.getNombreEquipo() == aux.getEquipo()) {
-						auxTeam.insertarJugador(aux);
-					}
-				}
-				 JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
-				dispose();
+						dispose();
 			}
 		});
 		btnTerminado.setBounds(211, 142, 89, 23);
 		panel.add(btnTerminado);
+		
+		JLabel lblFechaFinal = new JLabel("Fecha de Finalizacion:");
+		lblFechaFinal.setBounds(106, 96, 141, 14);
+		panel.add(lblFechaFinal);
+		
+
+		
+		
 	}
 	private void limpiarTexto() {
-		txtFechaInicio.setText("");
+		formattedFechaInicio.setText("");
+		formattedFechaFinal.setText("");
 		txtTipo.setText("");
+	}
+	private static String fechaActual() {
+		Date fecha = new Date();
+		SimpleDateFormat formatoFecha = new SimpleDateFormat ("dd/MM/YYYY");
+		return formatoFecha.format(fecha);
 	}
 }

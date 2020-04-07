@@ -122,7 +122,7 @@ public class regUser extends JDialog {
 											 user = new User(0,textField.getText(),textField_1.getText());
 										    Liga.getInstance().regUser(user);
 										    Liga.getInstance().guardarDatos(Liga.getInstance());
-											JOptionPane.showMessageDialog(null, "Operacion satisfactoria" , "Aviso:", JOptionPane.PLAIN_MESSAGE);
+											JOptionPane.showMessageDialog(null, "Operacion satisfactoria" , "Aviso:", JOptionPane.INFORMATION_MESSAGE);
 
 										    dispose();
 									} 
@@ -130,10 +130,10 @@ public class regUser extends JDialog {
 										 user = new User(1,textField.getText(),textField_1.getText());
 									    Liga.getInstance().regUser(user);
 									    Liga.getInstance().guardarDatos(Liga.getInstance());
-										JOptionPane.showMessageDialog(null, "Operacion satisfactoria" , "Aviso:", JOptionPane.PLAIN_MESSAGE);
+										JOptionPane.showMessageDialog(null, "Operacion satisfactoria" , "Aviso:", JOptionPane.INFORMATION_MESSAGE);
 									    dispose();
 												}
-									 else if (auxiliar != null){
+									 if (auxiliar != null){
 										JOptionPane.showMessageDialog(null, "Ya existe un usuario con este nombre" , "Error:", JOptionPane.WARNING_MESSAGE);
 									}
 								

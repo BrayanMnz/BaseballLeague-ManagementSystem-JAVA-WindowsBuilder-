@@ -12,12 +12,12 @@ public class Lesion implements Serializable{
 	private String miJugador;
 	private String fechaInicioLesion;
 	private String tipoLesion;
-	private Date fechaFinalLesion;
-	public Lesion( String miJugador, String fechaInicioLesion,Date fechaFinalLesion, String tipoLesion) {
+	private String fechaFinalLesion;
+	public Lesion( String miJugador, String fechaInicioLesion,String fechaFinalLesion, String tipoLesion) {
 		//this.miEquipo = miEquipo;
 		this.setMiJugador(miJugador);
 		this.fechaInicioLesion = fechaInicioLesion;
-		this.fechaFinalLesion= getFechaFinalLesion();
+		this.fechaFinalLesion= fechaFinalLesion;
 		this.tipoLesion = tipoLesion;
 	}
 //	public Equipo getmiEquipo() {
@@ -45,10 +45,10 @@ public class Lesion implements Serializable{
 	public void setTipoLesion(String tipoLesion) {
 		this.tipoLesion = tipoLesion;
 	}
-	public Date getFechaFinalLesion() {
+	public String getFechaFinalLesion() {
 		return fechaFinalLesion;
 	}
-	public void setFechaFinalLesion(Date fechaFinalLesion) {
+	public void setFechaFinalLesion(String fechaFinalLesion) {
 		this.fechaFinalLesion = fechaFinalLesion;
 	}
 }

@@ -345,6 +345,23 @@ public class verJugador extends JDialog {
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			
+			JButton btnAddLesion = new JButton("Agregar Lesion");
+			btnAddLesion.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (playerAux == null) {
+						Lesiones add = new Lesiones(identificador);
+						add.setVisible(true);
+						add.setModal(true);
+					}
+					else {
+						Lesiones add = new Lesiones(playerAux);
+						add.setVisible(true);
+						add.setModal(true);
+					}
+				}
+			});
+			buttonPane.add(btnAddLesion);
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.setActionCommand("Cancel");
