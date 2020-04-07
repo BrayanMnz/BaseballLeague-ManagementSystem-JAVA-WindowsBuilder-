@@ -39,12 +39,15 @@ import javax.swing.border.MatteBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 public class IniciarPartido extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private static JTable tblLocal;
-	private JTable tblVisita;
+	private static JTable tblVisita;
+	
 	private static DefaultTableModel model; 
 	private static DefaultTableModel model1;
 	private static DefaultTableModel model2;
@@ -55,13 +58,23 @@ public class IniciarPartido extends JDialog {
 	private static JFormattedTextField txtAux;
 
 	private static JTextField txtNombreEquipo;
-	private JTextField txtNombreLanzador;
+	private static  JTextField txtNombreLanzador;
 	private JTextField txtInnings;
 	private static 	JScrollPane scpnVisitante;
 	private static 	JScrollPane scpnLocal;
 	private static JButton btnVisitante;
 private static JButton btnLocal;
-private JTable tableInnings;
+private static JTable tableInnings;
+private static JTextField txtNombreVis;
+private JTextField txtinningsVis;
+private JTextField txtCarrerasLocal;
+private JTextField txtHitsLocal;
+private JTextField txtErroresLocal;
+private JTextField txtCarrerasVisitante;
+private JTextField txtHitsVisitante;
+private JTextField txtErroresVisitante;
+private static  int  auxf =0;
+private static jugadorPosicion auxJugador=null;
 
 	/**
 	 * Launch the application.
@@ -88,6 +101,7 @@ private JTable tableInnings;
 				cargarLineupLocal();
 				cargarLineupVisitante();
 				cargarMarcador();
+				cargarLanzadores();
 			}
 		});
 		this.auxID = auxID;
@@ -99,9 +113,10 @@ private JTable tableInnings;
 		
 		JPanel panelAnotacion = new JPanel();
 		panelAnotacion.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Alineacion", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelAnotacion.setBounds(10, 171, 885, 292);
+		panelAnotacion.setBounds(10, 147, 885, 292);
 		contentPanel.add(panelAnotacion);
 		panelAnotacion.setLayout(null);
+		panelAnotacion.setOpaque(false);
 		
 		scpnLocal = new JScrollPane();
 		scpnLocal.setVisible(true);
@@ -109,6 +124,7 @@ private JTable tableInnings;
 		panelAnotacion.add(scpnLocal);
 		
 		tblLocal = new JTable();
+		tblLocal.setAutoResizeMode(tblLocal.AUTO_RESIZE_OFF);
 		tblLocal.setVisible(true);
 		model = new DefaultTableModel();
 		String[] columnNamesLocal = {"Jugador","1IN","2IN","3IN","4IN","5IN","6IN","7IN","8IN","9IN","10IN","11IN","12IN"};
@@ -117,20 +133,34 @@ private JTable tableInnings;
 		scpnLocal.setViewportView(tblLocal);
 		
 		 JComboBox<Integer> cbxAux = new JComboBox<Integer>();
-		 for(int i=0; i<=5; i++) { 
+		 for(int i=1; i<=6; i++) { 
 			 cbxAux.addItem(i);}
+		 TableColumn tc0 = tblLocal.getColumnModel().getColumn(0);
+		 tc0.setPreferredWidth(140);
 		 TableColumn tc1 = tblLocal.getColumnModel().getColumn(1);
+		 tc1.setPreferredWidth(65);
 		 TableColumn tc2 = tblLocal.getColumnModel().getColumn(2);
+		 tc2.setPreferredWidth(65);
 		 TableColumn tc3 = tblLocal.getColumnModel().getColumn(3);
+		 tc3.setPreferredWidth(65);
 		 TableColumn tc4 = tblLocal.getColumnModel().getColumn(4);
+		 tc4.setPreferredWidth(65);
 		 TableColumn tc5 = tblLocal.getColumnModel().getColumn(5);
+		 tc5.setPreferredWidth(65);
 		 TableColumn tc6 = tblLocal.getColumnModel().getColumn(6);
+		 tc6.setPreferredWidth(65);
 		 TableColumn tc7 = tblLocal.getColumnModel().getColumn(7);
+		 tc7.setPreferredWidth(65);
 		 TableColumn tc8 = tblLocal.getColumnModel().getColumn(8);
+		 tc8.setPreferredWidth(65);
 		 TableColumn tc9 = tblLocal.getColumnModel().getColumn(9);
+		 tc9.setPreferredWidth(65);
 		 TableColumn tc10 = tblLocal.getColumnModel().getColumn(10);
+		 tc10.setPreferredWidth(65);
 		 TableColumn tc11 = tblLocal.getColumnModel().getColumn(11);
+		 tc11.setPreferredWidth(65);
 		 TableColumn tc12 = tblLocal.getColumnModel().getColumn(12);
+		 tc12.setPreferredWidth(65);
 		    TableCellEditor tce1 = new DefaultCellEditor(cbxAux);
 		    tc1.setCellEditor(tce1);
 		    TableCellEditor tce2 = new DefaultCellEditor(cbxAux);
@@ -182,25 +212,41 @@ private JTable tableInnings;
 			panelAnotacion.add(scpnVisitante);
 			
 			tblVisita = new JTable();
+		    tblVisita.setAutoResizeMode(tblVisita.AUTO_RESIZE_OFF);
 			tblVisita.setVisible(false);
 			tblVisita.setModel(model1);
+			TableColumn tcc0 = tblVisita.getColumnModel().getColumn(0);
+			tcc0.setPreferredWidth(140);
 			TableColumn tcc1 = tblVisita.getColumnModel().getColumn(1);
+			tcc1.setPreferredWidth(65);
 			TableColumn tcc2 = tblVisita.getColumnModel().getColumn(2);
+			tcc2.setPreferredWidth(65);
 			TableColumn tcc3 = tblVisita.getColumnModel().getColumn(3);
+			tcc3.setPreferredWidth(65);
 			TableColumn tcc4 = tblVisita.getColumnModel().getColumn(4);
+			tcc4.setPreferredWidth(65);
 			TableColumn tcc5 = tblVisita.getColumnModel().getColumn(5);
+			tcc5.setPreferredWidth(65);
 			TableColumn tcc6 = tblVisita.getColumnModel().getColumn(6);
+			tcc6.setPreferredWidth(65);
 			TableColumn tcc7 = tblVisita.getColumnModel().getColumn(7);
+			tcc7.setPreferredWidth(65);
 			TableColumn tcc8 = tblVisita.getColumnModel().getColumn(8);
+			tcc8.setPreferredWidth(65);
 			TableColumn tcc9 = tblVisita.getColumnModel().getColumn(9);
+			tcc9.setPreferredWidth(65);
 			TableColumn tcc10 = tblVisita.getColumnModel().getColumn(10);
+			tcc10.setPreferredWidth(65);
 			TableColumn tcc11 = tblVisita.getColumnModel().getColumn(11);
+			tcc11.setPreferredWidth(65);
 			TableColumn tcc12 = tblVisita.getColumnModel().getColumn(12);
+			tcc12.setPreferredWidth(65);
 			
 			
 			scpnVisitante.setViewportView(tblVisita);
 			
 			 btnLocal = new JButton("Local");
+			 btnLocal.setOpaque(false);
 			 btnLocal.setFont(btnLocal.getFont().deriveFont(btnLocal.getFont().getStyle() | Font.BOLD ));
 			btnLocal.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -220,6 +266,7 @@ private JTable tableInnings;
 			panelAnotacion.add(btnLocal);
 			
 			btnVisitante = new JButton("Visitante");
+			btnVisitante.setOpaque(false);
 			 btnVisitante.setFont(btnVisitante.getFont().deriveFont(btnVisitante.getFont().getStyle() | Font.BOLD ));
 			btnVisitante.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -237,9 +284,20 @@ private JTable tableInnings;
 			
 			btnVisitante.setBounds(101, 11, 93, 23);
 			panelAnotacion.add(btnVisitante);
+			
+			JButton btnNewButton = new JButton("New button");
+			btnNewButton.setBounds(704, 24, 89, 23);
+			panelAnotacion.add(btnNewButton);
+			btnNewButton.addActionListener(new ActionListener() {
+				
+				public void actionPerformed(ActionEvent e) {
+					cargarEstadisticasJugadores();	
+					
+				}
+			});
 		
 		 JComboBox<Integer> cbxAux1 = new JComboBox<Integer>();
-		 for(int i=0; i<=5; i++) { 
+		 for(int i=1; i<=6; i++) { 
 			 cbxAux1.addItem(i);}
 		    TableCellEditor tcce1 = new DefaultCellEditor(cbxAux1);
 		    tcc1.setCellEditor(tcce1);
@@ -270,38 +328,57 @@ private JTable tableInnings;
 		
 		
 		JPanel panel = new JPanel();
+		panel.setOpaque(false);
 		panel.setBorder(new TitledBorder(null, "Marcador: ", TitledBorder.CENTER, TitledBorder.TOP, null, null));
-		panel.setBounds(10, 11, 885, 135);
+		panel.setBounds(10, 0, 885, 146);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
 		JPanel panelinnings = new JPanel();
-		panelinnings.setBorder(new EmptyBorder(0, 0, 0, 0));
-		panelinnings.setBounds(10, 23, 635, 101);
+		panelinnings.setOpaque(false);
+		panelinnings.setBorder(new TitledBorder(null, "Innings", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelinnings.setBounds(10, 23, 634, 112);
 		panel.add(panelinnings);
-		panelinnings.setLayout(new BorderLayout(0, 0));
+		panelinnings.setLayout(null);
 		
 		JScrollPane scpInnings = new JScrollPane();
-		panelinnings.add(scpInnings, BorderLayout.CENTER);
+		scpInnings.setBounds(6, 16, 623, 85);
+		panelinnings.add(scpInnings);
 		
 		tableInnings = new JTable();
 		model2 = new DefaultTableModel();
 		String[] columnNamesMarcador = {"Equipo","1IN","2IN","3IN","4IN","5IN","6IN","7IN","8IN","9IN","10IN","11IN","12IN"};
 		model2.setColumnIdentifiers(columnNamesMarcador);
         tableInnings.setModel(model2);
-        
+         
+        tableInnings.setRowHeight(0, 15);
+        tableInnings.setRowHeight(1, 35);
+        tableInnings.setRowHeight(2, 35);
+        tableInnings.getColumnModel().getColumn(0).setPreferredWidth(119);;
 		TableColumn tccc1 = tableInnings.getColumnModel().getColumn(1);
+		tccc1.setPreferredWidth(42);
 		TableColumn tccc2 = tableInnings.getColumnModel().getColumn(2);
+		tccc2.setPreferredWidth(42);
 		TableColumn tccc3 = tableInnings.getColumnModel().getColumn(3);
+		tccc3.setPreferredWidth(42);
 		TableColumn tccc4 = tableInnings.getColumnModel().getColumn(4);
+		tccc4.setPreferredWidth(42);
 		TableColumn tccc5 = tableInnings.getColumnModel().getColumn(5);
+		tccc5.setPreferredWidth(42);
 		TableColumn tccc6 = tableInnings.getColumnModel().getColumn(6);
+		tccc6.setPreferredWidth(42);
 		TableColumn tccc7 = tableInnings.getColumnModel().getColumn(7);
+		tccc7.setPreferredWidth(42);
 		TableColumn tccc8 = tableInnings.getColumnModel().getColumn(8);
+		tccc8.setPreferredWidth(42);
 		TableColumn tccc9 = tableInnings.getColumnModel().getColumn(9);
+		tccc9.setPreferredWidth(42);
 		TableColumn tccc10 = tableInnings.getColumnModel().getColumn(10);
+		tccc10.setPreferredWidth(42);
 		TableColumn tccc11 = tableInnings.getColumnModel().getColumn(11);
+		tccc11.setPreferredWidth(42);
 		TableColumn tccc12 = tableInnings.getColumnModel().getColumn(12);
+		tccc12.setPreferredWidth(42);
 		
 		 JTextField txtAux = new JTextField();
 			MaskFormatter auxFormato = null;
@@ -346,26 +423,103 @@ private JTable tableInnings;
         
 		scpInnings.setViewportView(tableInnings);
 		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				cargarEstadisticasJugadores();	
-			}
-		});
-		btnNewButton.setBounds(721, 80, 89, 23);
-		panel.add(btnNewButton);
+		JPanel panel_1 = new JPanel();
+		panel_1.setOpaque(false);
+		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Pizarra:", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_1.setBounds(654, 11, 221, 124);
+		panel.add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("C");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 21));
+		lblNewLabel_1.setBounds(25, 11, 24, 32);
+		panel_1.add(lblNewLabel_1);
+		
+		JLabel lblH = new JLabel("H");
+		lblH.setFont(new Font("Tahoma", Font.BOLD, 21));
+		lblH.setBounds(96, 11, 24, 32);
+		panel_1.add(lblH);
+		
+		JLabel lblE = new JLabel("E");
+		lblE.setFont(new Font("Tahoma", Font.BOLD, 21));
+		lblE.setBounds(169, 11, 24, 32);
+		panel_1.add(lblE);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setForeground(Color.BLACK);
+		separator_1.setBounds(10, 40, 201, 2);
+		panel_1.add(separator_1);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setForeground(Color.BLACK);
+		separator_2.setBounds(10, 80, 201, 2);
+		panel_1.add(separator_2);
+		
+		txtCarrerasLocal = new JTextField();
+		txtCarrerasLocal.setFont(new Font("Tahoma", Font.BOLD, 20));
+		txtCarrerasLocal.setOpaque(false);
+		txtCarrerasLocal.setEditable(false);
+		txtCarrerasLocal.setBounds(25, 49, 24, 26);
+		panel_1.add(txtCarrerasLocal);
+		txtCarrerasLocal.setColumns(10);
 		
 		JSeparator separator = new JSeparator();
-		separator.setForeground(Color.BLACK);
-		separator.setBounds(10, 157, 885, 13);
-		contentPanel.add(separator);
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setBounds(69, 11, 2, 102);
+		panel_1.add(separator);
+		
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setOrientation(SwingConstants.VERTICAL);
+		separator_3.setBounds(147, 11, 2, 102);
+		panel_1.add(separator_3);
+		
+		txtHitsLocal = new JTextField();
+		txtHitsLocal.setFont(new Font("Tahoma", Font.BOLD, 20));
+		txtHitsLocal.setOpaque(false);
+		txtHitsLocal.setEditable(false);
+		txtHitsLocal.setBounds(96, 49, 24, 26);
+		panel_1.add(txtHitsLocal);
+		txtHitsLocal.setColumns(10);
+		
+		txtErroresLocal = new JTextField();
+		txtErroresLocal.setFont(new Font("Tahoma", Font.BOLD, 20));
+		txtErroresLocal.setOpaque(false);
+		txtErroresLocal.setEditable(false);
+		txtErroresLocal.setBounds(169, 49, 24, 26);
+		panel_1.add(txtErroresLocal);
+		txtErroresLocal.setColumns(10);
+		
+		txtCarrerasVisitante = new JTextField();
+		txtCarrerasVisitante.setOpaque(false);
+		txtCarrerasVisitante.setFont(new Font("Tahoma", Font.BOLD, 20));
+		txtCarrerasLocal.setOpaque(false);
+		txtCarrerasVisitante.setEditable(false);
+		txtCarrerasVisitante.setColumns(10);
+		txtCarrerasVisitante.setBounds(25, 87, 24, 26);
+		panel_1.add(txtCarrerasVisitante);
+		
+		txtHitsVisitante = new JTextField();
+		txtHitsVisitante.setFont(new Font("Tahoma", Font.BOLD, 20));
+		txtHitsVisitante.setOpaque(false);
+		txtHitsVisitante.setEditable(false);
+		txtHitsVisitante.setColumns(10);
+		txtHitsVisitante.setBounds(96, 87, 24, 26);
+		panel_1.add(txtHitsVisitante);
+		
+		txtErroresVisitante = new JTextField();
+		txtErroresVisitante.setFont(new Font("Tahoma", Font.BOLD, 20));
+		txtErroresVisitante.setOpaque(false);
+		txtErroresVisitante.setEditable(false);
+		txtErroresVisitante.setColumns(10);
+		txtErroresVisitante.setBounds(169, 87, 24, 26);
+		panel_1.add(txtErroresVisitante);
 		
 		JPanel pnlLanzador = new JPanel();
-		pnlLanzador.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Lanzador", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		pnlLanzador.setBounds(10, 463, 440, 197);
+		pnlLanzador.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "  Lanzador Equipo Local:   ", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		pnlLanzador.setBounds(10, 443, 440, 197);
 		contentPanel.add(pnlLanzador);
 		pnlLanzador.setLayout(null);
+		pnlLanzador.setOpaque(false);
 		
 		JLabel lblNombreLanzador = new JLabel("Nombre: ");
 		lblNombreLanzador.setBounds(10, 11, 168, 14);
@@ -378,7 +532,7 @@ private JTable tableInnings;
 		txtNombreLanzador.setColumns(10);
 		
 		JLabel lblOutsRealizados = new JLabel("Outs Realizados:");
-		lblOutsRealizados.setBounds(263, 11, 131, 14);
+		lblOutsRealizados.setBounds(322, 11, 109, 14);
 		pnlLanzador.add(lblOutsRealizados);
 		
 		JSpinner spnOuts = new JSpinner();
@@ -428,6 +582,83 @@ private JTable tableInnings;
 		spnCarrerasL.setBounds(263, 122, 168, 20);
 		pnlLanzador.add(spnCarrerasL);
 		
+		JLabel lblFondo2 = new JLabel("");
+		lblFondo2.setIcon(new ImageIcon(IniciarPartido.class.getResource("/Imagenes/fondo2.jpg")));
+		lblFondo2.setBounds(0, 645, 915, 26);
+		contentPanel.add(lblFondo2);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setOpaque(false);
+		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "  Lanzador Equipo Visitante  ", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_2.setBounds(460, 443, 440, 197);
+		contentPanel.add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblNombreVis = new JLabel("Nombre: ");
+		lblNombreVis.setBounds(10, 11, 168, 14);
+		panel_2.add(lblNombreVis);
+		
+		txtNombreVis = new JTextField();
+		txtNombreVis.setEditable(false);
+		txtNombreVis.setColumns(10);
+		txtNombreVis.setBounds(10, 26, 168, 20);
+		panel_2.add(txtNombreVis);
+		
+		JLabel lblInningsVis = new JLabel("Innings Lanzados:");
+		lblInningsVis.setBounds(10, 57, 168, 14);
+		panel_2.add(lblInningsVis);
+		
+		txtinningsVis = new JTextField();
+		txtinningsVis.setEditable(false);
+		txtinningsVis.setColumns(10);
+		txtinningsVis.setBounds(10, 76, 168, 20);
+		panel_2.add(txtinningsVis);
+		
+		JLabel lblPonchesVis = new JLabel("Ponches:");
+		lblPonchesVis.setBounds(10, 107, 168, 14);
+		panel_2.add(lblPonchesVis);
+		
+		JSpinner spnPonchesVis = new JSpinner();
+		spnPonchesVis.setBounds(10, 122, 168, 20);
+		panel_2.add(spnPonchesVis);
+		
+		JLabel lblBBVis = new JLabel("Bases por bolas: ");
+		lblBBVis.setBounds(10, 147, 168, 14);
+		panel_2.add(lblBBVis);
+		
+		JSpinner spnBBVis = new JSpinner();
+		spnBBVis.setBounds(10, 166, 168, 20);
+		panel_2.add(spnBBVis);
+		
+		JLabel lblOutsRVis = new JLabel("Outs Realizados:");
+		lblOutsRVis.setBounds(319, 11, 112, 14);
+		panel_2.add(lblOutsRVis);
+		
+		JSpinner spnOutsVis = new JSpinner();
+		spnOutsVis.setBounds(263, 26, 168, 20);
+		panel_2.add(spnOutsVis);
+		
+		JLabel lblCarrerasPerVis = new JLabel("Carreras Permitidas:");
+		lblCarrerasPerVis.setBounds(263, 57, 168, 14);
+		panel_2.add(lblCarrerasPerVis);
+		
+		JSpinner SpnCarPerVis = new JSpinner();
+		SpnCarPerVis.setBounds(263, 76, 168, 20);
+		panel_2.add(SpnCarPerVis);
+		
+		JLabel lblCarrLimPeVis = new JLabel("Carreras Limpias Permitidas: ");
+		lblCarrLimPeVis.setBounds(263, 107, 168, 14);
+		panel_2.add(lblCarrLimPeVis);
+		
+		JSpinner spnCarrLVis = new JSpinner();
+		spnCarrLVis.setBounds(263, 122, 168, 20);
+		panel_2.add(spnCarrLVis);
+		
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setIcon(new ImageIcon(IniciarPartido.class.getResource("/Imagenes/fondosss.jpg")));
+		lblNewLabel_2.setBounds(0, -13, 915, 673);
+		contentPanel.add(lblNewLabel_2);
+		
 			
 		
 		
@@ -436,35 +667,43 @@ private JTable tableInnings;
 	}
 	
 	public static void cargarLineupLocal() { 
+
 		 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
-		 txtNombreEquipo.setText(auxPartido.getLocal().nombreEquipo);
+			
 			model.setRowCount(0);
-			fila = new Object[model.getColumnCount()]; 
-		     
+			fila = new Object[model.getColumnCount()];
+             
+			
 			for (Jugador auxJugador : Liga.getInstance().getMisJugadores()) {
 		      if(auxJugador.getEquipo().equalsIgnoreCase(auxPartido.getLocal().getNombreEquipo())) { 
 		          if(auxJugador instanceof jugadorPosicion) { 
-		        	
-		        	  fila[0] = auxJugador.getNombre();	
-		        	  for(int i=1; i<=12 ; i++) {
-			         fila[i] = "<Anotar>";   }
-	                model.addRow(fila);        
-	                    }}}}
+			fila[0] = auxJugador.getNombre();
+			 for(int i=1; i<=12 ; i++) {
+			fila[i] = 0;    }
+			model.addRow(fila);  
+			     }}}
+	
+	}
+		
 	
 	public static void cargarLineupVisitante() { 
 		 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
 	
 			model1.setRowCount(0);
 			fila1 = new Object[model1.getColumnCount()];
-		     
+              
+			
 			for (Jugador auxJugador : Liga.getInstance().getMisJugadores()) {
 		      if(auxJugador.getEquipo().equalsIgnoreCase(auxPartido.getVisitante().getNombreEquipo())) { 
 		          if(auxJugador instanceof jugadorPosicion) { 
 			fila1[0] = auxJugador.getNombre();
 			 for(int i=1; i<=12 ; i++) {
-			fila1[i] = "<Anotar>";    }
+			fila1[i] = 0;    }
 			model1.addRow(fila1);  
 			     }}}}
+	
+	
+	
 	public static void cargarMarcador() { 
 		 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
 	
@@ -473,47 +712,64 @@ private JTable tableInnings;
 		     	       
 			fila2[0] = auxPartido.getLocal().getNombreEquipo();
 			 for(int i=1; i<=12 ; i++) {
-			fila2[i] = "-";    }
+			fila2[i] = "  -  ";    }
 				model2.addRow(fila2);  
 			 fila2[0] = auxPartido.getVisitante().getNombreEquipo();
 			 for(int i=1; i<=12 ; i++) {
-					fila2[i] = "-";    }
+					fila2[i] = "  -  ";    }
 			model2.addRow(fila2);  } 
 	
 
 public static void cargarEstadisticasJugadores() { 
-for(int i =0; i<=9 ; i++) {  // i representa la fila de la tabla, j a la columna. 
+for(int i =0; i<=2 ; i++) {  // i representa la fila de la tabla, j a la columna. 
 String aux = (String)tblLocal.getModel().getValueAt(i, 0).toString();
-    for (Equipo auxEquipo : Liga.getInstance().getMisEquipos()) {
-    	jugadorPosicion auxJugador = (jugadorPosicion) auxEquipo.buscarJugadorByNombre(aux);
-    	
-    	for(int j=1; j<=12; j++) { 
-    	 String auxH = tblLocal.getModel().getValueAt(i, j).toString();
-    		if(auxH.equalsIgnoreCase("0")) { 
-                auxJugador.setTurnosPartido(1);
-	  		      auxJugador.setPonchesPartido(1); }
-    	 else if(auxH.equalsIgnoreCase("1")) { 
-                  auxJugador.setTurnosPartido(1);
-	  		      auxJugador.setHitsPartido(1); } 
-    		else if(auxH.equalsIgnoreCase("2")) { 
-  		      auxJugador.setHitsPartido(1);
-  		      auxJugador.setDoblesPartido(1); 
-  		      auxJugador.setTurnosPartido(1);}
-    		else if(auxH.equalsIgnoreCase("3")) { 
-    		      auxJugador.setHitsPartido(1);
-    		      auxJugador.setTriplesPartido(1);
-
-	  		      auxJugador.setTurnosPartido(1);}
-    		else if(auxH.equalsIgnoreCase("4")) { 
-    		      auxJugador.setHitsPartido(1);
-    		      auxJugador.setHrPartido(1);
-    		      auxJugador.setTurnosPartido(1);
-    		      } else if(auxH.equalsIgnoreCase("5")) { 
-    	  		      auxJugador.setBBPartido(1);  }
-    	    		}}}}
+ auxJugador = (jugadorPosicion) Liga.getInstance().buscarPlayerByName(aux);
+for(int j =1; j<13; j++) { 
+	int auxH= Integer.parseInt(tblLocal.getModel().getValueAt(i, j).toString());
 
 	
+	
+	//System.out.println(auxH);
+	 if(auxH == 1) { 
 
+	   auxJugador.setHits(auxJugador.getHits()+1);
+	   auxJugador.setTurnos(auxJugador.getTurnos()+1);
+	} else if (auxH ==2 ) { 
+		auxJugador.setDobles(auxJugador.getDobles()+1);
+		 auxJugador.setTurnos(auxJugador.getTurnos()+1);
+	} else if (auxH ==3 ) { 
+		auxJugador.setTriples(auxJugador.getTriples()+1);
+		 auxJugador.setTurnos(auxJugador.getTurnos()+1);
+	} else if (auxH ==4 ) { 
+		auxJugador.setHr(auxJugador.getHr()+1);
+		 auxJugador.setTurnos(auxJugador.getTurnos()+1);
+	} else if (auxH ==5 ) { 
+		auxJugador.setBB(auxJugador.getBB()+1);
+		
+	} else if (auxH ==6 ) { 
+		 auxJugador.setTurnos(auxJugador.getTurnos()+1);
+		auxJugador.setPonches(auxJugador.getPonches()+1);
+	} 
+	 
+} } 
+ 
+ //System.out.println(auxf);
+// System.out.println(auxJugador.totalHits());
+
+ 
+    	
+    	
+    
+} 
+
+   public static void cargarLanzadores() { 
+	
+	   Jugador auxJugador = Liga.getInstance().buscarPlayerByName( LineupPartido.cbxPitcherLocal.getSelectedItem().toString());
+	    txtNombreLanzador.setText(auxJugador.getNombre());
+	    
+	    Jugador auxJugadorVis = Liga.getInstance().buscarPlayerByName( LineupPartido.cbxPitcherVisitante.getSelectedItem().toString());
+          txtNombreVis.setText(auxJugadorVis.getNombre());
+   }
 } 
 	
 

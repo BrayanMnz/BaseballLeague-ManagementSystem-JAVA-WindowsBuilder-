@@ -207,7 +207,7 @@ public class ManejarJugador extends JDialog {
 					} }
 					else if(cbxTipoJugador.getSelectedItem().toString().equalsIgnoreCase("Pitcher")) { 
 						miJugador = new Pitcher(txtNombre.getText(), txtDorsal.getText(), cbxEquipos.getSelectedItem().toString(), txtAltura.getText(), txtPeso.getText(), 
-								comboBox.getSelectedItem().toString(),cbxBatea.getSelectedItem().toString(),cbxLanza.getSelectedItem().toString());
+								"Pitcher",cbxBatea.getSelectedItem().toString(),cbxLanza.getSelectedItem().toString());
 						  Liga.getInstance().insertarJugador(miJugador);	
 						} 	else if(cbxTipoJugador.getSelectedItem().toString().equalsIgnoreCase("Jugador Posicion")) { 
 							miJugador = new jugadorPosicion(txtNombre.getText(), txtDorsal.getText(), cbxEquipos.getSelectedItem().toString(), txtAltura.getText(), txtPeso.getText(), 

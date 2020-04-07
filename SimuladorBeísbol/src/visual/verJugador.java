@@ -35,6 +35,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EtchedBorder;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.Font;
+import javax.swing.JSeparator;
 
 public class verJugador extends JDialog {
 
@@ -45,7 +47,6 @@ public class verJugador extends JDialog {
 	private static JTextField txtDatosPeso;
 	private Equipo team;
 	private static String identificador;
-	private JTable tableDatosGenerales;
 	private static DefaultTableModel model; 
 	private static DefaultTableModel modelEspecifico;
 
@@ -53,12 +54,14 @@ public class verJugador extends JDialog {
 	private static Object[] fila1;
 	private static Object[] fila; 
 	private JTable tablaEspecifico;
-	private JComboBox cbxJugadores;
-	private JComboBox cbxTeams;
-	//private static Jugador search;
-	private JTextField txtBuscarDorsal;
-	private JTextField txtBuscarEquipo;
+	private JComboBox<String> cbxJugadores;
+
 	private static Jugador playerAux=null;
+	private static JTextField txtBatea;
+	private static JTextField txtLanza;
+	private static JTextField txtPosicion;
+	private static JTextField txtDorsal;
+	private JTable tblStats2;
 
 	/**
 	 * Launch the application.
@@ -86,7 +89,7 @@ public class verJugador extends JDialog {
 			public void windowOpened(WindowEvent e) {
 				cargarJugadoresCBX ();
 				datosGenerales(identificador);
-				cargarDatosGenerales(identificador);
+				cargarTabla2(identificador);
 				cargarDatosEspecificos(identificador);
 			}
 		});
@@ -98,82 +101,53 @@ public class verJugador extends JDialog {
 		contentPanel.setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.setForeground(new Color(0, 255, 255));
+		panel.setOpaque(false);
 		panel.setBackground(new Color(204, 204, 204));
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Buscar Jugador", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Buscar Jugador", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel.setBounds(10, 11, 722, 56);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblBuscarDorsal = new JLabel("#Dorsal");
-		lblBuscarDorsal.setBackground(new Color(230, 230, 250));
-		lblBuscarDorsal.setBounds(10, 26, 53, 14);
-		panel.add(lblBuscarDorsal);
-		
-		JButton btnBuscarJugador = new JButton("Buscar");
-		btnBuscarJugador.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				playerAux = Liga.getInstance().buscarDorsalTeamName(txtBuscarDorsal.getText().toString(), cbxTeams.getSelectedItem().toString(), cbxJugadores.getSelectedItem().toString());
-			    	if(playerAux == null) { 
-			    	int option = JOptionPane.showConfirmDialog(null, "Jugador no encontrado, desea crearlo?", "Error", JOptionPane.YES_NO_OPTION, 
-							JOptionPane.QUESTION_MESSAGE);
-			    	if(option == JOptionPane.YES_OPTION) { 
-			    		ManejarJugador player1 = new ManejarJugador();
-			    		player1.setModal(true);
-			    		player1.setVisible(true);
-			    		txtBuscarDorsal.setText("");
-			    		txtBuscarEquipo.setText("");
-			    		datosGenerales(playerAux);
-			    		cargarDatosGenerales(playerAux);
-			    		cargarDatosEspecificos(playerAux);
-			    	}
-			    }
-			    if (playerAux != null) {
-					datosGenerales(playerAux);
-					cargarDatosGenerales(playerAux);
-					cargarDatosEspecificos(playerAux);
-			    }
-			}
+		cbxJugadores = new JComboBox<String>();
 
-
-		});
-		btnBuscarJugador.setBounds(536, 22, 101, 23);
-		panel.add(btnBuscarJugador);
-		
-		cbxJugadores = new JComboBox();
-
-		cbxJugadores.setModel(new DefaultComboBoxModel(new String[] {"<Jugadores>"}));
-		cbxJugadores.setBounds(363, 23, 163, 20);
+		cbxJugadores.setModel(new DefaultComboBoxModel<String>(new String[] {"<Jugadores>"}));
+		cbxJugadores.setBounds(46, 25, 163, 20);
 		panel.add(cbxJugadores);
 		
-		txtBuscarDorsal = new JTextField();
-		txtBuscarDorsal.setBounds(58, 23, 86, 20);
-		panel.add(txtBuscarDorsal);
-		txtBuscarDorsal.setColumns(10);
+		JLabel lblir = new JLabel("Ir a:");
+		lblir.setForeground(new Color(0, 255, 255));
+		lblir.setFont(lblir.getFont().deriveFont(lblir.getFont().getStyle() | Font.BOLD | Font.ITALIC));
+		lblir.setBounds(10, 28, 54, 14);
+		panel.add(lblir);
 		
-		JLabel lblBuscarEquipo = new JLabel("Equipo");
-		lblBuscarEquipo.setBounds(169, 26, 50, 14);
-		panel.add(lblBuscarEquipo);
+		JButton btnBuscar = new JButton("Cargar Jugador");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarDatos();
+				
+				
+			}
+		});
+		btnBuscar.setBounds(219, 24, 150, 23);
+		panel.add(btnBuscar);
 		
-		cbxTeams = new JComboBox();
-		cbxTeams.setModel(new DefaultComboBoxModel(new String[] {"<Equipos>"}));
-		cbxTeams.setBounds(217, 23, 124, 20);
-		panel.add(cbxTeams);
-		
-	/*	txtBuscarEquipo = new JTextField();
-		txtBuscarEquipo.setBounds(213, 23, 86, 20);
-		panel.add(txtBuscarEquipo);
-		txtBuscarEquipo.setColumns(10);
-		*/
+
 
 		JPanel panelDatosEquipo = new JPanel();
+		panelDatosEquipo.setForeground(new Color(0, 255, 255));
+		panelDatosEquipo.setOpaque(false);
 		panelDatosEquipo.setBackground(new Color(204, 204, 204));
-		panelDatosEquipo.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Datos del Jugador", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelDatosEquipo.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Datos del Jugador", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelDatosEquipo.setBounds(10, 78, 197, 295);
 		contentPanel.add(panelDatosEquipo);
 		panelDatosEquipo.setLayout(null);
-		panelDatosEquipo.setOpaque(true);
+		
 		
 		JLabel lblNewLabel = new JLabel("Nombre Jugador:");
+		lblNewLabel.setForeground(new Color(0, 255, 255));
+		lblNewLabel.setBackground(new Color(230, 230, 250));
+		lblNewLabel.setFont(lblir.getFont().deriveFont(lblir.getFont().getStyle() | Font.BOLD | Font.ITALIC));
 		lblNewLabel.setBounds(10, 30, 111, 14);
 		panelDatosEquipo.add(lblNewLabel); 
 	
@@ -185,38 +159,22 @@ public class verJugador extends JDialog {
 		txtDatosName.setColumns(10);
 		
 		JLabel lblDatosID = new JLabel("Equipo: ");
+		lblDatosID.setForeground(new Color(0, 255, 255));
+		lblDatosID.setFont(lblir.getFont().deriveFont(lblir.getFont().getStyle() | Font.BOLD | Font.ITALIC));
 		lblDatosID.setBounds(10, 80, 65, 14);
 		panelDatosEquipo.add(lblDatosID);
 		
 		txtDatosEquipo = new JTextField();
 		txtDatosEquipo.setEditable(false);
-		txtDatosEquipo.setBounds(10, 96, 169, 20);
+		txtDatosEquipo.setBounds(10, 99, 169, 20);
 		panelDatosEquipo.add(txtDatosEquipo);
 		txtDatosEquipo.setColumns(10);
 		
-		JLabel lblAltura = new JLabel("Altura:");
-		lblAltura.setBounds(10, 127, 126, 14);
-		panelDatosEquipo.add(lblAltura);
-		
-		txtDatosAltura = new JTextField();
-		txtDatosAltura.setEditable(false);
-		txtDatosAltura.setBounds(10, 152, 169, 20);
-		panelDatosEquipo.add(txtDatosAltura);
-		txtDatosAltura.setColumns(10);
-		
 		JLabel lblDatosFecha = new JLabel("Ver Lesiones");
+		lblDatosFecha.setForeground(new Color(0, 255, 255));
+		lblDatosFecha.setFont(lblir.getFont().deriveFont(lblir.getFont().getStyle() | Font.BOLD | Font.ITALIC));
 		lblDatosFecha.setBounds(10, 242, 150, 14);
 		panelDatosEquipo.add(lblDatosFecha);
-		
-		JLabel lblPeso = new JLabel("Peso:");
-		lblPeso.setBounds(10, 183, 169, 14);
-		panelDatosEquipo.add(lblPeso);
-		
-		txtDatosPeso = new JTextField();
-		txtDatosPeso.setEditable(false);
-		txtDatosPeso.setBounds(10, 208, 169, 20);
-		panelDatosEquipo.add(txtDatosPeso);
-		txtDatosPeso.setColumns(10);
 		
 		JButton btnLesiones = new JButton("Ver Lesiones");
 		btnLesiones.addActionListener(new ActionListener() {
@@ -235,38 +193,108 @@ public class verJugador extends JDialog {
 		btnLesiones.setBounds(10, 261, 169, 23);
 		panelDatosEquipo.add(btnLesiones);
 		
+		JLabel lblNewLabel_1 = new JLabel("no. Dorsal:");
+		lblNewLabel_1.setForeground(new Color(0, 255, 255));
+		lblNewLabel_1.setFont(lblir.getFont().deriveFont(lblir.getFont().getStyle() | Font.BOLD | Font.ITALIC));
+		lblNewLabel_1.setBounds(10, 130, 65, 14);
+		panelDatosEquipo.add(lblNewLabel_1);
+		
+		txtPosicion = new JTextField();
+		txtPosicion.setEditable(false);
+		txtPosicion.setBounds(10, 199, 169, 20);
+		panelDatosEquipo.add(txtPosicion);
+		txtPosicion.setColumns(10);
+		
+		JLabel lblPosicion = new JLabel("Posicion:");
+		lblPosicion.setForeground(new Color(0, 255, 255));
+		lblPosicion.setFont(lblir.getFont().deriveFont(lblir.getFont().getStyle() | Font.BOLD | Font.ITALIC));
+		lblPosicion.setBounds(10, 180, 150, 14);
+		panelDatosEquipo.add(lblPosicion);
+		
+		txtDorsal = new JTextField();
+		txtDorsal.setBounds(10, 149, 169, 20);
+		panelDatosEquipo.add(txtDorsal);
+		txtDorsal.setEditable(false);
+		txtDorsal.setColumns(10);
+		
 		JPanel pnlStatsEquipo = new JPanel();
+		pnlStatsEquipo.setForeground(new Color(0, 255, 255));
+		pnlStatsEquipo.setOpaque(false);
 		pnlStatsEquipo.setBackground(new Color(192, 192, 192));
 		pnlStatsEquipo.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Datos Generales", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		pnlStatsEquipo.setBounds(217, 78, 515, 93);
+		pnlStatsEquipo.setBounds(434, 78, 298, 138);
 		contentPanel.add(pnlStatsEquipo);
-		pnlStatsEquipo.setOpaque(true);
-		pnlStatsEquipo.setLayout(new BorderLayout(0, 0));
 		
-		JScrollPane scrollPane = new JScrollPane();
-		pnlStatsEquipo.add(scrollPane, BorderLayout.CENTER);
+		pnlStatsEquipo.setLayout(null);
 		
-		tableDatosGenerales = new JTable();
+		JLabel lblAltura = new JLabel("Altura");
+		lblAltura.setForeground(new Color(0, 255, 255));
+		lblAltura.setFont(lblir.getFont().deriveFont(lblir.getFont().getStyle() | Font.BOLD | Font.ITALIC));
+		lblAltura.setBounds(251, 82, 61, 14);
+		pnlStatsEquipo.add(lblAltura);
+		
+		txtDatosAltura = new JTextField();
+		txtDatosAltura.setBounds(180, 100, 104, 20);
+		pnlStatsEquipo.add(txtDatosAltura);
+		txtDatosAltura.setEditable(false);
+		txtDatosAltura.setColumns(10);
+		
+		JLabel lblPeso = new JLabel("Peso");
+		lblPeso.setForeground(new Color(0, 255, 255));
+		lblPeso.setFont(lblir.getFont().deriveFont(lblir.getFont().getStyle() | Font.BOLD | Font.ITALIC));
+		lblPeso.setBounds(251, 22, 47, 14);
+		pnlStatsEquipo.add(lblPeso);
+		
+		txtDatosPeso = new JTextField();
+		txtDatosPeso.setBounds(180, 41, 104, 20);
+		pnlStatsEquipo.add(txtDatosPeso);
+		txtDatosPeso.setEditable(false);
+		txtDatosPeso.setColumns(10);
+		
+		JLabel lblBatea = new JLabel("Batea:");
+		lblBatea.setForeground(new Color(0, 255, 255));
+		lblBatea.setFont(lblir.getFont().deriveFont(lblir.getFont().getStyle() | Font.BOLD | Font.ITALIC));
+		lblBatea.setBounds(10, 22, 46, 14);
+		pnlStatsEquipo.add(lblBatea);
+		
+		txtBatea = new JTextField();
+		txtBatea.setEditable(false);
+		txtBatea.setBounds(10, 41, 104, 20);
+		pnlStatsEquipo.add(txtBatea);
+		txtBatea.setColumns(10);
+		
+		JLabel lblLanza = new JLabel("Lanza:");
+		lblLanza.setForeground(new Color(0, 255, 255));
+		lblLanza.setFont(lblir.getFont().deriveFont(lblir.getFont().getStyle() | Font.BOLD | Font.ITALIC));
+		lblLanza.setBounds(10, 82, 46, 14);
+		pnlStatsEquipo.add(lblLanza);
+		
+		txtLanza = new JTextField();
+		txtLanza.setEditable(false);
+		txtLanza.setBounds(10, 100, 104, 20);
+		pnlStatsEquipo.add(txtLanza);
+		txtLanza.setColumns(10);
 		model = new DefaultTableModel();
-		String[] columnNames = {"#Dorsal","#Juegos","Errores","Posicion"};
+		String[] columnNames = {".Prom","Turnos","Ponches","Base por bolas"};
 		model.setColumnIdentifiers(columnNames);
-        tableDatosGenerales.setModel(model);
-		scrollPane.setViewportView(tableDatosGenerales);
 		
 		JPanel pnlListaJugadores = new JPanel();
+		pnlListaJugadores.setForeground(new Color(0, 255, 255));
+		pnlListaJugadores.setOpaque(false);
 		pnlListaJugadores.setBackground(new Color(204, 204, 204));
-		pnlListaJugadores.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Nomina del equipo: ", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		pnlListaJugadores.setBounds(217, 229, 515, 144);
+		pnlListaJugadores.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Estadisticas del Jugador:", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		pnlListaJugadores.setBounds(217, 227, 515, 146);
 		contentPanel.add(pnlListaJugadores);
-		pnlListaJugadores.setLayout(new BorderLayout(0, 0));
+		pnlListaJugadores.setLayout(null);
 		
 		JScrollPane scrollEspecifico = new JScrollPane();
-		pnlListaJugadores.add(scrollEspecifico, BorderLayout.CENTER);
+		scrollEspecifico.setBounds(6, 16, 503, 49);
+		pnlListaJugadores.add(scrollEspecifico);
 		
 		tablaEspecifico = new JTable();
 	
 		modelEspecifico = new DefaultTableModel();
-		String [] columnNamesPosicion = {"Hits","Carreras Anotadas", "Carreras Empujadas", "Bases Robadas", "Turnos", "Home Runs"};
+		String [] columnNamesPosicion = {"Hits","Dobles", "Triples", "HR"};
 		String [] columnNamesPitcher = {"Juegos Ganados","Juegos Perdidos", "Carreras Limpias", "Innings Lanzados", "Ponches", "BB", "Juegos Salvados"};
 		 if (identificador instanceof jugadorPosicion || (playerAux instanceof jugadorPosicion && playerAux != null)) {
 				modelEspecifico.setColumnIdentifiers(columnNamesPosicion);
@@ -276,6 +304,18 @@ public class verJugador extends JDialog {
 		 }
 		tablaEspecifico.setModel(modelEspecifico);
 		scrollEspecifico.setViewportView(tablaEspecifico);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(6, 73, 503, 2);
+		pnlListaJugadores.add(separator);
+		
+		JScrollPane scrollStats2 = new JScrollPane();
+		scrollStats2.setBounds(6, 86, 503, 49);
+		pnlListaJugadores.add(scrollStats2);
+		
+		tblStats2 = new JTable();
+		scrollStats2.setViewportView(tblStats2);
+		tblStats2.setModel(model);
 		
 		
 		
@@ -301,32 +341,35 @@ public class verJugador extends JDialog {
 
 	private static void datosGenerales(Jugador search) { 
 		txtDatosName.setText(search.getNombre());
-		txtDatosEquipo.setText(search.getEquipo().toString());
+		txtDatosEquipo.setText(search.getEquipo());
 		txtDatosPeso.setText(search.getPeso());
 		txtDatosAltura.setText(search.getAltura());
+		txtPosicion.setText(search.getPosicion());
+		txtDorsal.setText(search.getNoDorsal());
+		txtLanza.setText(search.getLanza());
+		txtBatea.setText(search.getBatea());
 	}
-	private static void cargarDatosGenerales(Jugador search) {
-		model.setRowCount(0);
-		fila = new Object[model.getColumnCount()]; 
-			fila[0] = search.getNoDorsal().toString();
-			fila[1] = search.getCantJuegos();
-			fila[2] = search.getErrores();
-			fila[3] = search.getPosicion();
+	 private static void cargarTabla2(Jugador search) { 
+		 model.setRowCount(0);
+		 fila = new Object[model.getColumnCount()];
+		 fila[0] =  ((jugadorPosicion) search).promBateo();
+		 fila[1] =  ((jugadorPosicion) search).getTurnos();
+		 fila[2] =  ((jugadorPosicion) search).getPonches();
+		 fila[3] =  ((jugadorPosicion) search).getBB();
+		 model.addRow(fila);
+	 }
+	
 
-			model.addRow(fila);
-			
-		}
 	private static void cargarDatosEspecificos(Jugador search) { 
 		modelEspecifico.setRowCount(0);
 		fila1 = new Object[modelEspecifico.getColumnCount()];
 			   if (search instanceof jugadorPosicion) {
-				
+				    
 					 fila1[0] = ((jugadorPosicion) search).getHits();
-					 fila1[1] = ((jugadorPosicion) search).getCarrerasAnotadas(); 
-					 fila1[2] = ((jugadorPosicion) search).getCarrerasEmpujadas();
-					 fila1[3] = ((jugadorPosicion) search).getBasesRobadas();
-					 fila1[4] = ((jugadorPosicion) search).getTurnos();
-					 fila1[5] = ((jugadorPosicion) search).getHr();
+					 fila1[1] = ((jugadorPosicion) search).getDobles();
+					 fila1[2] = ((jugadorPosicion) search).getTriples();
+					 fila1[3] = ((jugadorPosicion) search).getHr();
+					
 					 modelEspecifico.addRow(fila1);
 			   }
 			   else {
@@ -348,10 +391,19 @@ public class verJugador extends JDialog {
 		
 		for (Jugador aux : Liga.getInstance().getMisJugadores()) {
 			cbxJugadores.addItem(aux.getNombre().toString());		
-		}
-		for (Equipo auxTeam : Liga.getInstance().getMisEquipos()) {
-			cbxTeams.addItem(auxTeam.getNombreEquipo().toString());
-		}
-			
+		}}
+	private void cargarDatos() { 
+		Jugador auxJugador =Liga.getInstance().buscarPlayerByName(cbxJugadores.getSelectedItem().toString());
+		txtDatosName.setText(auxJugador.getNombre());
+		txtDatosEquipo.setText(auxJugador.getEquipo());
+		txtDatosPeso.setText(auxJugador.getPeso());
+		txtDatosAltura.setText(auxJugador.getAltura());
+		txtPosicion.setText(auxJugador.getPosicion());
+		txtDorsal.setText(auxJugador.getNoDorsal());
+		txtLanza.setText(auxJugador.getLanza());
+		txtBatea.setText(auxJugador.getBatea());
+		
+		
+	
 	}
 }

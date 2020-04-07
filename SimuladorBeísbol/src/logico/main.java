@@ -41,11 +41,12 @@ public class main implements Serializable {
 	 
 		jugadorPosicion bate1 = new jugadorPosicion("Yehudy","24", "2","3","Yankees","10","12","2");
 	//	jugadorPosicion bate2 = new jugadorPosicion("Brayan","25", "5","6","Redsox","10","14","5");
-		bate1.setHits(2);
+	//	bate1.setHits(2);
 		
 	bate1.setHitsPartido(4);
+	bate1.setHitsPartido(10);
 System.out.println(bate1.totalHits());
-bate1.getHits();
+System.out.println(bate1.getHits());
 		//s1.insertarJugador(bate1);
 		//s1.insertarJugador(bate2);
 	//	redsox.insertarJugador(p1);

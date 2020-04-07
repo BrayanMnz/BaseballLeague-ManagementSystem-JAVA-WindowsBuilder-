@@ -18,6 +18,7 @@ public abstract class Jugador implements Serializable{
 	protected String altura;// en metros 
 	protected String peso; //en libras 
 	protected float juegos;
+
 	protected String batea;
 	protected String lanza;
 	protected ArrayList<Lesion> misLesiones; 
@@ -69,6 +70,24 @@ public abstract class Jugador implements Serializable{
 	}
 	public String getEquipo() {
 		return equipo;
+	}
+	public float getJuegos() {
+		return juegos;
+	}
+	public String getBatea() {
+		return batea;
+	}
+	public String getLanza() {
+		return lanza;
+	}
+	public void setJuegos(float juegos) {
+		this.juegos = juegos;
+	}
+	public void setBatea(String batea) {
+		this.batea = batea;
+	}
+	public void setLanza(String lanza) {
+		this.lanza = lanza;
 	}
 	public boolean isLesionado() {
 		return lesionado;
