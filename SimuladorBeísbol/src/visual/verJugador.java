@@ -62,6 +62,12 @@ public class verJugador extends JDialog {
 	private static JTextField txtPosicion;
 	private static JTextField txtDorsal;
 	private JTable tblStats2;
+	private String [] columnNamesPosicion = {"Hits","Dobles", "Triples", "HR"};
+	private String [] columnNamesPitcher = {"Juegos Ganados","Juegos Perdidos", "Carreras Limpias"};
+	private String[] columnNames = {".Prom","Turnos","Ponches","Base por bolas"};
+	private String[] columnNamesPitcherT2 = {"Innings Lanzados","Ponches","Juegos Salvados","Base por bolas"};
+
+
 
 	/**
 	 * Launch the application.
@@ -87,6 +93,14 @@ public class verJugador extends JDialog {
 			}
 			@Override
 			public void windowOpened(WindowEvent e) {
+				if ((identificador instanceof jugadorPosicion && identificador != null)) {
+						modelEspecifico.setColumnIdentifiers(columnNamesPosicion);
+						model.setColumnIdentifiers(columnNames);
+				 }
+				 if (identificador instanceof Pitcher && identificador != null) {
+					 modelEspecifico.setColumnIdentifiers(columnNamesPitcher);
+					 model.setColumnIdentifiers(columnNamesPitcherT2);
+				 }
 				cargarJugadoresCBX ();
 				datosGenerales(identificador);
 				cargarTabla2(identificador);
@@ -124,9 +138,18 @@ public class verJugador extends JDialog {
 		JButton btnBuscar = new JButton("Cargar Jugador");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cargarDatos();
-				
-				
+				playerAux =Liga.getInstance().buscarPlayerByName(cbxJugadores.getSelectedItem().toString());
+				 if ((playerAux instanceof jugadorPosicion && playerAux != null)) {
+						modelEspecifico.setColumnIdentifiers(columnNamesPosicion);
+						model.setColumnIdentifiers(columnNames);
+				 }
+				 if (playerAux instanceof Pitcher && playerAux != null) {
+					 modelEspecifico.setColumnIdentifiers(columnNamesPitcher);
+					 model.setColumnIdentifiers(columnNamesPitcherT2);
+				 }
+				cargarDatos(playerAux);
+				cargarDatosEspecificos(playerAux);
+				cargarTabla2(playerAux);
 			}
 		});
 		btnBuscar.setBounds(219, 24, 150, 23);
@@ -275,8 +298,6 @@ public class verJugador extends JDialog {
 		pnlStatsEquipo.add(txtLanza);
 		txtLanza.setColumns(10);
 		model = new DefaultTableModel();
-		String[] columnNames = {".Prom","Turnos","Ponches","Base por bolas"};
-		model.setColumnIdentifiers(columnNames);
 		
 		JPanel pnlListaJugadores = new JPanel();
 		pnlListaJugadores.setForeground(new Color(0, 255, 255));
@@ -294,14 +315,7 @@ public class verJugador extends JDialog {
 		tablaEspecifico = new JTable();
 	
 		modelEspecifico = new DefaultTableModel();
-		String [] columnNamesPosicion = {"Hits","Dobles", "Triples", "HR"};
-		String [] columnNamesPitcher = {"Juegos Ganados","Juegos Perdidos", "Carreras Limpias", "Innings Lanzados", "Ponches", "BB", "Juegos Salvados"};
-		 if (identificador instanceof jugadorPosicion || (playerAux instanceof jugadorPosicion && playerAux != null)) {
-				modelEspecifico.setColumnIdentifiers(columnNamesPosicion);
-		 }
-		 else {
-			 modelEspecifico.setColumnIdentifiers(columnNamesPitcher);
-		 }
+
 		tablaEspecifico.setModel(modelEspecifico);
 		scrollEspecifico.setViewportView(tablaEspecifico);
 		
@@ -352,11 +366,22 @@ public class verJugador extends JDialog {
 	 private static void cargarTabla2(Jugador search) { 
 		 model.setRowCount(0);
 		 fila = new Object[model.getColumnCount()];
-		 fila[0] =  ((jugadorPosicion) search).promBateo();
-		 fila[1] =  ((jugadorPosicion) search).getTurnos();
-		 fila[2] =  ((jugadorPosicion) search).getPonches();
-		 fila[3] =  ((jugadorPosicion) search).getBB();
-		 model.addRow(fila);
+		 if (search instanceof jugadorPosicion) {
+			 fila[0] =  ((jugadorPosicion) search).promBateo();
+			 fila[1] =  ((jugadorPosicion) search).getTurnos();
+			 fila[2] =  ((jugadorPosicion) search).getPonches();
+			 fila[3] =  ((jugadorPosicion) search).getBB();
+			 model.addRow(fila);
+		 }
+		 if (search instanceof Pitcher) {
+			 fila[0] = ((Pitcher) search).getInningsLanzados();
+			 fila[1] =((Pitcher) search).getPonches();
+			 fila[2] = ((Pitcher) search).getBB();
+			 fila[3] = ((Pitcher) search).getJuegosSalvados();
+			
+			 model.addRow(fila);
+		 }
+
 	 }
 	
 
@@ -372,14 +397,14 @@ public class verJugador extends JDialog {
 					
 					 modelEspecifico.addRow(fila1);
 			   }
-			   else {
+			   if (search instanceof Pitcher) {
 					 fila1[0] = ((Pitcher) search).getJuegoGanado();
 					 fila1[1] =  ((Pitcher) search).getJuegoPerdido();
 					 fila1[2] = ((Pitcher) search).getCarrerasLimpias();
-					 fila1[3] = ((Pitcher) search).getInningsLanzados();
+				/*	 fila1[3] = ((Pitcher) search).getInningsLanzados();
 					 fila1[4] =((Pitcher) search).getPonches();
 					 fila1[5] = ((Pitcher) search).getBB();
-					 fila1[6] = ((Pitcher) search).getJuegosSalvados();
+					 fila1[6] = ((Pitcher) search).getJuegosSalvados();*/
 					 modelEspecifico.addRow(fila1);
 			   }
 
@@ -392,16 +417,15 @@ public class verJugador extends JDialog {
 		for (Jugador aux : Liga.getInstance().getMisJugadores()) {
 			cbxJugadores.addItem(aux.getNombre().toString());		
 		}}
-	private void cargarDatos() { 
-		Jugador auxJugador =Liga.getInstance().buscarPlayerByName(cbxJugadores.getSelectedItem().toString());
-		txtDatosName.setText(auxJugador.getNombre());
-		txtDatosEquipo.setText(auxJugador.getEquipo());
-		txtDatosPeso.setText(auxJugador.getPeso());
-		txtDatosAltura.setText(auxJugador.getAltura());
-		txtPosicion.setText(auxJugador.getPosicion());
-		txtDorsal.setText(auxJugador.getNoDorsal());
-		txtLanza.setText(auxJugador.getLanza());
-		txtBatea.setText(auxJugador.getBatea());
+	private void cargarDatos(Jugador aux) { 
+		txtDatosName.setText(aux.getNombre());
+		txtDatosEquipo.setText(aux.getEquipo());
+		txtDatosPeso.setText(aux.getPeso());
+		txtDatosAltura.setText(aux.getAltura());
+		txtPosicion.setText(aux.getPosicion());
+		txtDorsal.setText(aux.getNoDorsal());
+		txtLanza.setText(aux.getLanza());
+		txtBatea.setText(aux.getBatea());
 		
 		
 	

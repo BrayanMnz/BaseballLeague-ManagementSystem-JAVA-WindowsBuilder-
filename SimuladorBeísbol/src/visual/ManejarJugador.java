@@ -64,6 +64,7 @@ public class ManejarJugador extends JDialog {
     private JLabel lblPos;
     private JComboBox<String> cbxTipoJugador;
     private Jugador identificador;
+    private Equipo teamAux=null;
 	
 
 	/**
@@ -280,6 +281,17 @@ public class ManejarJugador extends JDialog {
 		panel.add(lblFiltrar);
 		
 	    cbxEquipos2 = new JComboBox<String>();
+	    cbxEquipos2.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		if (cbxEquipos2.getSelectedIndex() != 0) {
+		    		teamAux = Liga.getInstance().buscarEquipoByName(cbxEquipos2.getSelectedItem().toString());
+		    		cargarEquipo();
+	    		}
+	    		if (cbxEquipos2.getSelectedIndex() == 0) {
+	    			cargarJugadores();
+	    		}
+	    	}
+	    });
 		cbxEquipos2.setModel(new DefaultComboBoxModel<String>(new String[] {"<Todos>"}));
 		cbxEquipos2.setBounds(94, 10, 138, 22);
 		panel.add(cbxEquipos2);
@@ -349,6 +361,17 @@ public class ManejarJugador extends JDialog {
 		model.setRowCount(0);
 		fila = new Object[model.getColumnCount()];
 		for (logico.Jugador auxJugador : Liga.getInstance().getMisJugadores()) {
+			fila[0] = auxJugador.getNombre();
+			fila[1] = auxJugador.getNoDorsal();
+			fila[2] = auxJugador.getPosicion();
+			fila[3] = auxJugador.getEquipo();
+			model.addRow(fila);
+		}
+	}
+	private void cargarEquipo() {
+		model.setRowCount(0);
+		fila = new Object[model.getColumnCount()];
+		for (logico.Jugador auxJugador : teamAux.getMisJugadores()) {
 			fila[0] = auxJugador.getNombre();
 			fila[1] = auxJugador.getNoDorsal();
 			fila[2] = auxJugador.getPosicion();
