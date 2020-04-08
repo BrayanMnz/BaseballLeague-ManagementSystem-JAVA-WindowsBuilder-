@@ -148,6 +148,15 @@ public class Equipo implements Serializable{
 	}
 	return cantHits;
 } 
+    public float totalHR() { 
+    	float cantHR = 0;
+	for (Jugador auxJugador : misJugadores) {
+		if(auxJugador instanceof jugadorPosicion) { 
+			cantHR += ((jugadorPosicion) auxJugador).getHr();
+		}
+	}
+	return cantHR;
+} 
     
     //Calcular total de turnos del equipo
     public float totalTurnos() { 

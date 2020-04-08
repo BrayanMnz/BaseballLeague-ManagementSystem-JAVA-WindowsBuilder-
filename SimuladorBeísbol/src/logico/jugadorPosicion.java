@@ -116,7 +116,7 @@ public void setBB(float bB) {
 
 
 public float promBateo() { 
-     float avg=0;
+     float avg=.000f;
 	return avg = ((getHits())/(getTurnos()));
 	
 }

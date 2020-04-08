@@ -63,9 +63,9 @@ public class verJugador extends JDialog {
 	private static JTextField txtDorsal;
 	private JTable tblStats2;
 	private String [] columnNamesPosicion = {"Hits","Dobles", "Triples", "HR"};
-	private String [] columnNamesPitcher = {"Juegos Ganados","Juegos Perdidos", "Carreras Limpias"};
+	private String [] columnNamesPitcher = {"Ganados","Perdidos", ".PCL","Innings"};
 	private String[] columnNames = {".Prom","Turnos","Ponches","Base por bolas"};
-	private String[] columnNamesPitcherT2 = {"Innings Lanzados","Ponches","Juegos Salvados","Base por bolas"};
+	private String[] columnNamesPitcherT2 = {"Ponches","Base por bolas","Carreras","Carreras Limpias"};
 
 
 
@@ -138,7 +138,7 @@ public class verJugador extends JDialog {
 		JButton btnBuscar = new JButton("Cargar Jugador");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				playerAux =Liga.getInstance().buscarPlayerByName(cbxJugadores.getSelectedItem().toString());
+				playerAux =Liga.getInstance().buscarJugadorByNombre(cbxJugadores.getSelectedItem().toString());
 				 if ((playerAux instanceof jugadorPosicion && playerAux != null)) {
 						modelEspecifico.setColumnIdentifiers(columnNamesPosicion);
 						model.setColumnIdentifiers(columnNames);
@@ -391,10 +391,10 @@ public class verJugador extends JDialog {
 			 model.addRow(fila);
 		 }
 		 if (search instanceof Pitcher) {
-			 fila[0] = ((Pitcher) search).getInningsLanzados();
-			 fila[1] =((Pitcher) search).getPonches();
-			 fila[2] = ((Pitcher) search).getBB();
-			 fila[3] = ((Pitcher) search).getJuegosSalvados();
+			 fila[0] = ((Pitcher) search).getPonches();
+			 fila[1] =((Pitcher) search).getBB();
+			 fila[2] = ((Pitcher) search).getCarrerasLimpias();
+			 fila[3] = ((Pitcher) search).getCarrerasPermitidas();
 			
 			 model.addRow(fila);
 		 }
@@ -417,7 +417,8 @@ public class verJugador extends JDialog {
 			   if (search instanceof Pitcher) {
 					 fila1[0] = ((Pitcher) search).getJuegoGanado();
 					 fila1[1] =  ((Pitcher) search).getJuegoPerdido();
-					 fila1[2] = ((Pitcher) search).getCarrerasLimpias();
+					 fila1[2] = ((Pitcher) search).efectividad();
+					 fila1[3] =  ((Pitcher) search).getInningsLanzados();
 				/*	 fila1[3] = ((Pitcher) search).getInningsLanzados();
 					 fila1[4] =((Pitcher) search).getPonches();
 					 fila1[5] = ((Pitcher) search).getBB();

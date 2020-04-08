@@ -155,7 +155,7 @@ int option = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar
 					btnVerEquipo.setEnabled(false);
 					btnVerEquipo.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							insertarEstadisticas();
+						
 							VerEquipo v1 = new VerEquipo(identificador);
 							v1.setModal(true);
 							v1.setVisible(true);
@@ -201,15 +201,6 @@ int option = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar
 		}
 	}
 	
-	private static void insertarEstadisticas() { 
-		for (Equipo auxEquipo : Liga.getInstance().getMisEquipos()) {
-			if(auxEquipo.nombreEquipo.equalsIgnoreCase(Liga.getInstance().buscarEquipoByName(identificador).nombreEquipo));
-			auxEquipo.setCarrerasLimpiasPermitidas(5);
-			auxEquipo.setGanados(10);
-			auxEquipo.setPerdidos(3);
-		
-		}
-		
-	}
+
 	
 }

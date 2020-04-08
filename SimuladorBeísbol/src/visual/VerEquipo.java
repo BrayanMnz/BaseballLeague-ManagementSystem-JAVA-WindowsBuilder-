@@ -204,7 +204,7 @@ public class VerEquipo extends JDialog {
 		
 		tableEstadisticasEquipo = new JTable();
 		model = new DefaultTableModel();
-		String[] columnNames = {"Juegos","Ganados","Perdidos","Prom","ERA","Hits","Carreras"};
+		String[] columnNames = {"Ganados","Perdidos",".Prom",".PCL","Hits","HR","Carreras"};
 		model.setColumnIdentifiers(columnNames);
         tableEstadisticasEquipo.setModel(model);
 		scrollPane.setViewportView(tableEstadisticasEquipo);
@@ -265,12 +265,13 @@ public class VerEquipo extends JDialog {
 		fila = new Object[model.getColumnCount()]; 
 		Equipo auxEquipo = Liga.getInstance().buscarEquipoByName(identificador);
 			//fila[0] = auxEquipo.getCantJuegos();
-			fila[1] = auxEquipo.getGanados();
-			fila[2] = auxEquipo.getPerdidos();
-		//	fila[3] = auxEquipo.promColectivo();
-		//	fila[4] = auxEquipo.eraColectiva();
-		//	fila[5] = auxEquipo.totalHits(); 
-		//	fila[6] = auxEquipo.totalCarreras();
+			fila[0] = auxEquipo.getGanados();
+			fila[1] = auxEquipo.getPerdidos();
+		    fila[2] = auxEquipo.promColectivo();
+			fila[3] = auxEquipo.eraColectiva();
+			fila[4] = auxEquipo.totalHits(); 
+			fila[5] = auxEquipo.totalHR();
+			fila[6] = auxEquipo.totalCarreras();
 			model.addRow(fila);
 			
 		}

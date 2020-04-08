@@ -23,6 +23,7 @@ import logico.Equipo;
 import logico.Jugador;
 import logico.Liga;
 import logico.Partido;
+import logico.Pitcher;
 import logico.jugadorPosicion;
 
 import javax.swing.border.EtchedBorder;
@@ -41,12 +42,15 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class IniciarPartido extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private static JTable tblLocal;
 	private static JTable tblVisita;
+	private static JTable tableInnings;
 	
 	private static DefaultTableModel model; 
 	private static DefaultTableModel model1;
@@ -59,22 +63,34 @@ public class IniciarPartido extends JDialog {
 
 	private static JTextField txtNombreEquipo;
 	private static  JTextField txtNombreLanzador;
-	private JTextField txtInnings;
 	private static 	JScrollPane scpnVisitante;
 	private static 	JScrollPane scpnLocal;
 	private static JButton btnVisitante;
 private static JButton btnLocal;
-private static JTable tableInnings;
+
 private static JTextField txtNombreVis;
-private JTextField txtinningsVis;
-private JTextField txtCarrerasLocal;
-private JTextField txtHitsLocal;
-private JTextField txtErroresLocal;
-private JTextField txtCarrerasVisitante;
-private JTextField txtHitsVisitante;
-private JTextField txtErroresVisitante;
 private static  int  auxf =0;
 private static jugadorPosicion auxJugador=null;
+
+private static JSpinner spnOuts;
+private static JSpinner spnPonches;
+private static JSpinner spnBB;
+private static JSpinner spnCarreras;
+private static JSpinner spnCarrerasL;
+private static JSpinner spnOutsVis;
+private static JSpinner spnPonchesVis;
+private static JSpinner spnBBVis;
+private static JSpinner spnCarPerVis;
+private static JSpinner spnCarrLVis;
+private static JTextField txtPartido;
+private static Partido auxPartido1;
+private static JFormattedTextField txtCarrerasLocal;
+private static JFormattedTextField txtErroresLocal;
+private static JFormattedTextField txtCarrerasVisitante;
+private static JFormattedTextField txtHitsVisitante;
+private static JFormattedTextField txtErroresVisitante;
+private static JFormattedTextField txtHitsLocal;
+
 
 	/**
 	 * Launch the application.
@@ -92,6 +108,7 @@ private static jugadorPosicion auxJugador=null;
 	/**
 	 * Create the dialog.
 	 */
+	@SuppressWarnings("deprecation")
 	public IniciarPartido(String auxID) {
 		setResizable(false);
 		setTitle("Partido en curso ");
@@ -102,6 +119,8 @@ private static jugadorPosicion auxJugador=null;
 				cargarLineupVisitante();
 				cargarMarcador();
 				cargarLanzadores();
+				 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
+				 txtPartido.setText(auxPartido.getIdPartido());
 			}
 		});
 		this.auxID = auxID;
@@ -286,12 +305,41 @@ private static jugadorPosicion auxJugador=null;
 			panelAnotacion.add(btnVisitante);
 			
 			JButton btnNewButton = new JButton("New button");
-			btnNewButton.setBounds(704, 24, 89, 23);
+			btnNewButton.setBounds(752, 40, 89, 23);
 			panelAnotacion.add(btnNewButton);
+			
+			JSpinner spinnerInnings = new JSpinner();
+			spinnerInnings.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					int i=0;
+					spinnerInnings.getNextValue();
+					
+				}
+			});
+			spinnerInnings.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+			spinnerInnings.setBounds(811, 12, 30, 20);
+			panelAnotacion.add(spinnerInnings);
+			
+			JLabel lblIDPartido = new JLabel("ID del partido: ");
+			lblIDPartido.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
+			lblIDPartido.setBounds(350, 33, 155, 30);
+			panelAnotacion.add(lblIDPartido);
+			
+			txtPartido = new JTextField();
+			txtPartido.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
+			txtPartido.setEnabled(false);
+			txtPartido.setEditable(false);
+			txtPartido.setBounds(494, 33, 124, 28);
+			panelAnotacion.add(txtPartido);
+			txtPartido.setColumns(10);
 			btnNewButton.addActionListener(new ActionListener() {
 				
 				public void actionPerformed(ActionEvent e) {
-					cargarEstadisticasJugadores();	
+					cargarEstadisticasJugadoresLocal();
+					cargarEstadisticasJugadoresVisitante();
+					cargarStatsPitcherLocal();
+					cargarStatsPitcherVis();
+					cargarCarreras();
 					
 				}
 			});
@@ -455,14 +503,6 @@ private static jugadorPosicion auxJugador=null;
 		separator_2.setBounds(10, 80, 201, 2);
 		panel_1.add(separator_2);
 		
-		txtCarrerasLocal = new JTextField();
-		txtCarrerasLocal.setFont(new Font("Tahoma", Font.BOLD, 20));
-		txtCarrerasLocal.setOpaque(false);
-		txtCarrerasLocal.setEditable(false);
-		txtCarrerasLocal.setBounds(25, 49, 24, 26);
-		panel_1.add(txtCarrerasLocal);
-		txtCarrerasLocal.setColumns(10);
-		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setBounds(69, 11, 2, 102);
@@ -473,46 +513,102 @@ private static jugadorPosicion auxJugador=null;
 		separator_3.setBounds(147, 11, 2, 102);
 		panel_1.add(separator_3);
 		
-		txtHitsLocal = new JTextField();
-		txtHitsLocal.setFont(new Font("Tahoma", Font.BOLD, 20));
-		txtHitsLocal.setOpaque(false);
-		txtHitsLocal.setEditable(false);
-		txtHitsLocal.setBounds(96, 49, 24, 26);
-		panel_1.add(txtHitsLocal);
-		txtHitsLocal.setColumns(10);
+		 txtCarrerasLocal = new JFormattedTextField();
+			MaskFormatter auxFormato1 = null;
+			try {
+				auxFormato1 = new MaskFormatter("##");
+				auxFormato1.setPlaceholder("00");
+				} catch (ParseException e) {
+			
+				e.printStackTrace();
+			}
+			
+		     txtCarrerasLocal = new JFormattedTextField(auxFormato1);
+		    
+		 txtCarrerasLocal.setEditable(false);
+		 txtCarrerasLocal.setOpaque(false);
+		txtCarrerasLocal.setBounds(10, 49, 49, 26);
+		panel_1.add(txtCarrerasLocal);
 		
-		txtErroresLocal = new JTextField();
-		txtErroresLocal.setFont(new Font("Tahoma", Font.BOLD, 20));
-		txtErroresLocal.setOpaque(false);
-		txtErroresLocal.setEditable(false);
-		txtErroresLocal.setBounds(169, 49, 24, 26);
-		panel_1.add(txtErroresLocal);
-		txtErroresLocal.setColumns(10);
-		
-		txtCarrerasVisitante = new JTextField();
+ txtCarrerasVisitante = new JFormattedTextField();
+	MaskFormatter auxFormato2 = null;
+	try {
+		auxFormato2 = new MaskFormatter("##");
+		auxFormato2.setPlaceholder("00");
+		} catch (ParseException e) {
+	
+		e.printStackTrace();
+	}
+	
+     txtCarrerasVisitante = new JFormattedTextField(auxFormato2);
 		txtCarrerasVisitante.setOpaque(false);
-		txtCarrerasVisitante.setFont(new Font("Tahoma", Font.BOLD, 20));
-		txtCarrerasLocal.setOpaque(false);
 		txtCarrerasVisitante.setEditable(false);
-		txtCarrerasVisitante.setColumns(10);
-		txtCarrerasVisitante.setBounds(25, 87, 24, 26);
+		txtCarrerasVisitante.setBounds(10, 87, 49, 26);
 		panel_1.add(txtCarrerasVisitante);
 		
-		txtHitsVisitante = new JTextField();
-		txtHitsVisitante.setFont(new Font("Tahoma", Font.BOLD, 20));
-		txtHitsVisitante.setOpaque(false);
+		 txtHitsLocal = new JFormattedTextField();
+			MaskFormatter auxFormato3 = null;
+			try {
+				auxFormato3 = new MaskFormatter("##");
+				auxFormato3.setPlaceholder("00");
+				} catch (ParseException e) {
+			
+				e.printStackTrace();
+			}
+			
+		     txtHitsLocal = new JFormattedTextField(auxFormato3);
+		 txtHitsLocal.setOpaque(false);
+		txtHitsLocal.setEditable(false);
+		txtHitsLocal.setBounds(81, 49, 49, 26);
+		panel_1.add(txtHitsLocal);
+		
+	 txtHitsVisitante = new JFormattedTextField();
+		MaskFormatter auxFormato4 = null;
+		try {
+			auxFormato4 = new MaskFormatter("##");
+			auxFormato4.setPlaceholder("00");
+			} catch (ParseException e) {
+		
+			e.printStackTrace();
+		}
+		
+	     txtHitsVisitante = new JFormattedTextField(auxFormato4);
+	 txtHitsVisitante.setOpaque(false);
 		txtHitsVisitante.setEditable(false);
-		txtHitsVisitante.setColumns(10);
-		txtHitsVisitante.setBounds(96, 87, 24, 26);
+		txtHitsVisitante.setBounds(81, 87, 49, 26);
 		panel_1.add(txtHitsVisitante);
 		
-		txtErroresVisitante = new JTextField();
-		txtErroresVisitante.setFont(new Font("Tahoma", Font.BOLD, 20));
-		txtErroresVisitante.setOpaque(false);
+	 txtErroresVisitante = new JFormattedTextField();
+		MaskFormatter auxFormato5 = null;
+		try {
+			auxFormato5 = new MaskFormatter("##");
+			auxFormato5.setPlaceholder("00");
+			} catch (ParseException e) {
+		
+			e.printStackTrace();
+		}
+		
+	     txtErroresVisitante = new JFormattedTextField(auxFormato5);	
+	 txtErroresVisitante.setOpaque(false);
 		txtErroresVisitante.setEditable(false);
-		txtErroresVisitante.setColumns(10);
-		txtErroresVisitante.setBounds(169, 87, 24, 26);
+		txtErroresVisitante.setBounds(159, 87, 49, 26);
 		panel_1.add(txtErroresVisitante);
+		
+		 txtErroresLocal = new JFormattedTextField();
+			MaskFormatter auxFormato6 = null;
+			try {
+				auxFormato6 = new MaskFormatter("##");
+				auxFormato6.setPlaceholder("00");
+				} catch (ParseException e) {
+			
+				e.printStackTrace();
+			}
+			
+		     txtErroresLocal = new JFormattedTextField(auxFormato6);
+		txtErroresLocal.setOpaque(false);
+		txtErroresLocal.setEditable(false);
+		txtErroresLocal.setBounds(159, 49, 49, 26);
+		panel_1.add(txtErroresLocal);
 		
 		JPanel pnlLanzador = new JPanel();
 		pnlLanzador.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "  Lanzador Equipo Local:   ", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -535,51 +631,45 @@ private static jugadorPosicion auxJugador=null;
 		lblOutsRealizados.setBounds(322, 11, 109, 14);
 		pnlLanzador.add(lblOutsRealizados);
 		
-		JSpinner spnOuts = new JSpinner();
-		spnOuts.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		spnOuts = new JSpinner();
+		spnOuts.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
 		spnOuts.setBounds(263, 26, 168, 20);
 		pnlLanzador.add(spnOuts);
 		
-		JLabel lblInnings = new JLabel("Innings Lanzados:");
-		lblInnings.setBounds(10, 57, 168, 14);
-		pnlLanzador.add(lblInnings);
-		
-		txtInnings = new JTextField();
-		txtInnings.setEditable(false);
-		txtInnings.setBounds(10, 76, 168, 20);
-		pnlLanzador.add(txtInnings);
-		txtInnings.setColumns(10);
-		
 		JLabel lblPonches = new JLabel("Ponches:");
-		lblPonches.setBounds(10, 107, 168, 14);
+		lblPonches.setBounds(263, 75, 168, 14);
 		pnlLanzador.add(lblPonches);
 		
-		JSpinner spnPonches = new JSpinner();
-		spnPonches.setBounds(10, 122, 168, 20);
+		 spnPonches = new JSpinner();
+		 spnPonches.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
+		spnPonches.setBounds(263, 100, 168, 20);
 		pnlLanzador.add(spnPonches);
 		
 		JLabel lblNewLabel = new JLabel("Bases por bolas: ");
-		lblNewLabel.setBounds(10, 147, 168, 14);
+		lblNewLabel.setBounds(263, 141, 168, 14);
 		pnlLanzador.add(lblNewLabel);
 		
-		JSpinner spnBB = new JSpinner();
-		spnBB.setBounds(10, 166, 168, 20);
+		 spnBB = new JSpinner();
+		 spnBB.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
+		spnBB.setBounds(263, 166, 168, 20);
 		pnlLanzador.add(spnBB);
 		
-		JLabel lblCarrerasPerm = new JLabel("Carreras Permitidas:");
-		lblCarrerasPerm.setBounds(263, 57, 168, 14);
+		JLabel lblCarrerasPerm = new JLabel("Carreras Sucias Permitidas:");
+		lblCarrerasPerm.setBounds(10, 75, 168, 14);
 		pnlLanzador.add(lblCarrerasPerm);
 		
-		JSpinner spnCarreras = new JSpinner();
-		spnCarreras.setBounds(263, 76, 168, 20);
+	  spnCarreras = new JSpinner();
+		spnCarreras.setBounds(10, 100, 168, 20);
+		spnCarreras.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
 		pnlLanzador.add(spnCarreras);
 		
 		JLabel lblCarrerasLimp = new JLabel("Carreras Limpias Permitidas: ");
-		lblCarrerasLimp.setBounds(263, 107, 168, 14);
+		lblCarrerasLimp.setBounds(10, 141, 168, 14);
 		pnlLanzador.add(lblCarrerasLimp);
 		
-		JSpinner spnCarrerasL = new JSpinner();
-		spnCarrerasL.setBounds(263, 122, 168, 20);
+		 spnCarrerasL = new JSpinner();
+		 spnCarrerasL.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
+		spnCarrerasL.setBounds(10, 166, 168, 20);
 		pnlLanzador.add(spnCarrerasL);
 		
 		JLabel lblFondo2 = new JLabel("");
@@ -604,54 +694,49 @@ private static jugadorPosicion auxJugador=null;
 		txtNombreVis.setBounds(10, 26, 168, 20);
 		panel_2.add(txtNombreVis);
 		
-		JLabel lblInningsVis = new JLabel("Innings Lanzados:");
-		lblInningsVis.setBounds(10, 57, 168, 14);
-		panel_2.add(lblInningsVis);
-		
-		txtinningsVis = new JTextField();
-		txtinningsVis.setEditable(false);
-		txtinningsVis.setColumns(10);
-		txtinningsVis.setBounds(10, 76, 168, 20);
-		panel_2.add(txtinningsVis);
-		
 		JLabel lblPonchesVis = new JLabel("Ponches:");
-		lblPonchesVis.setBounds(10, 107, 168, 14);
+		lblPonchesVis.setBounds(263, 75, 168, 14);
 		panel_2.add(lblPonchesVis);
 		
-		JSpinner spnPonchesVis = new JSpinner();
-		spnPonchesVis.setBounds(10, 122, 168, 20);
+		 spnPonchesVis = new JSpinner();
+		spnPonchesVis.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
+		spnPonchesVis.setBounds(263, 100, 168, 20);
 		panel_2.add(spnPonchesVis);
 		
 		JLabel lblBBVis = new JLabel("Bases por bolas: ");
-		lblBBVis.setBounds(10, 147, 168, 14);
+		lblBBVis.setBounds(263, 141, 168, 14);
 		panel_2.add(lblBBVis);
 		
-		JSpinner spnBBVis = new JSpinner();
-		spnBBVis.setBounds(10, 166, 168, 20);
+	 spnBBVis = new JSpinner();
+		spnBBVis.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
+		spnBBVis.setBounds(263, 166, 168, 20);
 		panel_2.add(spnBBVis);
 		
 		JLabel lblOutsRVis = new JLabel("Outs Realizados:");
 		lblOutsRVis.setBounds(319, 11, 112, 14);
 		panel_2.add(lblOutsRVis);
 		
-		JSpinner spnOutsVis = new JSpinner();
+	 spnOutsVis = new JSpinner();
+		spnOutsVis.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
 		spnOutsVis.setBounds(263, 26, 168, 20);
 		panel_2.add(spnOutsVis);
 		
-		JLabel lblCarrerasPerVis = new JLabel("Carreras Permitidas:");
-		lblCarrerasPerVis.setBounds(263, 57, 168, 14);
+		JLabel lblCarrerasPerVis = new JLabel("Carreras Sucias Permitidas:");
+		lblCarrerasPerVis.setBounds(10, 75, 168, 14);
 		panel_2.add(lblCarrerasPerVis);
 		
-		JSpinner SpnCarPerVis = new JSpinner();
-		SpnCarPerVis.setBounds(263, 76, 168, 20);
-		panel_2.add(SpnCarPerVis);
+	    spnCarPerVis = new JSpinner();
+		spnCarPerVis.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
+		spnCarPerVis.setBounds(10, 100, 168, 20);
+		panel_2.add(spnCarPerVis);
 		
 		JLabel lblCarrLimPeVis = new JLabel("Carreras Limpias Permitidas: ");
-		lblCarrLimPeVis.setBounds(263, 107, 168, 14);
+		lblCarrLimPeVis.setBounds(10, 141, 168, 14);
 		panel_2.add(lblCarrLimPeVis);
 		
-		JSpinner spnCarrLVis = new JSpinner();
-		spnCarrLVis.setBounds(263, 122, 168, 20);
+	    spnCarrLVis = new JSpinner();
+		spnCarrLVis.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
+		spnCarrLVis.setBounds(10, 166, 168, 20);
 		panel_2.add(spnCarrLVis);
 		
 		JLabel lblNewLabel_2 = new JLabel("");
@@ -712,18 +797,18 @@ private static jugadorPosicion auxJugador=null;
 		     	       
 			fila2[0] = auxPartido.getLocal().getNombreEquipo();
 			 for(int i=1; i<=12 ; i++) {
-			fila2[i] = "  -  ";    }
+			fila2[i] = 0;    }
 				model2.addRow(fila2);  
 			 fila2[0] = auxPartido.getVisitante().getNombreEquipo();
 			 for(int i=1; i<=12 ; i++) {
-					fila2[i] = "  -  ";    }
+					fila2[i] = 0;    }
 			model2.addRow(fila2);  } 
 	
 
-public static void cargarEstadisticasJugadores() { 
+public static void cargarEstadisticasJugadoresLocal() { 
 for(int i =0; i<=2 ; i++) {  // i representa la fila de la tabla, j a la columna. 
 String aux = (String)tblLocal.getModel().getValueAt(i, 0).toString();
- auxJugador = (jugadorPosicion) Liga.getInstance().buscarPlayerByName(aux);
+ auxJugador = (jugadorPosicion) Liga.getInstance().buscarJugadorByNombre(aux);
 for(int j =1; j<13; j++) { 
 	int auxH= Integer.parseInt(tblLocal.getModel().getValueAt(i, j).toString());
 
@@ -749,25 +834,104 @@ for(int j =1; j<13; j++) {
 	} else if (auxH ==6 ) { 
 		 auxJugador.setTurnos(auxJugador.getTurnos()+1);
 		auxJugador.setPonches(auxJugador.getPonches()+1);
-	} 
-	 
-} } 
+	} } } 
  
- //System.out.println(auxf);
-// System.out.println(auxJugador.totalHits());
+}
 
+public static void cargarEstadisticasJugadoresVisitante() { 
+for(int i =0; i<=1 ; i++) {  // i representa la fila de la tabla, j a la columna. 
+String aux = (String)tblVisita.getModel().getValueAt(i, 0).toString();
+ auxJugador = (jugadorPosicion) Liga.getInstance().buscarJugadorByNombre(aux);
+for(int j =1; j<13; j++) { 
+	int auxH= Integer.parseInt(tblVisita.getModel().getValueAt(i, j).toString());
+
+	
+	
+	//System.out.println(auxH);
+	 if(auxH == 1) { 
+
+	   auxJugador.setHits(auxJugador.getHits()+1);
+	   auxJugador.setTurnos(auxJugador.getTurnos()+1);
+	} else if (auxH ==2 ) { 
+		auxJugador.setDobles(auxJugador.getDobles()+1);
+		 auxJugador.setTurnos(auxJugador.getTurnos()+1);
+	} else if (auxH ==3 ) { 
+		auxJugador.setTriples(auxJugador.getTriples()+1);
+		 auxJugador.setTurnos(auxJugador.getTurnos()+1);
+	} else if (auxH ==4 ) { 
+		auxJugador.setHr(auxJugador.getHr()+1);
+		 auxJugador.setTurnos(auxJugador.getTurnos()+1);
+	} else if (auxH ==5 ) { 
+		auxJugador.setBB(auxJugador.getBB()+1);
+		
+	} else if (auxH ==6 ) { 
+		 auxJugador.setTurnos(auxJugador.getTurnos()+1);
+		auxJugador.setPonches(auxJugador.getPonches()+1);
+	} } } 
  
-    	
-    	
-    
+}
+
+public static void cargarCarreras() { 
+for(int i =0; i<=1 ; i++) {  // i representa la fila de la tabla, j a la columna. 
+	 auxPartido1 = Liga.getInstance().buscarPartidoById(auxID);
+
+	 
+String aux = (String)tableInnings.getModel().getValueAt(i, 0).toString();
+
+ Equipo auxEquipo = (Equipo) Liga.getInstance().buscarEquipoByName(aux);
+for(int j =1; j<13; j++) { 
+	
+	int auxH= Integer.parseInt(tableInnings.getModel().getValueAt(i, j).toString());
+    if(aux.equalsIgnoreCase(auxPartido1.getLocal().getNombreEquipo())) {       
+	auxPartido1.setLocalRun(auxPartido1.getLocalRun()+ auxH); } 
+    else if(aux.equalsIgnoreCase(auxPartido1.getVisitante().getNombreEquipo())) { 
+    	auxPartido1.setVisitaRun(auxPartido1.getVisitaRun() + auxH);
+    }
+
+
 } 
+} txtCarrerasLocal.setText(""+auxPartido1.getLocalRun());
+ txtCarrerasVisitante.setText(""+auxPartido1.getVisitaRun());
+}
+
+
+public static void cargarStatsPitcherLocal() { 
+	
+	Jugador auxPitcher = Liga.getInstance().buscarJugadorByNombre( LineupPartido.cbxPitcherLocal.getSelectedItem().toString());
+	
+	
+	 ((Pitcher) auxPitcher).setBB( ((Pitcher) auxPitcher).getBB()+((float)spnBB.getValue()));
+	 ((Pitcher) auxPitcher).setPonches( ((Pitcher) auxPitcher).getPonches()+((float)spnPonches.getValue()));
+	 ((Pitcher) auxPitcher).setCarrerasLimpias( ((Pitcher) auxPitcher).getCarrerasLimpias()+((float)spnCarrerasL.getValue()));
+	 ((Pitcher) auxPitcher).setInningsLanzados((float) (((Pitcher) auxPitcher).getInningsLanzados()+((float)spnOuts.getValue()*(0.3333333333))));
+
+   float auxCarreras = (((float)spnBB.getValue())+ (float)(spnCarreras.getValue()));
+	 ((Pitcher) auxPitcher).setCarrerasPermitidas(auxCarreras + ((Pitcher) auxPitcher).getCarrerasPermitidas() );
+
+}
+public static void cargarStatsPitcherVis() { 
+	 Jugador auxPitcher = Liga.getInstance().buscarJugadorByNombre( LineupPartido.cbxPitcherVisitante.getSelectedItem().toString());
+     
+	 
+	
+	 ((Pitcher) auxPitcher).setBB( ((Pitcher) auxPitcher).getBB()+((float)spnBBVis.getValue()));
+	 ((Pitcher) auxPitcher).setPonches( ((Pitcher) auxPitcher).getPonches()+((float)spnPonchesVis.getValue()));
+	 ((Pitcher) auxPitcher).setCarrerasLimpias( ((Pitcher) auxPitcher).getCarrerasLimpias()+((float)spnCarrLVis.getValue()));
+	 ((Pitcher) auxPitcher).setInningsLanzados((float) (((Pitcher) auxPitcher).getInningsLanzados()+((float)spnOutsVis.getValue()*(0.3333333333))));
+
+    float auxCarreras = (((float)spnBB.getValue())+ (float)(spnCarPerVis.getValue()));
+	 ((Pitcher) auxPitcher).setCarrerasPermitidas(auxCarreras + ((Pitcher) auxPitcher).getCarrerasPermitidas() );
+
+}
+
+
 
    public static void cargarLanzadores() { 
 	
-	   Jugador auxJugador = Liga.getInstance().buscarPlayerByName( LineupPartido.cbxPitcherLocal.getSelectedItem().toString());
+	   Jugador auxJugador = Liga.getInstance().buscarJugadorByNombre( LineupPartido.cbxPitcherLocal.getSelectedItem().toString());
 	    txtNombreLanzador.setText(auxJugador.getNombre());
 	    
-	    Jugador auxJugadorVis = Liga.getInstance().buscarPlayerByName( LineupPartido.cbxPitcherVisitante.getSelectedItem().toString());
+	    Jugador auxJugadorVis = Liga.getInstance().buscarJugadorByNombre( LineupPartido.cbxPitcherVisitante.getSelectedItem().toString());
           txtNombreVis.setText(auxJugadorVis.getNombre());
    }
 } 

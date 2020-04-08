@@ -259,7 +259,7 @@ public class mainVisual extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				index = tablePartidosHoy.getSelectedRow();
 				if(index >= 0) { 
-					auxIDPartido = (String)tablePartidosHoy.getModel().getValueAt(index, 0);
+					auxIDPartido = (String)tablePartidosHoy.getModel().getValueAt(index, 0).toString();
 					btnReprogramar.setEnabled(true);
 					btnIniciarPartido.setEnabled(true);
 					
@@ -277,6 +277,7 @@ public class mainVisual extends JFrame {
 			
 				
 				LineupPartido p1 = new LineupPartido(auxIDPartido);
+				
 				p1.setLocationRelativeTo(null);
 				p1.setModal(true);
 				p1.setVisible(true);
@@ -294,14 +295,15 @@ public class mainVisual extends JFrame {
 					if(auxIDPartido.equalsIgnoreCase(auxPartido.getIdPartido())) { 
 						int option = JOptionPane.showConfirmDialog(null, "Está seguro que desea reprogramar este partido? " ,"Información",JOptionPane.WARNING_MESSAGE);
 						if(option == JOptionPane.OK_OPTION) {  
-							
+							ModificarPartido p1 = new ModificarPartido(auxPartido.getIdPartido());
 							Liga.getInstance().EliminarPartido(auxPartido);
-							ModificarPartido p1 = new ModificarPartido();
+							
 							p1.setModal(true);
 							p1.setVisible(true);
 							p1.setLocationRelativeTo(null); 
 							btnReprogramar.setEnabled(false);
 							btnIniciarPartido.setEnabled(false);
+					
 							
 						}
 							  

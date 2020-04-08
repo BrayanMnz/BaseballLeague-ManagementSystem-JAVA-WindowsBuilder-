@@ -52,13 +52,14 @@ public class ModificarPartido extends JDialog {
 	private JSpinner spnFechaPartido;
 	private JFormattedTextField formattedFechaPartido;
 	private JButton btnProgramar; 
+	private static String auxID;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			ModificarPartido dialog = new ModificarPartido();
+			ModificarPartido dialog = new ModificarPartido(auxID);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -69,7 +70,8 @@ public class ModificarPartido extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ModificarPartido() {
+	public ModificarPartido(String auxID) {
+		this.auxID = auxID;
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowActivated(WindowEvent e) {
@@ -77,7 +79,7 @@ public class ModificarPartido extends JDialog {
 				 
 			}
 		});
-		Partido aux = mainVisual.partidoSeleccionadoTabla();
+		
 		setModal(true);
 		setTitle("Reprogramar partido ");
 		setBounds(100, 100, 484, 321);
@@ -146,7 +148,7 @@ public class ModificarPartido extends JDialog {
 			 panelProgramar.add(lblIDPartido);
 			 
 			 txtIDPartido = new JTextField();
-			 txtIDPartido.setText(aux.getIdPartido());
+			 txtIDPartido.setText(auxID);
 			 txtIDPartido.setEnabled(false);
 			 txtIDPartido.setBounds(290, 53, 130, 20);
 			 panelProgramar.add(txtIDPartido);

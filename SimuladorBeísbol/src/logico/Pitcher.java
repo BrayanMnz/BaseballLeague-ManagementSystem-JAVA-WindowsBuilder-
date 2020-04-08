@@ -8,6 +8,7 @@ public class Pitcher extends Jugador {
 	private float juegoGanado;
 	private float juegoPerdido;
 	private float carrerasLimpias;	 //ER EARNED RUNS 
+	private float carrerasPermitidas;
 	private float inningsLanzados; 
 	private float ponches; 
 	private float BB;
@@ -19,6 +20,12 @@ public class Pitcher extends Jugador {
 	}
 	public float getCarrerasLimpias() {
 		return carrerasLimpias;
+	}
+	public float getCarrerasPermitidas() {
+		return carrerasPermitidas;
+	}
+	public void setCarrerasPermitidas(float carrerasPermitidas) {
+		this.carrerasPermitidas = carrerasPermitidas;
 	}
 	public void setCarrerasLimpias(float carrerasLimpias) {
 		this.carrerasLimpias = carrerasLimpias;
@@ -72,7 +79,7 @@ public class Pitcher extends Jugador {
 	}
 	
 public float efectividad() { 
-	float era=0; 
+	float era=0.00f; 
 	return era = (getCarrerasLimpias()*9) / getInningsLanzados();
 }
 //@Override
