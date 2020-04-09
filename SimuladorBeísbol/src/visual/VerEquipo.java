@@ -32,11 +32,11 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EtchedBorder;
+import javax.swing.DefaultComboBoxModel;
 
 public class VerEquipo extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private static JTextField txtBuscarEquipo;
 	private static JTextField txtDatosNombre;
 	private static JTextField txtDatosidEquipo;
 	private static JTextField txtDatosEstadio;
@@ -50,6 +50,7 @@ public class VerEquipo extends JDialog {
 	private static Object[] fila1;
 	private static Object[] fila; 
 	private JTable tablaNomina;
+	private static JComboBox<String> comboBox;
 
 	/**
 	 * Launch the application.
@@ -77,6 +78,7 @@ public class VerEquipo extends JDialog {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				informacionEquipo();
+				cargarEquiposEnCBX();
 			
 				cargarEstadisticasEquipos();
 				cargarNomina();
@@ -96,41 +98,30 @@ public class VerEquipo extends JDialog {
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblBuscarEquipo = new JLabel("ID Equipo: ");
-		lblBuscarEquipo.setBackground(new Color(230, 230, 250));
-		lblBuscarEquipo.setBounds(10, 26, 80, 14);
-		panel.add(lblBuscarEquipo);
-		
-		txtBuscarEquipo = new JTextField();
-		txtBuscarEquipo.setBounds(100, 23, 262, 20);
-		panel.add(txtBuscarEquipo);
-		txtBuscarEquipo.setColumns(10);
-		
 		JButton btnBuscarEquipo = new JButton("Buscar");
 		btnBuscarEquipo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Equipo auxEquipo = Liga.getInstance().buscarEquipoById(txtBuscarEquipo.getText());
-			    if(auxEquipo == null) { 
-			    	int option = JOptionPane.showConfirmDialog(null, "Equipo no encontrado, Desea crearlo?", "Error", JOptionPane.YES_NO_OPTION, 
-							JOptionPane.QUESTION_MESSAGE);
-			    	if(option == JOptionPane.YES_OPTION) { 
-			    		RegistrarEquipo team1 = new RegistrarEquipo();
-			    		team1.setModal(true);
-			    		team1.setVisible(true);
-			    		txtBuscarEquipo.setText("");
-			    		informacionEquipo();
-			    	}
-			    }
-			    else if (auxEquipo.equals(Liga.getInstance().buscarEquipoById(txtBuscarEquipo.getText()))) { 
-			    informacionEquipo();
-			    	
-			    }
+		 
+	
+			    	cargarEstadisticasEquipos1();
+			    	cargarNomina1();
+			    		informacionEquipo1();
+		
 			}
 
 
 		});
 		btnBuscarEquipo.setBounds(372, 22, 101, 23);
 		panel.add(btnBuscarEquipo);
+		
+		 comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"<Seleccione>"}));
+		comboBox.setBounds(99, 22, 246, 22);
+		panel.add(comboBox);
+		
+		JLabel lblNewLabel_1 = new JLabel("Ir a :");
+		lblNewLabel_1.setBounds(22, 26, 46, 14);
+		panel.add(lblNewLabel_1);
 		
 		JPanel panelDatosEquipo = new JPanel();
 		panelDatosEquipo.setBackground(new Color(204, 204, 204));
@@ -293,7 +284,52 @@ public class VerEquipo extends JDialog {
 		}
 	}
 	
-
-	
+	private void cargarEquiposEnCBX () {
+		
+		for (Equipo aux : Liga.getInstance().getMisEquipos()) {
+			comboBox.addItem(aux.getNombreEquipo());
+			
+			
+		} }
+	private static void informacionEquipo1() { 
+		Equipo auxEquipo = Liga.getInstance().buscarEquipoByName(comboBox.getSelectedItem().toString());
+		txtDatosNombre.setText(auxEquipo.getNombreEquipo());
+		txtDatosidEquipo.setText(auxEquipo.getId());
+		txtDatosFechaFundacion.setText(auxEquipo.getFechaFundacion());
+		txtDatosTrainer.setText(auxEquipo.getTrainer());
+		txtDatosEstadio.setText(auxEquipo.getEstadio());
+	}
+	private static void cargarEstadisticasEquipos1() {
+		model.setRowCount(0);
+		fila = new Object[model.getColumnCount()]; 
+		Equipo auxEquipo = Liga.getInstance().buscarEquipoByName(comboBox.getSelectedItem().toString());
+			//fila[0] = auxEquipo.getCantJuegos();
+			fila[0] = auxEquipo.getGanados();
+			fila[1] = auxEquipo.getPerdidos();
+		    fila[2] = auxEquipo.promColectivo();
+			fila[3] = auxEquipo.eraColectiva();
+			fila[4] = auxEquipo.totalHits(); 
+			fila[5] = auxEquipo.totalHR();
+			fila[6] = auxEquipo.totalCarreras();
+			model.addRow(fila);
+			
+		}
+	private static void cargarNomina1() { 
+		model1.setRowCount(0);
+		fila1 = new Object[model1.getColumnCount()];
+		Equipo auxEquipo = Liga.getInstance().buscarEquipoByName(comboBox.getSelectedItem().toString());
+		 for (Jugador auxJugador : Liga.getInstance().getMisJugadores()) {
+			 if(auxJugador.getEquipo().equalsIgnoreCase(auxEquipo.getNombreEquipo()))
+			 {   
+			
+				 fila1[0] = auxJugador.getNombre();
+				 fila1[1] = auxJugador.getNoDorsal(); 
+				 fila1[2] = auxJugador.getPosicion();
+				 model1.addRow(fila1);
+			 } 
+			 
+			
+		}
+	}
 	
 }

@@ -214,7 +214,7 @@ public class ModificarPartido extends JDialog {
 						
 					else if(miPartido == null) { 
 						miPartido = new Partido(buscarEquipo(comboBoxLocal.getSelectedItem().toString()), buscarEquipo(comboBoxVisitante.getSelectedItem().toString()), 
-								estadioEquipoLocal(), horaJuego);
+								estadioEquipoLocal(), horaJuego, formattedFechaPartido.getText());
 					
 				        Liga.getInstance().insertarPartido(miPartido);
 						    mainVisual.cargarPartidosHoy();

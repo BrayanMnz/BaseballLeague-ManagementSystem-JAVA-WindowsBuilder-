@@ -33,6 +33,7 @@ import java.awt.event.WindowEvent;
 import java.text.ParseException;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.SpinnerNumberModel;
@@ -91,7 +92,7 @@ private static JFormattedTextField txtHitsVisitante;
 private static JFormattedTextField txtErroresVisitante;
 private static JFormattedTextField txtHitsLocal;
 
-
+HiloPizarra h1 = new HiloPizarra();
 	/**
 	 * Launch the application.
 	 */
@@ -115,12 +116,24 @@ private static JFormattedTextField txtHitsLocal;
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
+			
+			
+				h1.start(); 
+			
+				
 				cargarLineupLocal();
 				cargarLineupVisitante();
 				cargarMarcador();
 				cargarLanzadores();
 				 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
 				 txtPartido.setText(auxPartido.getIdPartido());
+			}
+			@Override
+			public void windowActivated(WindowEvent e) {
+			  
+				HiloPizarra h1 = new HiloPizarra();
+				h1.start();
+				
 			}
 		});
 		this.auxID = auxID;
@@ -136,6 +149,7 @@ private static JFormattedTextField txtHitsLocal;
 		contentPanel.add(panelAnotacion);
 		panelAnotacion.setLayout(null);
 		panelAnotacion.setOpaque(false);
+	
 		
 		scpnLocal = new JScrollPane();
 		scpnLocal.setVisible(true);
@@ -205,7 +219,7 @@ private static JFormattedTextField txtHitsLocal;
 		    TableCellEditor tce12 = new DefaultCellEditor(cbxAux);
 		    tc12.setCellEditor(tce12);
 		
-	
+	h1.start();
 		
 
 		
@@ -261,7 +275,7 @@ private static JFormattedTextField txtHitsLocal;
 			TableColumn tcc12 = tblVisita.getColumnModel().getColumn(12);
 			tcc12.setPreferredWidth(65);
 			
-			
+			h1.start();
 			scpnVisitante.setViewportView(tblVisita);
 			
 			 btnLocal = new JButton("Local");
@@ -276,7 +290,7 @@ private static JFormattedTextField txtHitsLocal;
 				
 					 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
 					 txtNombreEquipo.setText(auxPartido.getLocal().nombreEquipo);
-					
+	h1.start();				
 					
 					
 				}
@@ -304,21 +318,9 @@ private static JFormattedTextField txtHitsLocal;
 			btnVisitante.setBounds(101, 11, 93, 23);
 			panelAnotacion.add(btnVisitante);
 			
-			JButton btnNewButton = new JButton("New button");
-			btnNewButton.setBounds(752, 40, 89, 23);
+			JButton btnNewButton = new JButton("Terminar Partido");
+			btnNewButton.setBounds(717, 11, 155, 52);
 			panelAnotacion.add(btnNewButton);
-			
-			JSpinner spinnerInnings = new JSpinner();
-			spinnerInnings.addChangeListener(new ChangeListener() {
-				public void stateChanged(ChangeEvent e) {
-					int i=0;
-					spinnerInnings.getNextValue();
-					
-				}
-			});
-			spinnerInnings.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-			spinnerInnings.setBounds(811, 12, 30, 20);
-			panelAnotacion.add(spinnerInnings);
 			
 			JLabel lblIDPartido = new JLabel("ID del partido: ");
 			lblIDPartido.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
@@ -335,12 +337,30 @@ private static JFormattedTextField txtHitsLocal;
 			btnNewButton.addActionListener(new ActionListener() {
 				
 				public void actionPerformed(ActionEvent e) {
+					
 					cargarEstadisticasJugadoresLocal();
 					cargarEstadisticasJugadoresVisitante();
 					cargarStatsPitcherLocal();
 					cargarStatsPitcherVis();
 					cargarCarreras();
-					
+			
+					if(Integer.parseInt(txtCarrerasLocal.getText().toString()) > Integer.parseInt(txtCarrerasVisitante.getText().toString())){ 
+						 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
+						 auxPartido.getLocal().setGanados(auxPartido.getLocal().getGanados() + 1);
+						 auxPartido.getVisitante().setPerdidos(auxPartido.getVisitante().getPerdidos() + 1);
+						   JOptionPane.showMessageDialog(null, "El ganador del partido es: "+auxPartido.getLocal().nombreEquipo, "Partido Finalizado", JOptionPane.INFORMATION_MESSAGE);
+							
+					} 	else if(Integer.parseInt(txtCarrerasLocal.getText()) < Integer.parseInt(txtCarrerasVisitante.getText())){ 
+						 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
+						 auxPartido.getVisitante().setGanados(auxPartido.getVisitante().getGanados() + 1);
+						 auxPartido.getLocal().setPerdidos(auxPartido.getLocal().getPerdidos() + 1);
+						   JOptionPane.showMessageDialog(null, "El ganador del partido es: "+auxPartido.getVisitante().nombreEquipo, "Partido Finalizado", JOptionPane.INFORMATION_MESSAGE);
+							
+					}
+						
+					dispose();
+					 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
+					 auxPartido.setTerminado(true);
 				}
 			});
 		
@@ -744,7 +764,7 @@ private static JFormattedTextField txtHitsLocal;
 		lblNewLabel_2.setBounds(0, -13, 915, 673);
 		contentPanel.add(lblNewLabel_2);
 		
-			
+	
 		
 		
 		
@@ -758,8 +778,8 @@ private static JFormattedTextField txtHitsLocal;
 			model.setRowCount(0);
 			fila = new Object[model.getColumnCount()];
              
-			
-			for (Jugador auxJugador : Liga.getInstance().getMisJugadores()) {
+			Equipo auxEquipo = auxPartido.getLocal();
+			for (Jugador auxJugador : auxEquipo.getAlineacion()) {
 		      if(auxJugador.getEquipo().equalsIgnoreCase(auxPartido.getLocal().getNombreEquipo())) { 
 		          if(auxJugador instanceof jugadorPosicion) { 
 			fila[0] = auxJugador.getNombre();
@@ -777,8 +797,8 @@ private static JFormattedTextField txtHitsLocal;
 			model1.setRowCount(0);
 			fila1 = new Object[model1.getColumnCount()];
               
-			
-			for (Jugador auxJugador : Liga.getInstance().getMisJugadores()) {
+			Equipo auxEquipo = auxPartido.getVisitante();
+			for (Jugador auxJugador : auxEquipo.getAlineacion()) {
 		      if(auxJugador.getEquipo().equalsIgnoreCase(auxPartido.getVisitante().getNombreEquipo())) { 
 		          if(auxJugador instanceof jugadorPosicion) { 
 			fila1[0] = auxJugador.getNombre();
@@ -797,16 +817,18 @@ private static JFormattedTextField txtHitsLocal;
 		     	       
 			fila2[0] = auxPartido.getLocal().getNombreEquipo();
 			 for(int i=1; i<=12 ; i++) {
-			fila2[i] = 0;    }
+			fila2[i] = 00;    }
 				model2.addRow(fila2);  
 			 fila2[0] = auxPartido.getVisitante().getNombreEquipo();
 			 for(int i=1; i<=12 ; i++) {
-					fila2[i] = 0;    }
+					fila2[i] = 00;    }
 			model2.addRow(fila2);  } 
 	
 
 public static void cargarEstadisticasJugadoresLocal() { 
-for(int i =0; i<=2 ; i++) {  // i representa la fila de la tabla, j a la columna. 
+	 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
+	 Equipo auxEquipo = auxPartido.getLocal();
+for(int i =0; i<auxEquipo.getAlineacion().size() ; i++) {  // i representa la fila de la tabla, j a la columna. 
 String aux = (String)tblLocal.getModel().getValueAt(i, 0).toString();
  auxJugador = (jugadorPosicion) Liga.getInstance().buscarJugadorByNombre(aux);
 for(int j =1; j<13; j++) { 
@@ -839,7 +861,9 @@ for(int j =1; j<13; j++) {
 }
 
 public static void cargarEstadisticasJugadoresVisitante() { 
-for(int i =0; i<=1 ; i++) {  // i representa la fila de la tabla, j a la columna. 
+	 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
+	 Equipo auxEquipo = auxPartido.getVisitante();
+for(int i =0; i<auxEquipo.getAlineacion().size() ; i++) {  // i representa la fila de la tabla, j a la columna. 
 String aux = (String)tblVisita.getModel().getValueAt(i, 0).toString();
  auxJugador = (jugadorPosicion) Liga.getInstance().buscarJugadorByNombre(aux);
 for(int j =1; j<13; j++) { 
@@ -934,6 +958,8 @@ public static void cargarStatsPitcherVis() {
 	    Jugador auxJugadorVis = Liga.getInstance().buscarJugadorByNombre( LineupPartido.cbxPitcherVisitante.getSelectedItem().toString());
           txtNombreVis.setText(auxJugadorVis.getNombre());
    }
+   
+
 } 
 	
 

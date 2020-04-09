@@ -34,6 +34,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.swing.UIManager;
 import java.awt.Font;
 import javax.swing.JScrollPane;
@@ -43,14 +48,9 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.data.general.DefaultPieDataset;
-
 import javax.swing.JTable;
 import javax.swing.JTextPane;
+import java.awt.Toolkit;
 
 public class mainVisual extends JFrame {
 
@@ -63,7 +63,10 @@ public class mainVisual extends JFrame {
 	private JTable tablePartidosHoy; 
 	private static DefaultTableModel model; 
 	private static Object[] fila; 
+	private static DefaultTableModel model1; 
+	private static Object[] fila1; 
 	private static int index;
+	private static int indice;
 	private static String auxIDPartido;
 	private static JButton btnReprogramar;
 	private static JButton btnIniciarPartido;
@@ -72,9 +75,8 @@ public class mainVisual extends JFrame {
 	private JMenu mnPartido;
 	private JMenu mnUsuarios;
 	private JMenuItem menuitemRegEquipos;
-	private ChartPanel chartPanel;
-	private JLabel lblNewLabel;
-	private JPanel panelGrafico;
+	private static JTable tblPartidos;
+	private static JButton btnEliminar;
 
 
 	//private static Season miSeason;
@@ -99,6 +101,7 @@ public class mainVisual extends JFrame {
 
 	 
 	public mainVisual(User userLog) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(mainVisual.class.getResource("/Imagenes/baseball_ball_128px.png")));
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -124,7 +127,7 @@ public class mainVisual extends JFrame {
 		panelPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(panelPrincipal);
 		panelPrincipal.setLayout(null);
-		Liga.getInstance().cargarLiga(Liga.getInstance());
+		
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(UIManager.getColor("Button.background"));
@@ -179,6 +182,7 @@ public class mainVisual extends JFrame {
 		mntmRegistrarJugador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (userLog.getTipo() == 0) {
+
 					 ManejarJugador j1 = new ManejarJugador();
 					  j1.setLocationRelativeTo(null);
 					  j1.setVisible(true);
@@ -202,6 +206,7 @@ public class mainVisual extends JFrame {
 		mntmProgramarPartido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (userLog.getTipo() == 0) {
+
 					ProgramarPartido p1 = new ProgramarPartido ();
 					p1.setVisible(true);
 					p1.setModal(true);
@@ -235,42 +240,20 @@ public class mainVisual extends JFrame {
 		});
 		mnUsuarios.add(mntmAnotador);
 		
+		JMenu mnNewMenu = new JMenu("Posiciones");
+		mnNewMenu.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		mnNewMenu.setForeground(Color.BLACK);
+		menuBar.add(mnNewMenu);
 		
-	
-		
-		JButton btnGrafico = new JButton("New button");
-		btnGrafico.addActionListener(new ActionListener() {
+		JMenuItem mntmNewMenuItem = new JMenuItem("Partidos Ganados");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Grafico graph = new Grafico();
-				graph.setVisible(true);
+				GraficoTeams g1 = new GraficoTeams();
+				g1.setVisible(true);
 				
-				/*panelGrafico = new JPanel();
-				panelGrafico.setBounds(598, 20, 742, 326);
-		        panelGrafico.setLayout(null);
-		        lblNewLabel.add(panelGrafico);
-				
-				getContentPane().add(panelGrafico);
-			    DefaultPieDataset data = new DefaultPieDataset();
-		        for (Equipo aux : Liga.getInstance().getMisEquipos()) {
-		        	data.setValue(aux.getNombreEquipo()+" ; "+aux.getGanados(), aux.getGanados());
-		        }
-		 
-		        JFreeChart chart = ChartFactory.createPieChart(
-		         "Juegos ganados", 
-		         data, 
-		         true, 
-		         true, 
-		         false);
-		 
-		        // Crear el Panel del Grafico con ChartPanel
-		        ChartPanel chartPanel = new ChartPanel(chart);
-		        chartPanel.setBounds(598, 11, 742, 326);
-		       // getContentPane().add(panelGrafico);
-		        panelGrafico.add(chartPanel);
-		        */
 			}
 		});
-		menuBar.add(btnGrafico);
+		mnNewMenu.add(mntmNewMenuItem);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 22, 1350, 657);
@@ -279,48 +262,48 @@ public class mainVisual extends JFrame {
 		panel.setLayout(null);
 		
 		JPanel panelPartidos = new JPanel();
-		panelPartidos.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Partidos de hoy", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelPartidos.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Calendario de Partidos", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelPartidos.setBounds(36, 11, 552, 326);
 		panel.add(panelPartidos);
 		panelPartidos.setLayout(null);
 		panelPartidos.setOpaque(false); 
 		
 		JScrollPane scrollPartidosHoy = new JScrollPane();
-		scrollPartidosHoy.setBounds(10, 25, 532, 265);
+		scrollPartidosHoy.setBounds(10, 25, 532, 122);
 		panelPartidos.add(scrollPartidosHoy);
 		
 		tablePartidosHoy = new JTable();
 		model = new DefaultTableModel();
-		String[] columnNames = {"ID Partido","Local", "Visitante", "Estadio", "Hora"};
+		String[] columnNames = {"ID Partido","Local", "Visitante", "Estadio", "Hora","Fecha"};
 		model.setColumnIdentifiers(columnNames);
 		tablePartidosHoy.setModel(model);
 		tablePartidosHoy.setOpaque(false);
 		tablePartidosHoy.setBorder(new CompoundBorder());
 		scrollPartidosHoy.setViewportView(tablePartidosHoy);
 		
-		tablePartidosHoy.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				index = tablePartidosHoy.getSelectedRow();
-				if(index >= 0) { 
-					auxIDPartido = (String)tablePartidosHoy.getModel().getValueAt(index, 0).toString();
-					btnReprogramar.setEnabled(true);
-					btnIniciarPartido.setEnabled(true);
-				}	
-			}
-		});
-		 
+	
 	
 		
 		btnIniciarPartido = new JButton("Iniciar Partido");
 		btnIniciarPartido.setEnabled(false);
 		btnIniciarPartido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+				  Date date = Calendar.getInstance().getTime();  
+			        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+			        String strDate = dateFormat.format(date);
+				if(Liga.getInstance().buscarPartidoById(auxIDPartido).getFecha().equalsIgnoreCase(strDate))
+				{ 
+				
 				LineupPartido p1 = new LineupPartido(auxIDPartido);
+				
 				p1.setLocationRelativeTo(null);
 				p1.setModal(true);
-				p1.setVisible(true);
+				p1.setVisible(true);} 
+				else { 
+ JOptionPane.showMessageDialog(null, "Debe esperar la fecha del partido para iniciarlo!", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+					 
+					
+				}
 			}
 		});
 		btnIniciarPartido.setBounds(414, 292, 128, 23);
@@ -355,31 +338,104 @@ public class mainVisual extends JFrame {
 		btnReprogramar.setBounds(230, 292, 174, 23);
 		panelPartidos.add(btnReprogramar);
 		
-		lblNewLabel = new JLabel("New label");
+		 btnEliminar = new JButton("Eliminar");
+		 btnEliminar.setEnabled(false);
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Liga.getInstance().EliminarPartido(Liga.getInstance().buscarPartidoById(auxIDPartido));
+				cargarPartidosHoy();
+			}
+		});
+		btnEliminar.setBounds(136, 292, 89, 23);
+		panelPartidos.add(btnEliminar);
+		
+		JScrollPane scpProximosPartidos = new JScrollPane();
+		scpProximosPartidos.setBounds(10, 159, 532, 122);
+		panelPartidos.add(scpProximosPartidos);
+		
+		tblPartidos = new JTable();
+		tblPartidos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				indice = tblPartidos.getSelectedRow();
+				if(indice >=0) { 
+					auxIDPartido = (String)tblPartidos.getModel().getValueAt(indice, 0).toString();
+					btnReprogramar.setEnabled(true);
+					btnIniciarPartido.setEnabled(true);
+					btnEliminar.setEnabled(true);
+					
+					
+				}
+					
+				
+			}
+		});
+		model1 = new DefaultTableModel();
+		String[] columnNames1 = {"ID Partido","Local", "Visitante", "Estadio", "Hora","Fecha"};
+		model1.setColumnIdentifiers(columnNames1);
+		tblPartidos.setModel(model1);
+		tblPartidos.setOpaque(false);
+		tblPartidos.setBorder(new CompoundBorder());
+		scpProximosPartidos.setViewportView(tblPartidos);
+		
+		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(mainVisual.class.getResource("/Imagenes/ws_Baseball_Stadium_Fenway_Park_1920x1440.jpg")));
-		lblNewLabel.setBounds(10, -32, 1350, 689);
+		lblNewLabel.setBounds(0, -32, 1350, 689);
 		panel.add(lblNewLabel);
-		
-
-		
-		//panel.add(panelGrafico);
-		
-
-		    
+		tablePartidosHoy.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				index = tablePartidosHoy.getSelectedRow();
+				
+				if(index >= 0 ) { 
+					auxIDPartido = (String)tablePartidosHoy.getModel().getValueAt(index, 0).toString();
+					btnReprogramar.setEnabled(true);
+					btnIniciarPartido.setEnabled(true);
+					btnEliminar.setEnabled(true);
+					
+					
+				}
+				
+			}
+		});
+		 
 		
 	}
 	
+	
+	
+	
 	public static void cargarPartidosHoy() { 
 		model.setRowCount(0);
+		model1.setRowCount(0);
+		fila1 = new Object[model1.getColumnCount()];
 		fila = new Object[model.getColumnCount()];
 	for (Partido auxPartido : Liga.getInstance().getMisPartidos()) {
+		  Date date = Calendar.getInstance().getTime();  
+	        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+	        String strDate = dateFormat.format(date); 
+		if(auxPartido.getFecha().equalsIgnoreCase(strDate)&& auxPartido.isTerminado()== false) { 
 		fila[0] = auxPartido.getIdPartido();
 		fila[1] = auxPartido.getLocal().getNombreEquipo();
 		fila[2] = auxPartido.getVisitante().getNombreEquipo();
 		fila[3] = auxPartido.getLocal().getEstadio();
 		fila[4] = auxPartido.getHora();
-		model.addRow(fila);
-		  }
+		fila[5] = auxPartido.getFecha();
+		model.addRow(fila); } 
+		else { 
+			fila1[0] = auxPartido.getIdPartido();
+			fila1[1] = auxPartido.getLocal().getNombreEquipo();
+			fila1[2] = auxPartido.getVisitante().getNombreEquipo();
+			fila1[3] = auxPartido.getLocal().getEstadio();
+			fila1[4] = auxPartido.getHora();
+			fila1[5] = auxPartido.getFecha();
+			model1.addRow(fila1);
+			
+		}}
+
+		
+		  
 	}
 	
 	public static Partido partidoSeleccionadoTabla() { 

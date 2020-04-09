@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
+
 public class Partido implements Serializable{
 	/**
 	 * 
@@ -11,6 +13,8 @@ public class Partido implements Serializable{
 	private static final long serialVersionUID = 1L;
 	//CREAR MARCADOR PARA LA PARTE VISUAL
 	private ArrayList <Equipo> misEquipos;
+	private ArrayList <Jugador> AlineacionLocal;
+	private ArrayList <Jugador> AlineacionVisitante;
 	private String idPartido;
 	private Equipo Equipovisitante;
 	private Equipo Equipolocal;
@@ -26,9 +30,12 @@ public class Partido implements Serializable{
 	private int errorLocal=0;
 	private int errorVisita=0;
 	private Partido miPartido;
-	public Partido(Equipo local, Equipo visitante, String estadio, String horaJuego) {
+	public Partido(Equipo local, Equipo visitante, String estadio, String horaJuego, String fecha ) {
 		super();
+		AlineacionLocal = new ArrayList <Jugador>();
+		AlineacionVisitante = new ArrayList <Jugador>();
 		this.Equipovisitante = visitante;
+	this.fecha = fecha;
 		this.Equipolocal = local;
 		this.estadio = estadio;
 		this.horaJuego = horaJuego;
@@ -36,7 +43,7 @@ public class Partido implements Serializable{
 		terminado = false;
 		localRun = 0;
 		visitaRun = 0;
-		this.innnings = innnings;
+		//this.innnings = innnings;
 	}
 	
 
@@ -61,15 +68,25 @@ public class Partido implements Serializable{
 	public String getHora() {
 		return horaJuego;
 	}
-	public void setHora(String hora) {
-		this.horaJuego = hora;
-	}
 	public String getFecha() {
 		return fecha;
 	}
+//////////////////////////////////////////////////////////////////////////////
+	public  void insertarJugador(Jugador aux) {  
+		getAlineacionLocal().add(aux);
+	 
+}
+	
+
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
+
+
+	public void setHora(String hora) {
+		this.horaJuego = hora;
+	}
+
 	public boolean isTerminado() {
 		return terminado;
 	}
@@ -95,6 +112,16 @@ public class Partido implements Serializable{
 		this.visitaHits = visitaHits;
 	}
 
+	public ArrayList<Jugador> getAlineacionLocal() {
+		return AlineacionLocal;
+	}
+
+
+	public void setAlineacionLocal(ArrayList<Jugador> alineacionLocal) {
+		AlineacionLocal = alineacionLocal;
+	}
+
+
 	public void setIdPartido(String idPartido) {
 		this.idPartido = Liga.getInstance().generarIDPartido();
 	}
@@ -108,6 +135,16 @@ public class Partido implements Serializable{
 	public int getLocalHits() {
 		return localHits;
 	}
+	public ArrayList<Jugador> getAlineacionVisitante() {
+		return AlineacionVisitante;
+	}
+
+
+	public void setAlineacionVisitante(ArrayList<Jugador> alineacionVisitante) {
+		AlineacionVisitante = alineacionVisitante;
+	}
+
+
 	public void setLocalHits(int localHits) {
 		this.localHits = localHits;
 	}

@@ -132,6 +132,10 @@ public class Equipo implements Serializable{
 		} else
 		Alineacion.add(aux);  
 	}
+	public void EliminarJugadorAlineacion(Jugador aux) {
+		getAlineacion().remove(aux);
+		}
+	
 	public void insertarLanzador(Pitcher aux) { 
 		if(aux.lesionado == true) { 
 			JOptionPane.showMessageDialog(null, "El jugador esta lesionado no puede pertenecer a la alineacion", "Error", JOptionPane.WARNING_MESSAGE);

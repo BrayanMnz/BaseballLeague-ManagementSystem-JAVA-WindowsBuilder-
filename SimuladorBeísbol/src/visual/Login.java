@@ -183,6 +183,7 @@ public class Login extends JFrame {
 			}
 		});
 		
+		
 		btnCerrar.setBorder(emptyBorder);
 		btnCerrar.setBackground(Color.WHITE);
 		btnCerrar.setForeground(Color.WHITE);

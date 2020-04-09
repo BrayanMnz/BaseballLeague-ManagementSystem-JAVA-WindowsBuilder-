@@ -211,10 +211,10 @@ public class ProgramarPartido extends JDialog {
 						
 					else if(miPartido == null) { 
 						miPartido = new Partido(buscarEquipo(comboBoxLocal.getSelectedItem().toString()), buscarEquipo(comboBoxVisitante.getSelectedItem().toString()), 
-								estadioEquipoLocal(), horaJuego);
+								estadioEquipoLocal(), horaJuego,formattedFechaPartido.getText());
 				        Liga.getInstance().insertarPartido(miPartido);
 						    mainVisual.cargarPartidosHoy();
-						    System.out.println(Liga.getInstance().generarIDPartido());
+						    
 				        JOptionPane.showMessageDialog(null, "Operacion Satisfactoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
 						   dispose();
 					  }

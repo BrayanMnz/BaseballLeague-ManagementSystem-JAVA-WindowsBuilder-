@@ -26,7 +26,7 @@ public class Liga implements Serializable{
 	private ArrayList <Equipo> misEquipos;
 	private ArrayList <Partido> misPartidos; 
 	private static Liga miLiga; 
-	private int cantPartidos;
+	private int cantPartidos = 0;
 	private static boolean control = true;
 	private ArrayList <User> usuarios;
 	private  User loginUser;
@@ -159,6 +159,8 @@ public class Liga implements Serializable{
 	
 	   public String generarIDPartido() { 
 		   String auxID="";
+		   if(cantPartidos<0)
+			   setCantPartidos(0);
 		   return auxID = "MLB-00"+cantPartidos;
 		   }
 	 
@@ -259,7 +261,8 @@ public class Liga implements Serializable{
     		 if(misJugadores.get(i).getNombre().equalsIgnoreCase(Nombre)) {
     			 auxJugador = misJugadores.get(i);
     			 encontrado = true;  } 
-    		 i++; }	return  auxJugador;
+    		 i++; }	
+    	 return  auxJugador;
 	 }
 	public Jugador buscarDorsalTeamName (String dorsal, String team, String name) {
 		Jugador player=null;

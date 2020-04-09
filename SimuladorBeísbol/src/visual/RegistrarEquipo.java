@@ -33,6 +33,7 @@ import javax.swing.JFormattedTextField;
 import java.awt.Font;
 import java.awt.Image;
 import javax.swing.UIManager;
+import java.awt.Toolkit;
 
 public class RegistrarEquipo extends JDialog {
 
@@ -67,9 +68,10 @@ public class RegistrarEquipo extends JDialog {
 	 * Create the dialog.
 	 */
 	public RegistrarEquipo() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistrarEquipo.class.getResource("/Imagenes/baseball_ball_128px.png")));
 		
 		setTitle("Registro de Equipos ");
-		setBounds(100, 100, 788, 348);
+		setBounds(100, 100, 533, 348);
 		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(UIManager.getColor("Button.background"));
@@ -139,61 +141,10 @@ public class RegistrarEquipo extends JDialog {
 			panel.add(formattedFechaFundacion);
 		}
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.GRAY);
-		panel.setBounds(519, 10, 243, 255);
-		contentPanel.add(panel);
-		panel.setLayout(null);
-		panel.setOpaque(false);
-		panel.setBorder(new TitledBorder(null, "Logo: ", TitledBorder.CENTER, TitledBorder.TOP, null, null));
-		
-		JLabel lblLogoEquipo = new JLabel("");
-		lblLogoEquipo.setBounds(10, 26, 223, 173);
-		panel.add(lblLogoEquipo);
-		
-		JButton btnSeleccionarFoto = new JButton("Seleccionar");
-		btnSeleccionarFoto.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.showOpenDialog(null);
-				
-				BufferedImage foto;
-				File fileFoto = fileChooser.getSelectedFile();
-		
-				String routeOfFoto=null;
-				
-				try {
-					 routeOfFoto = fileFoto.getAbsolutePath();
-					
-				}catch (NullPointerException  e1) {
-					e1.printStackTrace();
-				}
-				try {
-					foto = ImageIO.read(fileFoto);
-					String routetosave = "LogosEquipos/"+ txtNombreEquipo.getText() + ".png";
-					ImageIO.write(foto, "png", new File(routetosave));
-					/** to adjust image at size of JLabel **/
-					ImageIcon fotoJugador = new ImageIcon(routeOfFoto);
-					Icon fotoJ = new ImageIcon(fotoJugador.getImage().getScaledInstance(lblLogoEquipo.getWidth(), lblLogoEquipo.getHeight(), Image.SCALE_SMOOTH));
-					lblLogoEquipo.setIcon(fotoJ);
-					selectionFoto = true;
-					
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}catch (IllegalArgumentException e2) {
-					JOptionPane.showMessageDialog(null, "Solo se permiten fotos." , "Error:", JOptionPane.ERROR_MESSAGE);
-				}	
-			}
-		});
-		btnSeleccionarFoto.setBounds(10, 211, 223, 33);
-		panel.add(btnSeleccionarFoto);
-		
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(RegistrarEquipo.class.getResource("/Imagenes/mlb-logo-drawing-11.jpg")));
 
-		lblFondo.setBounds(0, 0, 772, 276);
+		lblFondo.setBounds(0, 0, 517, 276);
 		contentPanel.add(lblFondo);
 		{
 			JPanel buttonPane = new JPanel();
@@ -235,6 +186,12 @@ public class RegistrarEquipo extends JDialog {
 			}
 			{
 				JButton btnCancel = new JButton("Cancelar");
+				btnCancel.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					
+					dispose();
+					}
+				});
 				btnCancel.setActionCommand("Cancel");
 				buttonPane.add(btnCancel);
 			}

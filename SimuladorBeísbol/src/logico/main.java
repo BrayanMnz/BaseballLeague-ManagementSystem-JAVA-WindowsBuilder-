@@ -2,6 +2,7 @@ package logico;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,15 +24,17 @@ public class main implements Serializable {
 		Equipo redsox = new Equipo ("Redsox","BOS","FenWay","Roe Roenicke",null);
 		Equipo Yankees = new Equipo("Yankees", "NYY", "Yankee Stadium", "Aaron Boone",null);
 	//    liga1.insertarSeason(s1);
-		Date fechaFinal = new Date();
-		Date fecha = new Date();
+	//	Date fechaFinal = new Date();
+	    Date date = Calendar.getInstance().getTime();  
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+        String strDate = dateFormat.format(date); 
+	   System.out.println(strDate);
 		Date fechad = new Date(120, 02, 25);
-		SimpleDateFormat fechaformat = new SimpleDateFormat("dd/MM/yyyy");
-	    String fechaActual = fechaformat.format(fecha);
-	    String fechaFutura = fechaformat.format(fechad);
-   System.out.println(fechaFutura);
-	Partido partido = new Partido(Yankees, redsox, "Fenway", "");
-	Partido partido1 = new Partido(Yankees, redsox, "Fenway", "");
+	
+//  System.out.println(fechaFutura);
+	Partido partido = new Partido(Yankees, redsox, "Fenway", "","Hola");
+	Partido partido1 = new Partido(Yankees, redsox, "Fenway", "","Hola");
+	System.out.println(partido.getFecha());
 		liga1.insertarPartido(partido);
 
 		liga1.insertarPartido(partido1);
@@ -43,10 +46,9 @@ public class main implements Serializable {
 	//	jugadorPosicion bate2 = new jugadorPosicion("Brayan","25", "5","6","Redsox","10","14","5");
 	//	bate1.setHits(2);
 		
-	bate1.setHitsPartido(4);
-	bate1.setHitsPartido(10);
-System.out.println(bate1.totalHits());
-System.out.println(bate1.getHits());
+	
+
+//System.out.println(bate1.getHits());
 		//s1.insertarJugador(bate1);
 		//s1.insertarJugador(bate2);
 	//	redsox.insertarJugador(p1);
