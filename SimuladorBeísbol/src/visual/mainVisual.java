@@ -43,6 +43,12 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
+
 import javax.swing.JTable;
 import javax.swing.JTextPane;
 
@@ -66,6 +72,9 @@ public class mainVisual extends JFrame {
 	private JMenu mnPartido;
 	private JMenu mnUsuarios;
 	private JMenuItem menuitemRegEquipos;
+	private ChartPanel chartPanel;
+	private JLabel lblNewLabel;
+	private JPanel panelGrafico;
 
 
 	//private static Season miSeason;
@@ -170,7 +179,6 @@ public class mainVisual extends JFrame {
 		mntmRegistrarJugador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (userLog.getTipo() == 0) {
-
 					 ManejarJugador j1 = new ManejarJugador();
 					  j1.setLocationRelativeTo(null);
 					  j1.setVisible(true);
@@ -194,7 +202,6 @@ public class mainVisual extends JFrame {
 		mntmProgramarPartido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (userLog.getTipo() == 0) {
-
 					ProgramarPartido p1 = new ProgramarPartido ();
 					p1.setVisible(true);
 					p1.setModal(true);
@@ -227,6 +234,43 @@ public class mainVisual extends JFrame {
 			}
 		});
 		mnUsuarios.add(mntmAnotador);
+		
+		
+	
+		
+		JButton btnGrafico = new JButton("New button");
+		btnGrafico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Grafico graph = new Grafico();
+				graph.setVisible(true);
+				
+				/*panelGrafico = new JPanel();
+				panelGrafico.setBounds(598, 20, 742, 326);
+		        panelGrafico.setLayout(null);
+		        lblNewLabel.add(panelGrafico);
+				
+				getContentPane().add(panelGrafico);
+			    DefaultPieDataset data = new DefaultPieDataset();
+		        for (Equipo aux : Liga.getInstance().getMisEquipos()) {
+		        	data.setValue(aux.getNombreEquipo()+" ; "+aux.getGanados(), aux.getGanados());
+		        }
+		 
+		        JFreeChart chart = ChartFactory.createPieChart(
+		         "Juegos ganados", 
+		         data, 
+		         true, 
+		         true, 
+		         false);
+		 
+		        // Crear el Panel del Grafico con ChartPanel
+		        ChartPanel chartPanel = new ChartPanel(chart);
+		        chartPanel.setBounds(598, 11, 742, 326);
+		       // getContentPane().add(panelGrafico);
+		        panelGrafico.add(chartPanel);
+		        */
+			}
+		});
+		menuBar.add(btnGrafico);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 22, 1350, 657);
@@ -262,9 +306,7 @@ public class mainVisual extends JFrame {
 					auxIDPartido = (String)tablePartidosHoy.getModel().getValueAt(index, 0).toString();
 					btnReprogramar.setEnabled(true);
 					btnIniciarPartido.setEnabled(true);
-					
-				}
-				
+				}	
 			}
 		});
 		 
@@ -275,9 +317,7 @@ public class mainVisual extends JFrame {
 		btnIniciarPartido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
-				
 				LineupPartido p1 = new LineupPartido(auxIDPartido);
-				
 				p1.setLocationRelativeTo(null);
 				p1.setModal(true);
 				p1.setVisible(true);
@@ -315,10 +355,18 @@ public class mainVisual extends JFrame {
 		btnReprogramar.setBounds(230, 292, 174, 23);
 		panelPartidos.add(btnReprogramar);
 		
-		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(mainVisual.class.getResource("/Imagenes/ws_Baseball_Stadium_Fenway_Park_1920x1440.jpg")));
-		lblNewLabel.setBounds(0, -32, 1350, 689);
+		lblNewLabel.setBounds(10, -32, 1350, 689);
 		panel.add(lblNewLabel);
+		
+
+		
+		//panel.add(panelGrafico);
+		
+
+		    
+		
 	}
 	
 	public static void cargarPartidosHoy() { 
@@ -345,7 +393,6 @@ public class mainVisual extends JFrame {
 		}
 		return aux;
 	}
-	
 }
 
 
