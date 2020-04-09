@@ -75,7 +75,6 @@ public class LineupPartido extends JDialog {
 	private static JPanel panelVisita;
 	private static JPanel panelAlVisita;
 	private JButton btnLocal_1;
-	private JButton btnVisita;
 	private JTable table;
 
 	/**
@@ -390,6 +389,8 @@ public class LineupPartido extends JDialog {
 					tablaVisitante.setVisible(false);
 					tablaLocal.setVisible(true);
 					scrollPaneLocal.setVisible(true);
+					tblLineupL.setVisible(true);
+					table.setVisible(false);
 					
 					
 				}
@@ -398,7 +399,7 @@ public class LineupPartido extends JDialog {
 			contentPanel.add(btnLocal_1);
 		}
 		{
-			btnVisita = new JButton("Visitante");
+			JButton btnVisita = new JButton("Visitante");
 			btnVisita.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					panelAlHome.setVisible(false);
@@ -409,6 +410,9 @@ public class LineupPartido extends JDialog {
 					tablaVisitante.setVisible(true);
 					tablaLocal.setVisible(false);
 					scrollPaneLocal.setVisible(false);
+					tblLineupL.setVisible(false);
+					table.setVisible(true);
+					
 					
 					
 				}
@@ -605,6 +609,7 @@ public class LineupPartido extends JDialog {
 				}
 			}
 		 }
+
 }
 
 

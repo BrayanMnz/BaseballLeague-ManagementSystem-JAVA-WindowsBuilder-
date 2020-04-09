@@ -7,6 +7,7 @@ public class HiloPizarra extends Thread {
 		try {
 			HiloPizarra.sleep(5000);
 			IniciarPartido.cargarCarreras();
+			IniciarPartido.actualiarPizarra();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

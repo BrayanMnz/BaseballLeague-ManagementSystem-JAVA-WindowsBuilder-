@@ -92,7 +92,7 @@ private static JFormattedTextField txtHitsVisitante;
 private static JFormattedTextField txtErroresVisitante;
 private static JFormattedTextField txtHitsLocal;
 
-HiloPizarra h1 = new HiloPizarra();
+
 	/**
 	 * Launch the application.
 	 */
@@ -116,7 +116,7 @@ HiloPizarra h1 = new HiloPizarra();
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-			
+				HiloPizarra h1 = new HiloPizarra();
 			
 				h1.start(); 
 			
@@ -130,9 +130,7 @@ HiloPizarra h1 = new HiloPizarra();
 			}
 			@Override
 			public void windowActivated(WindowEvent e) {
-			  
-				HiloPizarra h1 = new HiloPizarra();
-				h1.start();
+			
 				
 			}
 		});
@@ -218,8 +216,7 @@ HiloPizarra h1 = new HiloPizarra();
 		    tc11.setCellEditor(tce11);
 		    TableCellEditor tce12 = new DefaultCellEditor(cbxAux);
 		    tc12.setCellEditor(tce12);
-		
-	h1.start();
+	
 		
 
 		
@@ -275,7 +272,7 @@ HiloPizarra h1 = new HiloPizarra();
 			TableColumn tcc12 = tblVisita.getColumnModel().getColumn(12);
 			tcc12.setPreferredWidth(65);
 			
-			h1.start();
+		
 			scpnVisitante.setViewportView(tblVisita);
 			
 			 btnLocal = new JButton("Local");
@@ -290,7 +287,7 @@ HiloPizarra h1 = new HiloPizarra();
 				
 					 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
 					 txtNombreEquipo.setText(auxPartido.getLocal().nombreEquipo);
-	h1.start();				
+		
 					
 					
 				}
@@ -348,13 +345,24 @@ HiloPizarra h1 = new HiloPizarra();
 						 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
 						 auxPartido.getLocal().setGanados(auxPartido.getLocal().getGanados() + 1);
 						 auxPartido.getVisitante().setPerdidos(auxPartido.getVisitante().getPerdidos() + 1);
-						   JOptionPane.showMessageDialog(null, "El ganador del partido es: "+auxPartido.getLocal().nombreEquipo, "Partido Finalizado", JOptionPane.INFORMATION_MESSAGE);
+						  
+						 PizarraFinal f1 = new PizarraFinal(IniciarPartido.auxID);
+						 f1.setModal(true);
+						 f1.setLocationRelativeTo(null);
+						 f1.setVisible(true);
+						 
+						 JOptionPane.showMessageDialog(null, "El ganador del partido es: "+auxPartido.getLocal().nombreEquipo, "Partido Finalizado", JOptionPane.INFORMATION_MESSAGE);
 							
 					} 	else if(Integer.parseInt(txtCarrerasLocal.getText()) < Integer.parseInt(txtCarrerasVisitante.getText())){ 
 						 Partido auxPartido = Liga.getInstance().buscarPartidoById(auxID);
 						 auxPartido.getVisitante().setGanados(auxPartido.getVisitante().getGanados() + 1);
 						 auxPartido.getLocal().setPerdidos(auxPartido.getLocal().getPerdidos() + 1);
-						   JOptionPane.showMessageDialog(null, "El ganador del partido es: "+auxPartido.getVisitante().nombreEquipo, "Partido Finalizado", JOptionPane.INFORMATION_MESSAGE);
+						  
+						 PizarraFinal f1 = new PizarraFinal(IniciarPartido.auxID);
+						 f1.setModal(true);
+						 f1.setLocationRelativeTo(null);
+						 f1.setVisible(true); 
+						 JOptionPane.showMessageDialog(null, "El ganador del partido es: "+auxPartido.getVisitante().nombreEquipo, "Partido Finalizado", JOptionPane.INFORMATION_MESSAGE);
 							
 					}
 						
@@ -914,8 +922,7 @@ for(int j =1; j<13; j++) {
 
 
 } 
-} txtCarrerasLocal.setText(""+auxPartido1.getLocalRun());
- txtCarrerasVisitante.setText(""+auxPartido1.getVisitaRun());
+} 
 }
 
 
@@ -958,7 +965,10 @@ public static void cargarStatsPitcherVis() {
 	    Jugador auxJugadorVis = Liga.getInstance().buscarJugadorByNombre( LineupPartido.cbxPitcherVisitante.getSelectedItem().toString());
           txtNombreVis.setText(auxJugadorVis.getNombre());
    }
-   
+	public static void actualiarPizarra() { 
+		txtCarrerasLocal.setText(""+Liga.getInstance().buscarPartidoById(auxID).getLocalRun());
+		txtCarrerasVisitante.setText(""+Liga.getInstance().buscarPartidoById(auxID).getVisitaRun());
+	}
 
 } 
 	
